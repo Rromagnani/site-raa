@@ -9,14 +9,17 @@
 <meta property="og:description" content="Tradição familiar, precisão técnica. Notícias jurídicas atualizadas todos os dias.">
 <meta property="og:url" content="https://www.raa.com.br/">
 <meta name="theme-color" content="#0E1B2C">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:image" content="https://www.raa.com.br/img/fotos/hero-1.webp">
+<link rel="preload" as="image" href="img/fotos/hero-1.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"LegalService","name":"Romagnani Advogados Associados","url":"https://www.raa.com.br","telephone":"+55 11 2787-6308",
  "address":{"@type":"PostalAddress","streetAddress":"Av. Paulista, 1079 - 8º andar","addressLocality":"São Paulo","addressRegion":"SP","postalCode":"01311-200","addressCountry":"BR"},
- "sameAs":["https://www.instagram.com/raa_advogados/","https://www.facebook.com/romagnaniadvogados/","https://www.linkedin.com/company/romagnani-advogados-associados/","https://www.youtube.com/@RomagnaniAdvogados"]}
+ "sameAs":["https://www.instagram.com/raa_advogados/","https://www.facebook.com/romagnaniadvogados/","https://www.linkedin.com/company/romagnani-advogados-associados/"]}
 </script>
 <style>
 :root{
@@ -47,9 +50,9 @@ header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,box-
 header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:72px;color:var(--on-ink)}
 .brand{display:flex;align-items:center;gap:12px}
-.brand .mono{width:40px;height:40px;border:1px solid var(--brass-2);border-radius:50%;display:grid;place-items:center;font-family:var(--serif);color:var(--brass-2);font-size:1.25rem}
-.brand b{font-family:var(--serif);font-weight:600;font-size:1.15rem;letter-spacing:.01em;display:block;line-height:1.1}
-.brand small{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--on-ink-muted)}
+.brand img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.brand b{font-family:"Cinzel",var(--serif);font-weight:600;font-size:1.22rem;letter-spacing:.08em;display:block;line-height:1.1;color:#F3EEE6}
+.brand small{font-family:"Cinzel",var(--serif);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--on-ink-muted)}
 .menu{display:flex;gap:28px;align-items:center;font-size:.9rem}
 .menu a:not(.btn){opacity:.85;transition:opacity .2s}
 .menu a:not(.btn):hover{opacity:1;color:var(--brass-2)}
@@ -75,8 +78,16 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 
 /* ——— hero ——— */
 .hero{position:relative;min-height:100vh;background:var(--ink);color:var(--on-ink);display:flex;flex-direction:column;overflow:hidden;padding:0}
-.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 40%,transparent 0,rgba(14,27,44,.2) 40%,rgba(14,27,44,.92) 100%);pointer-events:none}
+.slides{position:absolute;inset:0}
+.slides figure{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease}
+.slides figure.on{opacity:1}
+.slides img{width:100%;height:100%;object-fit:cover}
+.slides figure.on img{animation:kb 9s ease-out forwards}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.15) translate(-1.5%,-1%)}}
+.sdots{position:absolute;z-index:3;right:24px;bottom:28px;display:flex;gap:8px}
+.sdots button{width:28px;height:3px;border-radius:2px;background:rgba(237,231,220,.3);transition:background .3s,width .3s}
+.sdots button.on{background:var(--brass-2);width:44px}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,27,44,.94) 0%,rgba(14,27,44,.78) 45%,rgba(14,27,44,.5) 100%),linear-gradient(0deg,rgba(14,27,44,.9),transparent 35%);pointer-events:none;z-index:1}
 .hero-body{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:1.25fr .9fr;gap:56px;align-items:center;padding-top:150px;padding-bottom:72px}
 .hero h1{font-size:clamp(2.6rem,6.2vw,5.2rem);margin:1rem 0 1.4rem}
 .hero h1 em{font-style:italic;color:var(--brass-2)}
@@ -85,7 +96,7 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 .rotator span.on{opacity:1;transform:none;position:relative}
 .hero p.lead{color:var(--on-ink-muted);font-size:1.12rem}
 .cta{display:flex;gap:12px;margin-top:2rem;flex-wrap:wrap}
-.today{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:26px;backdrop-filter:blur(6px)}
+.today{background:rgba(14,27,44,.55);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px;backdrop-filter:blur(14px)}
 .today header{position:static;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
 .today h3{font-size:1.4rem}
 .today .when{font-size:.75rem;color:var(--on-ink-muted)}
@@ -128,6 +139,20 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 .more button:hover{background:var(--ink);color:var(--on-ink)}
 .empty{color:var(--muted);padding:40px;text-align:center;grid-column:1/-1}
 
+.nc{padding:0;gap:0}
+.nc .ph{aspect-ratio:16/9;overflow:hidden;background:var(--paper-2);position:relative}
+.nc .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease}
+.nc:hover .ph img{transform:scale(1.08)}
+.nc .ph .area{position:absolute;left:14px;top:14px;background:rgba(14,27,44,.82);color:var(--brass-2);padding:5px 10px;border-radius:999px;font-size:.66rem;backdrop-filter:blur(6px)}
+.nc .bd{padding:18px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.nc.big::after{content:none}
+.nc.big{padding:0;justify-content:flex-end}
+.nc.big .ph{position:absolute;inset:0;aspect-ratio:auto}
+.nc.big .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,27,44,.1) 0%,rgba(14,27,44,.55) 45%,rgba(14,27,44,.95) 100%)}
+.nc.big .ph .area{z-index:1;left:28px;top:28px}
+.nc.big .bd{position:relative;z-index:1;padding:36px;flex:0}
+.nc.big .meta{color:rgba(237,231,220,.8)}
+
 /* ——— videos ——— */
 .videos{background:var(--ink);color:var(--on-ink)}
 .videos .eyebrow{color:var(--brass-2)}
@@ -168,11 +193,36 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 .ac:hover .n,.ac:hover a{color:var(--brass-2)}
 .ac:hover a{opacity:1;transform:none}
 
+.ac{background:var(--ink);color:var(--on-ink);overflow:hidden;min-height:360px;justify-content:flex-end;isolation:isolate}
+.ac .bgs{position:absolute;inset:0;z-index:-2}
+.ac .bgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity 1.4s ease,transform 7s ease-out}
+.ac .bgs img.on{opacity:1;transform:scale(1.1)}
+.ac::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(14,27,44,.2) 0%,rgba(14,27,44,.72) 50%,rgba(14,27,44,.96) 100%);transition:opacity .4s}
+.ac:hover::after{background:linear-gradient(180deg,rgba(14,27,44,.45),rgba(14,27,44,.97) 55%)}
+.ac .n{position:absolute;top:26px;left:30px;color:var(--brass-2);font-size:1.1rem}
+.ac h3{margin:auto 0 10px;color:#fff}
+.ac p{color:rgba(237,231,220,.8);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s}
+.ac:hover p,.ac:focus-within p{max-height:12em;opacity:1}
+.ac a{color:var(--brass-2);margin-top:0;padding-top:14px}
+
+/* ——— faixa com parallax ——— */
+.band{position:relative;height:clamp(340px,60vh,560px);overflow:hidden;display:grid;place-items:center;color:var(--on-ink);text-align:center;padding:0 16px}
+.band img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;will-change:transform}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(14,27,44,.75),rgba(14,27,44,.82))}
+.band blockquote{position:relative;z-index:1;font-family:var(--serif);font-size:clamp(1.6rem,3.6vw,2.8rem);max-width:24ch;line-height:1.2;margin:0 auto}
+.band cite{display:block;margin-top:22px;font-family:var(--sans);font-style:normal;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass-2)}
+.band .seal{position:relative;z-index:1;width:64px;margin:0 auto 22px;opacity:.95}
+
 /* ——— escritório ——— */
 .about{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .about blockquote{font-family:var(--serif);font-size:clamp(1.6rem,2.8vw,2.3rem);line-height:1.25;border-left:2px solid var(--brass);padding-left:28px;margin:28px 0}
 .about p{color:var(--muted);margin-bottom:1rem}
 .vals{display:grid;gap:16px;margin-top:8px}
+.aph{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;margin-bottom:6px}
+.aph figure{border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5}
+.aph figure:last-child{aspect-ratio:auto;margin-top:48px}
+.aph img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 1.6s ease}
+.rv.in .aph img,.aph.in img{transform:scale(1)}
 .val{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;display:grid;grid-template-columns:48px 1fr;gap:18px}
 .val .ic{width:48px;height:48px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;color:var(--brass-ink)}
 .val h3{font-size:1.25rem;margin-bottom:6px}
@@ -209,6 +259,7 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 footer{background:var(--ink);color:var(--on-ink-muted);padding:48px 0 32px;font-size:.84rem}
 .fgrid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
 footer .brand{color:var(--on-ink)}
+.flogo img{height:auto;width:210px;filter:none}
 footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);font-size:.76rem}
 
 /* ——— reveal ——— */
@@ -222,7 +273,15 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   .timeline{grid-template-columns:1fr}
   .vlist{max-height:none}
 }
+@media (max-width:1080px){
+  .menu{position:fixed;inset:108px 0 auto 0;background:var(--ink);flex-direction:column;align-items:flex-start;padding:24px 24px 32px;gap:18px;transform:translateY(-130%);transition:transform .35s;font-size:1.05rem;box-shadow:0 20px 40px rgba(0,0,0,.3);z-index:-1}
+  .menu.open{transform:none}
+  .burger{display:grid;place-items:center}
+}
 @media (max-width:760px){
+  .ac p{max-height:none;opacity:1}
+  .brand img{height:42px}
+  .aph figure:last-child{margin-top:24px}
   .wrap{padding:0 16px}
   section{padding:72px 0}
   .menu{position:fixed;inset:108px 0 auto 0;background:var(--ink);flex-direction:column;align-items:flex-start;padding:24px 16px 32px;gap:18px;transform:translateY(-130%);transition:transform .35s;font-size:1.05rem;box-shadow:0 20px 40px rgba(0,0,0,.3)}
@@ -249,8 +308,7 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   </div>
   <div class="wrap nav">
     <a href="#" class="brand" aria-label="Romagnani Advogados Associados — início">
-      <span class="mono">R</span>
-      <span><b>Romagnani</b><small>Advogados Associados</small></span>
+      <img src="img/brasao.webp" alt="" width="46" height="48"><span><b>Romagnani</b><small>Advogados Associados</small></span>
     </a>
     <nav class="menu" id="menu">
       <a href="#noticias">Notícias</a>
@@ -268,7 +326,14 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
 </header>
 
 <section class="hero">
-  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="slides" id="slides" aria-hidden="true">
+    <figure class="on"><img src="img/fotos/hero-1.webp" alt=""></figure>
+    <figure><img src="img/fotos/hero-2.webp" alt="" loading="lazy"></figure>
+    <figure><img src="img/fotos/hero-3.webp" alt="" loading="lazy"></figure>
+    <figure><img src="img/fotos/hero-4.webp" alt="" loading="lazy"></figure>
+    <figure><img src="img/fotos/hero-5.webp" alt="" loading="lazy"></figure>
+  </div>
+  <div class="sdots" id="sdots"></div>
   <div class="wrap hero-body">
     <div>
       <div class="eyebrow" style="color:var(--brass-2)">Av. Paulista · São Paulo</div>
@@ -307,13 +372,12 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   <div class="wrap">
     <div class="rv">
       <div class="eyebrow">Vídeos</div>
-      <h2 class="sec">Direito em poucos minutos</h2>
-      <p class="lead">Nossos vídeos explicativos e as sessões e boletins mais recentes do STF e do STJ.</p>
+      <h2 class="sec">Direto dos tribunais</h2>
+      <p class="lead">Sessões, boletins e explicações mais recentes publicados pelo STF e pelo STJ.</p>
     </div>
     <div class="vgrid rv">
       <div class="player" id="player"></div>
       <div>
-        <div class="vfilter" id="vfilter"></div>
         <div class="vlist" id="vlist"></div>
       </div>
     </div>
@@ -331,7 +395,15 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   </div>
 </section>
 
-<section id="escritorio" style="padding-top:24px">
+<div class="band" id="band">
+  <img src="img/fotos/escritorio-3.webp" alt="" loading="lazy">
+  <div>
+    <img class="seal" src="img/brasao.webp" alt="">
+    <blockquote>“Cada causa é tratada com rigor analítico, estratégia personalizada e absoluto zelo.”<cite>Romagnani Advogados Associados</cite></blockquote>
+  </div>
+</div>
+
+<section id="escritorio">
   <div class="wrap">
     <div class="about">
       <div class="rv">
@@ -342,6 +414,7 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
         <p>Incorporamos automação de processos, análise de dados, inteligência artificial e gestão documental segura — sempre preservando a confidencialidade e o indispensável olhar humano e estratégico que cada demanda exige.</p>
       </div>
       <div class="vals rv">
+        <div class="aph"><figure><img src="img/fotos/escritorio-1.webp" alt="Caneta-tinteiro escrevendo sobre papel" loading="lazy"></figure><figure><img src="img/fotos/escritorio-2.webp" alt="Livros e caderno sobre a mesa" loading="lazy"></figure></div>
         <div class="val"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 0 0 6 0L7 7Zm10 0-3 7a3 3 0 0 0 6 0l-3-7Z"/></svg></div><div><h3>Ética e integridade</h3><p>Honestidade, transparência e retidão sustentam a confiança que nossos clientes depositam em nós.</p></div></div>
         <div class="val"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12"/></svg></div><div><h3>Excelência técnica</h3><p>Atualização constante e experiência forjada na prática diária para soluções seguras e eficazes.</p></div></div>
         <div class="val"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg></div><div><h3>Atendimento humanizado</h3><p>Relacionamento próximo e duradouro, pautado pela empatia, respeito e compromisso com resultados.</p></div></div>
@@ -385,7 +458,6 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
         <a href="https://www.instagram.com/raa_advogados/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
         <a href="https://www.linkedin.com/company/romagnani-advogados-associados/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
         <a href="https://www.facebook.com/romagnaniadvogados/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6Z"/></svg></a>
-        <a href="https://www.youtube.com/@RomagnaniAdvogados" target="_blank" rel="noopener" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1c.4-1.6.5-4.8.5-4.8s0-3.2-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg></a>
       </div>
     </div>
     <div class="map rv">
@@ -397,7 +469,7 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <a href="#" class="brand"><span class="mono">R</span><span><b>Romagnani</b><small>Advogados Associados</small></span></a>
+      <a href="#" class="brand flogo" aria-label="Romagnani Advogados Associados"><img src="img/logo-claro.webp" alt="Romagnani Advogados Associados" loading="lazy"></a>
       <span>© <span id="ano"></span> Romagnani Advogados Associados · Av. Paulista, 1079 · São Paulo/SP</span>
     </div>
     <p class="fine">Conteúdo de caráter exclusivamente informativo, que não constitui consultoria jurídica. As notícias são de responsabilidade de suas respectivas fontes, identificadas em cada item.</p>
@@ -415,6 +487,9 @@ function ago(iso){
   const u = [["day",86400],["hour",3600],["minute",60]];
   for (const [k,v] of u) if (Math.abs(s) >= v || k==="minute") return rtf.format(Math.round(s/v), k);
 }
+const FOTOS = {hero:5, tributario:5, trabalhista:5, civil:5, imobiliario:5, familia:5, consumidor:5, escritorio:4};
+const DIA = Math.floor(Date.now() / 864e5);  // muda as fotos a cada dia
+const foto = (a, i) => `img/fotos/${a}-${((DIA + i) % FOTOS[a]) + 1}.webp`;
 const news = [...D.noticias].sort((a,b) => b.data.localeCompare(a.data));
 
 /* menu */
@@ -450,23 +525,24 @@ $("#tabs").onclick = e => {
 $("#more").onclick = () => { mostrar += 9; renderNews(); };
 function renderNews(){
   const lista = filtro === "todas" ? news : news.filter(n => n.area === filtro);
-  $("#news").innerHTML = lista.slice(0, mostrar).map((n,i) => `
+  const cont = {};
+  $("#news").innerHTML = lista.slice(0, mostrar).map((n,i) => {
+    const k = cont[n.area] = (cont[n.area] ?? -1) + 1;
+    return `
     <a class="nc${i===0 ? " big" : ""}" href="${esc(n.link)}" target="_blank" rel="noopener" style="animation-delay:${Math.min(i,8)*.05}s">
-      <div class="meta"><span class="area">${esc(areaNome[n.area])}</span><span>${ago(n.data)}</span></div>
-      <h3>${esc(n.titulo)}</h3>
-      <div class="src">${esc(n.fonte)}</div>
-    </a>`).join("") || `<p class="empty">Nenhuma notícia nesta área hoje.</p>`;
+      <div class="ph"><img src="${foto(n.area, k)}" alt="" loading="${i < 3 ? "eager" : "lazy"}"><span class="area">${esc(areaNome[n.area])}</span></div>
+      <div class="bd">
+        <div class="meta"><span>${esc(n.fonte)}</span><span>${ago(n.data)}</span></div>
+        <h3>${esc(n.titulo)}</h3>
+        <div class="src">Ler notícia</div>
+      </div>
+    </a>`; }).join("") || `<p class="empty">Nenhuma notícia nesta área hoje.</p>`;
   $("#more").parentElement.style.display = lista.length > mostrar ? "" : "none";
 }
 renderNews();
 
 /* vídeos */
 const vids = D.videos;
-let vf = "proprio";
-const tabsV = [["proprio","Nossos vídeos"],["tribunais","STF e STJ"]];
-$("#vfilter").innerHTML = tabsV.map(([k,t]) => `<button data-k="${k}" aria-selected="${k===vf}">${t}</button>`).join("");
-$("#vfilter").onclick = e => { const b = e.target.closest("button"); if(!b) return; vf = b.dataset.k;
-  document.querySelectorAll("#vfilter button").forEach(x => x.setAttribute("aria-selected", x===b)); renderVids(true); };
 const thumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 function cue(v){
   $("#player").innerHTML = `<button class="thumb" aria-label="Assistir: ${esc(v.titulo)}"><img src="${thumb(v.id)}" alt=""><span class="play"></span><span class="ptitle">${esc(v.titulo)}</span></button>`;
@@ -475,7 +551,7 @@ function cue(v){
   document.querySelectorAll(".vi").forEach(x => x.classList.toggle("on", x.dataset.id === v.id));
 }
 function renderVids(cueFirst){
-  const l = vids.filter(v => vf === "proprio" ? v.proprio : !v.proprio).sort((a,b) => b.data.localeCompare(a.data));
+  const l = [...vids].sort((a,b) => b.data.localeCompare(a.data));
   $("#vlist").innerHTML = l.map(v => `<button class="vi" data-id="${v.id}"><img loading="lazy" src="${thumb(v.id)}" alt=""><span><b>${esc(v.titulo)}</b><small><span class="ch">${esc(v.canal)}</span> · ${new Date(v.data).toLocaleDateString("pt-BR",{month:"short",year:"numeric"})}</small></span></button>`).join("");
   $("#vlist").onclick = e => { const b = e.target.closest(".vi"); if (b) cue(vids.find(v => v.id === b.dataset.id)); };
   if (cueFirst && l[0]) cue(l[0]);
@@ -491,7 +567,17 @@ const AREAS = [
   ["familia","Família e Sucessões","Divórcios, união estável, partilha, testamentos, inventários e planejamento sucessório, com orientação técnica e humana."],
   ["consumidor","Direito do Consumidor","Defesa de empresas e consumidores em práticas comerciais, publicidade, contratos e cláusulas abusivas."],
 ];
-$("#agrid").innerHTML = AREAS.map(([s,t,d],i) => `<article class="ac"><span class="n">0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="#noticias" data-a="${s}">Notícias desta área →</a></article>`).join("");
+$("#agrid").innerHTML = AREAS.map(([s,t,d],i) => `<article class="ac" tabindex="0"><div class="bgs">${
+  Array.from({length:FOTOS[s]}, (_,j) => `<img src="img/fotos/${s}-${j+1}.webp" alt="" loading="lazy"${j === DIA % FOTOS[s] ? ' class="on"' : ""}>`).join("")
+}</div><span class="n">0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="#noticias" data-a="${s}">Notícias desta área →</a></article>`).join("");
+// cada card troca de foto em ritmo próprio, como uma vitrine viva
+document.querySelectorAll(".ac").forEach((card, i) => {
+  const imgs = card.querySelectorAll(".bgs img");
+  setTimeout(() => setInterval(() => {
+    const at = [...imgs].findIndex(x => x.classList.contains("on"));
+    imgs[at].classList.remove("on"); imgs[(at + 1) % imgs.length].classList.add("on");
+  }, 6500), i * 1100);
+});
 $("#agrid").onclick = e => { const a = e.target.closest("a[data-a]"); if (a) document.querySelector(`.tab[data-a="${a.dataset.a}"]`)?.click(); };
 
 /* newsletter */
@@ -502,29 +588,27 @@ $("#ano").textContent = new Date().getFullYear();
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }), {threshold:.12});
 document.querySelectorAll(".rv").forEach(el => io.observe(el));
 
-/* fundo animado: constelação sutil */
+/* slideshow do topo */
 (() => {
-  const c = $("#bg"), x = c.getContext("2d");
+  const figs = [...document.querySelectorAll("#slides figure")];
+  $("#sdots").innerHTML = figs.map((_,i) => `<button aria-label="Imagem ${i+1}"${i ? "" : ' class="on"'}></button>`).join("");
+  const dots = [...document.querySelectorAll("#sdots button")];
+  let at = 0, timer;
+  const go = n => { figs[at].classList.remove("on"); dots[at].classList.remove("on"); at = (n + figs.length) % figs.length; figs[at].classList.add("on"); dots[at].classList.add("on"); };
+  const play = () => { clearInterval(timer); timer = setInterval(() => go(at + 1), 7000); };
+  dots.forEach((d,i) => d.onclick = () => { go(i); play(); });
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) play();
+})();
+
+/* parallax da faixa */
+(() => {
+  const band = $("#band"), img = band.querySelector("img");
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  let W, H, P;
-  const dpr = Math.min(devicePixelRatio || 1, 2);
-  function size(){ W = c.clientWidth; H = c.clientHeight; c.width = W*dpr; c.height = H*dpr; x.setTransform(dpr,0,0,dpr,0,0);
-    const n = Math.min(90, Math.round(W*H/16000));
-    P = Array.from({length:n}, () => ({x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25})); }
-  size(); addEventListener("resize", size);
-  let visivel = true;
-  new IntersectionObserver(([e]) => visivel = e.isIntersecting).observe(c);
-  (function loop(){
-    requestAnimationFrame(loop); if (!visivel) return;
-    x.clearRect(0,0,W,H);
-    for (const p of P){ p.x += p.vx; p.y += p.vy; if (p.x<0||p.x>W) p.vx*=-1; if (p.y<0||p.y>H) p.vy*=-1; }
-    for (let i=0;i<P.length;i++) for (let j=i+1;j<P.length;j++){
-      const a=P[i], b=P[j], d=Math.hypot(a.x-b.x, a.y-b.y);
-      if (d < 140){ x.strokeStyle = `rgba(201,164,106,${(1-d/140)*.35})`; x.lineWidth=.6; x.beginPath(); x.moveTo(a.x,a.y); x.lineTo(b.x,b.y); x.stroke(); }
-    }
-    x.fillStyle = "rgba(201,164,106,.7)";
-    for (const p of P){ x.beginPath(); x.arc(p.x,p.y,1.3,0,7); x.fill(); }
-  })();
+  let tick = false;
+  addEventListener("scroll", () => { if (tick) return; tick = true; requestAnimationFrame(() => {
+    const r = band.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) img.style.transform = `translateY(${(r.top + r.height/2 - innerHeight/2) * -0.18}px)`;
+    tick = false; }); }, {passive:true});
 })();
 </script>
 </body>

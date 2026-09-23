@@ -15,7 +15,6 @@ versão anterior continua no ar — o site nunca fica vazio.
 | Conteúdo | Fonte |
 |---|---|
 | Notícias por área (até 9 por área) | Google Notícias, restrito a Migalhas, Conjur, JOTA, STF, STJ, TST e CNJ, classificadas pelo título |
-| Vídeos do escritório | Canal youtube.com/@RomagnaniAdvogados — **basta publicar no YouTube que aparece no site** |
 | Vídeos dos tribunais | Canais oficiais do STF e do STJ |
 
 ## Como publicar uma nova newsletter
@@ -30,6 +29,11 @@ Pode ser criado direto no site do GitHub (*Add file → Create new file*).
 - **Temas das notícias**: listas `AREAS` (buscas) e `REGRAS` (classificação) em `build.py`.
 - **Filtrar assuntos indesejados**: expressão `FORA` em `build.py`.
 - **Textos institucionais, cores, contatos**: `templates/index.html`.
+- **Fotos**: em `static/img/fotos/`, nomeadas `area-N.webp` (ex.: `familia-3.webp`). As fotos
+  se revezam sozinhas a cada dia. Para trocar, substitua o arquivo mantendo o nome; para
+  acrescentar, ajuste a contagem em `FOTOS` no `templates/index.html`. Origem e licença de cada
+  foto (Unsplash, uso comercial livre): `static/img/fotos/CREDITOS.json`.
+- **Vídeos do escritório**: desativados; para reativar, descomente a linha do canal em `CANAIS` (`build.py`).
 
 ## Testar no computador
 

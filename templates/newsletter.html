@@ -6,10 +6,10 @@
 <title>{{titulo}} — Romagnani Advogados</title>
 <meta name="description" content="{{resumo}}">
 <meta name="theme-color" content="#0E1B2C">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0E1B2C;--paper:#F7F4EE;--text:#1B2433;--muted:#5E6878;--line:#DDD5C7;--brass:#B08D57;--brass-2:#C9A46A;--brass-ink:#7A5E33;--on-ink:#EDE7DC}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -18,7 +18,9 @@ a{color:var(--brass-ink)}
 .bar{background:var(--ink);color:var(--on-ink);padding:0 16px}
 .bar div{max-width:760px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
 .bar a{color:var(--on-ink);text-decoration:none;font-size:.9rem}
-.bar b{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem}
+.bar b{font-family:"Cinzel",serif;font-weight:600;font-size:1.05rem;letter-spacing:.08em}
+.bar .home{display:flex;align-items:center;gap:10px}
+.bar img{height:38px}
 .prog{position:fixed;top:0;left:0;height:3px;background:var(--brass-2);width:0;z-index:9}
 article{max-width:760px;margin:0 auto;padding:64px 16px 96px;overflow-wrap:anywhere}
 .eyebrow{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-ink);font-weight:600}
@@ -32,7 +34,7 @@ p{margin-bottom:1rem}
 </head>
 <body>
 <div class="prog" id="prog"></div>
-<div class="bar"><div><a href="../"><b>Romagnani</b> Advogados</a><a href="../#newsletter">← Newsletter</a></div></div>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a href="../#newsletter">← Newsletter</a></div></div>
 <article>
   <div class="eyebrow">Newsletter · {{data}}</div>
   <h1>{{titulo}}</h1>

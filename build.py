@@ -2,7 +2,7 @@
 """Gera o site www.raa.com.br em ./public.
 
 Busca notícias jurídicas (Google Notícias, filtrado por fontes confiáveis) e
-vídeos (canal do escritório + STF/STJ), e monta as páginas a partir de
+vídeos (canais do STF e do STJ), e monta as páginas a partir de
 templates/. Só usa a biblioteca padrão do Python — roda em qualquer lugar,
 inclusive no GitHub Actions, sem instalar nada.
 """
@@ -34,9 +34,10 @@ AREAS = [
 ]
 
 CANAIS = [
-    ("UCETskzV5b4--3Qu1l0R6wug", "Romagnani Advogados", 12),
-    ("UCsW4QSB1USsu9ouuFUWe4Iw", "STF", 4),
-    ("UCfO_b7sApXI23VnsljvSAJg", "STJ", 4),
+    # Para voltar a exibir os vídeos do escritório, reative a linha abaixo.
+    # ("UCETskzV5b4--3Qu1l0R6wug", "Romagnani Advogados", 12),
+    ("UCsW4QSB1USsu9ouuFUWe4Iw", "STF", 6),
+    ("UCfO_b7sApXI23VnsljvSAJg", "STJ", 6),
 ]
 
 # Classificação pelo TÍTULO (o Google casa termos no corpo e mistura as áreas).
