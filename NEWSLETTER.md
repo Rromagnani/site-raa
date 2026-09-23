@@ -1,6 +1,6 @@
 # Newsletter semanal — manual editorial
 
-Uma edição por semana, publicada às segundas-feiras. Este é o roteiro seguido a cada edição.
+Uma edição por semana, publicada aos domingos às 20h (horário de Brasília). Este é o roteiro seguido a cada edição.
 
 ## 1. Escolher o tema
 
@@ -69,5 +69,6 @@ Texto…
 ## 6. Publicar
 
 1. `python3 build.py` e conferir a edição no navegador (capa, fotos, links).
-2. Commit com a mensagem `Newsletter AAAA-MM-DD: <tema>` e `git push`. O GitHub
+2. Incluir também `content/videos_duracao.json` (durações dos vídeos, atualizadas pelo build local).
+3. Commit com a mensagem `Newsletter AAAA-MM-DD: <tema>` e `git push`. O GitHub
    Actions publica o site em seguida.
