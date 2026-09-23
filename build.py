@@ -114,6 +114,9 @@ def duracao(video_id):
     except Exception:
         return None
     m = re.search(r'"lengthSeconds":"(\d+)"', pagina)
+    if not m:
+        t = re.search(r"<title>(.*?)</title>", pagina, re.S)
+        print(f"[aviso] duração ilegível de {video_id}: {len(pagina)} bytes, título={t and t.group(1)[:80]!r}", file=sys.stderr)
     return int(m.group(1)) if m else None
 
 
