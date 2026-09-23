@@ -17,9 +17,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LegalService","name":"Romagnani Advogados Associados","url":"https://www.raa.com.br","telephone":"+55 11 2787-6308",
+{"@context":"https://schema.org","@type":"LegalService","name":"Romagnani Advogados Associados","url":"https://www.raa.com.br","telephone":"+55 11 2787-6308","contactPoint":{"@type":"ContactPoint","telephone":"+55 11 98374-8099","contactType":"customer service","availableLanguage":"Portuguese"},
  "address":{"@type":"PostalAddress","streetAddress":"Av. Paulista, 1079 - 8º andar","addressLocality":"São Paulo","addressRegion":"SP","postalCode":"01311-200","addressCountry":"BR"},
- "sameAs":["https://www.instagram.com/raa_advogados/","https://www.facebook.com/romagnaniadvogados/","https://www.linkedin.com/company/romagnani-advogados-associados/"]}
+ "sameAs":["https://www.instagram.com/raa_advogados/","https://www.linkedin.com/company/romagnani-advogados-associados/"]}
 </script>
 <style>
 :root{
@@ -92,8 +92,8 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 .hero h1{font-size:clamp(2.6rem,6.2vw,5.2rem);margin:1rem 0 1.4rem}
 .hero h1 em{font-style:italic;color:var(--brass-2)}
 .rotator{display:inline-block;position:relative;min-width:6ch}
-.rotator span{position:absolute;left:0;opacity:0;transform:translateY(.4em);transition:all .6s}
-.rotator span.on{opacity:1;transform:none;position:relative}
+.rotator span{position:absolute;left:0;opacity:0;transform:translateY(-.3em);transition:opacity .3s,transform .3s;white-space:nowrap}
+.rotator span.on{opacity:1;transform:none;position:relative;transition:opacity .5s .3s,transform .5s .3s}
 .hero p.lead{color:var(--on-ink-muted);font-size:1.12rem}
 .cta{display:flex;gap:12px;margin-top:2rem;flex-wrap:wrap}
 .today{background:rgba(14,27,44,.55);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px;backdrop-filter:blur(14px)}
@@ -233,7 +233,22 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 
 /* ——— newsletter ——— */
 .nl{background:var(--paper-2)}
-.nlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:36px}
+.nlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:20px}
+.nlhero{display:grid;grid-template-columns:1.2fr 1fr;margin-top:36px;border-radius:20px;overflow:hidden;background:var(--ink);color:var(--on-ink);min-height:420px;transition:transform .3s,box-shadow .3s}
+.nlhero:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(14,27,44,.6)}
+.nlhero .ph{overflow:hidden;position:relative}
+.nlhero .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s}
+.nlhero:hover .ph img{transform:scale(1.06)}
+.nlhero .ph span{position:absolute;left:20px;top:20px;background:var(--brass-2);color:var(--ink);font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+.nlhero .tx{padding:40px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.nlhero time{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-2);font-weight:600}
+.nlhero h3{font-size:clamp(1.6rem,2.6vw,2.2rem);line-height:1.15}
+.nlhero p{color:var(--on-ink-muted)}
+.nlhero b{font-weight:500;color:var(--brass-2)}
+.nlc .th{margin:-28px -28px 6px;aspect-ratio:16/9;overflow:hidden}
+.nlc .th img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.nlc:hover .th img{transform:scale(1.06)}
+.nlc{overflow:hidden}
 .nlc{background:var(--card);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);transition:transform .25s,box-shadow .25s}
 .nlc:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(14,27,44,.4)}
 .nlc time{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-ink);font-weight:600}
@@ -267,6 +282,8 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
 .rv.in{opacity:1;transform:none}
 
 @media (max-width:980px){
+  .nlhero{grid-template-columns:1fr}
+  .nlhero .ph{aspect-ratio:16/9}
   .hero-body,.vgrid,.about,.contact{grid-template-columns:1fr}
   .grid-news{grid-template-columns:repeat(2,1fr)}
   .agrid{grid-template-columns:repeat(2,1fr)}
@@ -336,7 +353,6 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   <div class="sdots" id="sdots"></div>
   <div class="wrap hero-body">
     <div>
-      <div class="eyebrow" style="color:var(--brass-2)">Av. Paulista · São Paulo</div>
       <h1>Tradição familiar.<br>Advocacia <em class="rotator" id="rot"><span class="on">precisa.</span><span>estratégica.</span><span>próxima.</span><span>moderna.</span></em></h1>
       <p class="lead">Há décadas assessorando empresas e famílias em Direito do Trabalho, Tributário, Civil, Empresarial, Imobiliário, Família e Consumidor — com rigor técnico e tecnologia a serviço do cliente.</p>
       <div class="cta">
@@ -432,9 +448,10 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
   <div class="wrap">
     <div class="rv">
       <div class="eyebrow">Newsletter</div>
-      <h2 class="sec">Um tema, a fundo</h2>
-      <p class="lead">Análises práticas sobre temas específicos, com fundamentos e jurisprudência.</p>
+      <h2 class="sec">O tema da semana</h2>
+      <p class="lead">Toda semana escolhemos um assunto importante dos tribunais e explicamos, sem juridiquês, o que muda na sua vida e na sua empresa.</p>
     </div>
+    <a class="nlhero rv" id="nlhero"></a>
     <div class="nlgrid" id="nlgrid"></div>
     <div class="pod rv">
       <svg width="34" height="34" viewBox="0 0 24 24" fill="#1DB954"><circle cx="12" cy="12" r="12"/><path d="M6.5 9.5c3.7-1.1 7.7-.8 11 1M7 12.5c3-.8 6.3-.5 9 .9M7.6 15.3c2.4-.6 4.8-.4 7 .7" stroke="#0E1B2C" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
@@ -449,15 +466,15 @@ footer p.fine{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255
     <div class="rv">
       <div class="eyebrow">Contato</div>
       <h2 class="sec">Vamos conversar</h2>
-      <p class="lead">Atendimento presencial na Av. Paulista.</p>
       <div class="clist">
         <div><small>Telefone</small><a href="tel:+551127876308">+55 11 2787-6308</a></div>
+        <div><small>WhatsApp</small><a href="https://wa.me/5511983748099" target="_blank" rel="noopener">+55 11 98374-8099</a></div>
         <div><small>Endereço</small><span>Av. Paulista, 1079 — 8º andar<br>Bela Vista · São Paulo/SP · 01311-200</span></div>
       </div>
       <div class="social">
         <a href="https://www.instagram.com/raa_advogados/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+        <a href="https://wa.me/5511983748099" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.16-1.5A9.93 9.93 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.06.9.9-2.98-.2-.31a8.2 8.2 0 1 1 6.84 3.71Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.17.25-.64.8-.78.97-.14.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25 0-.38.11-.5l.37-.43c.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3c-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.2 3.7.58.25 1.04.4 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg></a>
         <a href="https://www.linkedin.com/company/romagnani-advogados-associados/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
-        <a href="https://www.facebook.com/romagnaniadvogados/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6Z"/></svg></a>
       </div>
     </div>
     <div class="map rv">
@@ -552,7 +569,7 @@ function cue(v){
 }
 function renderVids(cueFirst){
   const l = [...vids].sort((a,b) => b.data.localeCompare(a.data));
-  $("#vlist").innerHTML = l.map(v => `<button class="vi" data-id="${v.id}"><img loading="lazy" src="${thumb(v.id)}" alt=""><span><b>${esc(v.titulo)}</b><small><span class="ch">${esc(v.canal)}</span> · ${new Date(v.data).toLocaleDateString("pt-BR",{month:"short",year:"numeric"})}</small></span></button>`).join("");
+  $("#vlist").innerHTML = l.map(v => `<button class="vi" data-id="${v.id}"><img loading="lazy" src="${thumb(v.id)}" alt=""><span><b>${esc(v.titulo)}</b><small><span class="ch">${esc(v.canal)}</span> · ${Math.floor(v.duracao/60)}:${String(v.duracao%60).padStart(2,"0")} · ${new Date(v.data).toLocaleDateString("pt-BR",{month:"short",year:"numeric"})}</small></span></button>`).join("");
   $("#vlist").onclick = e => { const b = e.target.closest(".vi"); if (b) cue(vids.find(v => v.id === b.dataset.id)); };
   if (cueFirst && l[0]) cue(l[0]);
 }
@@ -581,7 +598,13 @@ document.querySelectorAll(".ac").forEach((card, i) => {
 $("#agrid").onclick = e => { const a = e.target.closest("a[data-a]"); if (a) document.querySelector(`.tab[data-a="${a.dataset.a}"]`)?.click(); };
 
 /* newsletter */
-$("#nlgrid").innerHTML = D.newsletters.map(n => `<a class="nlc rv" href="newsletter/${n.slug}.html"><time>${esc(n.data)}</time><h3>${esc(n.titulo)}</h3><p>${esc(n.resumo)}</p><span>Ler edição →</span></a>`).join("");
+const [nl1, ...nlOutras] = D.newsletters;
+if (nl1) {
+  const h = $("#nlhero"); h.href = `newsletter/${nl1.slug}.html`;
+  h.innerHTML = `<div class="ph"><img src="${esc(nl1.capa)}" alt="" loading="lazy"><span>Edição da semana</span></div>
+    <div class="tx"><time>${esc(nl1.data)} · ${nl1.minutos} min de leitura</time><h3>${esc(nl1.titulo)}</h3><p>${esc(nl1.resumo)}</p><b>Ler a edição →</b></div>`;
+} else $("#nlhero").remove();
+$("#nlgrid").innerHTML = nlOutras.slice(0, 6).map(n => `<a class="nlc rv" href="newsletter/${n.slug}.html"><div class="th"><img src="${esc(n.capa)}" alt="" loading="lazy"></div><time>${esc(n.data)}${n.area ? " · " + esc(n.area) : ""}</time><h3>${esc(n.titulo)}</h3><p>${esc(n.resumo)}</p><span>Ler edição →</span></a>`).join("");
 $("#ano").textContent = new Date().getFullYear();
 
 /* reveal */

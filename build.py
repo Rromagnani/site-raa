@@ -107,6 +107,16 @@ def noticias():
     return saida
 
 
+def duracao(video_id):
+    """Duração em segundos (0 = transmissão ao vivo/agendada; None = não conseguiu ler)."""
+    try:
+        pagina = baixar(f"https://www.youtube.com/watch?v={video_id}").decode("utf-8", "ignore")
+    except Exception:
+        return None
+    m = re.search(r'"lengthSeconds":"(\d+)"', pagina)
+    return int(m.group(1)) if m else None
+
+
 def videos():
     ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
     saida = []
@@ -116,27 +126,106 @@ def videos():
         except Exception as e:
             print(f"[aviso] vídeos de {nome}: {e}", file=sys.stderr)
             continue
-        for en in raiz.findall("a:entry", ns)[:limite]:
-            saida.append({"id": en.findtext("yt:videoId", namespaces=ns),
-                          "titulo": en.findtext("a:title", namespaces=ns),
+        n = 0
+        for en in raiz.findall("a:entry", ns):
+            vid = en.findtext("yt:videoId", namespaces=ns)
+            titulo = en.findtext("a:title", namespaces=ns) or ""
+            if FORA.search(titulo):
+                continue
+            # Fora: chamadas curtas/Shorts, transmissões ao vivo e sessões de várias horas.
+            seg = duracao(vid)
+            if seg is None or not 60 <= seg <= 90 * 60:
+                continue
+            saida.append({"id": vid, "titulo": titulo, "duracao": seg,
                           "data": en.findtext("a:published", namespaces=ns),
                           "canal": nome, "proprio": nome.startswith("Romagnani")})
+            n += 1
+            if n == limite:
+                break
     return saida
 
 
+META = re.compile(r"^(Resumo|Área|Capa):\s*(.+)$")
+IMG = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)$")
+
+
+def caminho_img(nome):
+    """'foto.webp' → img/newsletter/foto.webp; 'fotos/x.webp' → img/fotos/x.webp."""
+    return nome if nome.startswith("http") else "img/" + (nome if "/" in nome else f"newsletter/{nome}")
+
+
 def newsletters():
-    """Cada arquivo content/newsletter/AAAA-MM-DD.txt: 1ª linha = título, resto = texto."""
+    """Arquivos em content/newsletter/AAAA-MM-DD.md (ou .txt, formato antigo).
+
+    1ª linha: título (com ou sem '# '). Logo abaixo, opcionais: 'Resumo:', 'Área:', 'Capa:'.
+    No texto (.md): '## subtítulo', '- item', '> destaque', '![legenda](foto.webp)',
+    **negrito** e [link](https://...).
+    """
     lista = []
-    for f in sorted((ROOT / "content/newsletter").glob("*.txt"), reverse=True):
+    for f in sorted((ROOT / "content/newsletter").glob("*.*"), reverse=True):
+        if f.suffix not in (".md", ".txt"):
+            continue
         linhas = f.read_text(encoding="utf-8").strip().splitlines()
-        corpo = [l for l in linhas[1:] if l.strip()]
-        resumo = next((l for l in corpo if len(l) > 90), corpo[0] if corpo else "")
-        lista.append({"slug": f.stem, "titulo": linhas[0], "corpo": corpo,
+        titulo, meta, corpo = linhas[0].lstrip("# ").strip(), {}, []
+        for l in linhas[1:]:
+            m = META.match(l.strip())
+            if m and not corpo:
+                meta[m.group(1)] = m.group(2).strip()
+            elif l.strip() or f.suffix == ".md":
+                corpo.append(l)
+        imgs = [IMG.match(l.strip()) for l in corpo]
+        capa = meta.get("Capa") or next((m.group(2) for m in imgs if m), "fotos/escritorio-3.webp")
+        # a primeira foto do texto vira a capa; não repete logo abaixo dela
+        primeira = next((i for i, l in enumerate(corpo) if l.strip()), None)
+        if primeira is not None and imgs[primeira] and imgs[primeira].group(2) == capa:
+            del corpo[primeira]
+        texto = [l for l in corpo if l.strip() and not IMG.match(l.strip()) and not l.startswith(("#", "- ", ">"))]
+        resumo = meta.get("Resumo") or next((l for l in texto if len(l) > 90), texto[0] if texto else "")
+        resumo = re.sub(r"\*\*|\[|\]\([^)]*\)", "", resumo)
+        palavras = sum(len(l.split()) for l in corpo)
+        lista.append({"slug": f.stem, "titulo": titulo, "corpo": corpo, "md": f.suffix == ".md",
+                      "area": meta.get("Área", ""), "capa": caminho_img(capa),
+                      "minutos": max(1, round(palavras / 200)),
                       "resumo": resumo[:220] + ("…" if len(resumo) > 220 else "")})
     return lista
 
 
+def inline(t):
+    t = html.escape(t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
+    return t
+
+
+def md_html(linhas):
+    """Markdown simples → HTML (só o que as newsletters usam)."""
+    partes, lista = [], []
+    def fecha_lista():
+        if lista:
+            partes.append("<ul>" + "".join(f"<li>{inline(i)}</li>" for i in lista) + "</ul>")
+            lista.clear()
+    for l in linhas:
+        l = l.strip()
+        m = IMG.match(l)
+        if l.startswith("- "):
+            lista.append(l[2:]); continue
+        fecha_lista()
+        if not l:
+            continue
+        if m:
+            partes.append(f'<figure><img src="../{caminho_img(m.group(2))}" alt="{html.escape(m.group(1))}" loading="lazy"></figure>')
+        elif l.startswith("## "):
+            partes.append(f"<h2>{inline(l[3:])}</h2>")
+        elif l.startswith("> "):
+            partes.append(f"<blockquote>{inline(l[2:])}</blockquote>")
+        else:
+            partes.append(f"<p>{inline(l)}</p>")
+    fecha_lista()
+    return "\n".join(partes)
+
+
 def corpo_html(linhas):
+    """Formato antigo (.txt): heurística de subtítulos."""
     partes = []
     for l in linhas:
         e = html.escape(l)
@@ -172,7 +261,7 @@ def main():
         "areas": [{"slug": s, "nome": n} for s, n, _ in AREAS],
         "noticias": news,
         "videos": vids,
-        "newsletters": [{k: v for k, v in n.items() if k != "corpo"} | {"data": data_br(n["slug"])} for n in nls],
+        "newsletters": [{k: v for k, v in n.items() if k not in ("corpo", "md")} | {"data": data_br(n["slug"])} for n in nls],
     }
     js = json.dumps(dados, ensure_ascii=False).replace("</", "<\\/")
     (OUT / "dados.json").write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -186,7 +275,10 @@ def main():
         pagina = (tpl_nl.replace("{{titulo}}", html.escape(n["titulo"]))
                   .replace("{{data}}", data_br(n["slug"]))
                   .replace("{{resumo}}", html.escape(n["resumo"]))
-                  .replace("{{corpo}}", corpo_html(n["corpo"])))
+                  .replace("{{capa}}", "../" + n["capa"])
+                  .replace("{{area}}", html.escape(n["area"] or "Newsletter"))
+                  .replace("{{minutos}}", str(n["minutos"]))
+                  .replace("{{corpo}}", md_html(n["corpo"]) if n["md"] else corpo_html(n["corpo"])))
         (OUT / "newsletter" / f"{n['slug']}.html").write_text(pagina, encoding="utf-8")
 
     urls = ["https://www.raa.com.br/"] + [f"https://www.raa.com.br/newsletter/{n['slug']}.html" for n in nls]

@@ -17,12 +17,11 @@ versão anterior continua no ar — o site nunca fica vazio.
 | Notícias por área (até 9 por área) | Google Notícias, restrito a Migalhas, Conjur, JOTA, STF, STJ, TST e CNJ, classificadas pelo título |
 | Vídeos dos tribunais | Canais oficiais do STF e do STJ |
 
-## Como publicar uma nova newsletter
+## Newsletter semanal
 
-Crie um arquivo em `content/newsletter/` com o nome `AAAA-MM-DD.txt`
-(ex.: `2026-10-05.txt`). A primeira linha é o título; o restante é o texto.
-Linhas que começam com número (`1. Introdução`) viram subtítulos.
-Pode ser criado direto no site do GitHub (*Add file → Create new file*).
+Uma edição por semana, em `content/newsletter/AAAA-MM-DD.md`, com fotos. O passo a passo
+(escolha do tema, apuração, tom de voz, imagens e formato) está em [NEWSLETTER.md](NEWSLETTER.md).
+As edições antigas (`.txt`) continuam funcionando.
 
 ## Ajustes comuns
 
