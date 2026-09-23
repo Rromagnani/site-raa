@@ -1,0 +1,79 @@
+O AVISO-PRÉVIO: Aspectos Legais, Jurisprudenciais e Práticos
+Apresentação
+Este material foi elaborado com o objetivo de proporcionar uma visão completa, técnica e acessível sobre o aviso-prévio no Direito do Trabalho brasileiro. Trata-se de um guia essencial para advogados, empregadores, empregados e estudantes que desejam compreender com profundidade este relevante instituto jurídico.
+1. Conceito e Fundamentação Legal
+O aviso-prévio é o instituto pelo qual uma das partes do contrato de trabalho comunica à outra sua decisão de rescindir unilateralmente o vínculo empregatício. Sua principal função é evitar a ruptura abrupta da relação laboral, possibilitando que a parte não causadora da extinção possa se preparar para a nova realidade.
+Base Legal:
+Artigo 487 da Consolidação das Leis do Trabalho (CLT).
+Lei nº 12.506, de 11 de outubro de 2011: instituiu o aviso-prévio proporcional ao tempo de serviço.
+2. Natureza Jurídica e Função Social
+O aviso-prévio possui natureza bilateral e obrigatória, devendo ser concedido tanto pelo empregador quanto pelo empregado que deseje rescindir o contrato.
+Sua função social está atrelada à proteção do trabalhador ou do empregador, conferindo um prazo razoável para:
+O trabalhador buscar nova colocação.
+O empregador encontrar substituto para a função.
+3. Modalidades de Aviso-Prévio
+a) Aviso-Prévio Trabalhado
+O trabalhador continua exercendo suas funções durante o período do aviso.
+Direitos:
+Redução de duas horas diárias na jornada; ou
+Sete dias corridos de ausência ao final do período, a critério do empregado. (Art. 488 da CLT)
+b) Aviso-Prévio Indenizado
+O trabalhador é dispensado do cumprimento do aviso, recebendo, em contrapartida, uma indenização correspondente ao período.
+Este período é considerado para fins de:
+Tempo de serviço.
+Cálculo de verbas rescisórias.
+c) Aviso-Prévio Cumprido em Casa
+Embora não previsto expressamente na legislação, é aceito pela jurisprudência, desde que não prejudique os direitos do trabalhador.
+4. Duração do Aviso-Prévio
+a) Prazo Mínimo
+30 dias para trabalhadores com até 1 ano de serviço.
+b) Proporcionalidade
+Introduzida pela Lei nº 12.506/2011, determina o acréscimo de 3 dias para cada ano completo de serviço, até o limite máximo de 90 dias.
+Exemplo:
+4 anos completos: 30 dias + (4 x 3) = 42 dias de aviso-prévio.
+5. Sujeitos da Obrigação
+a) Quando o Empregador Demite:
+Deve conceder o aviso-prévio ou indenizá-lo, salvo em casos de justa causa, quando não há obrigação de aviso.
+b) Quando o Empregado Pede Demissão:
+Também deverá conceder o aviso, sob pena de desconto correspondente das verbas rescisórias.
+6. Descumprimento do Aviso-Prévio
+a) Pelo Empregador:
+Deverá indenizar o empregado pelo período equivalente.
+b) Pelo Empregado:
+O empregador poderá descontar o valor do aviso das verbas rescisórias.
+Base Legal:
+Art. 487, §§ 1º e 2º da CLT.
+7. Controvérsias e Jurisprudência
+a) Aplicação da Proporcionalidade ao Empregado
+Não se aplica a proporcionalidade prevista na Lei nº 12.506/2011 quando a rescisão se dá por iniciativa do empregado.
+Súmula nº 441 do TST:
+"É inaplicável ao empregado que se demite o benefício do aviso-prévio proporcional previsto no art. 1º da Lei nº 12.506/2011."
+🔗 Acesse a Súmula 441
+b) Redução de Jornada: Direito ou Obrigação?
+A redução é facultativa ao empregado, que pode optar por trabalhar integralmente.
+Precedente:
+TST, RR - 1217-72.2010.5.12.0006, Rel. Min. Maria Cristina Peduzzi, DEJT 18/03/2011.
+🔗 Acesse o acórdão
+8. Formas e Formalidades
+Preferencialmente por escrito, mas admite-se a forma verbal.
+Não há necessidade de homologação sindical.
+Recomendável que a comunicação seja comprovada para fins de segurança jurídica.
+9. Estabilidade Provisória e o Aviso-Prévio
+Caso o trabalhador adquire estabilidade provisória antes do aviso-prévio, não poderá ser dispensado.
+Por outro lado, se a estabilidade for adquirida durante o período do aviso, prevalece o entendimento de que o aviso integra o contrato de trabalho, assegurando o direito à estabilidade.
+Súmula nº 371 do TST:
+"É válida a dispensa do empregado estável, com a concessão de aviso-prévio indenizado."
+🔗 Acesse a Súmula 371
+10. Efeitos nas Verbas Rescisórias
+O aviso-prévio, mesmo que indenizado, integra o tempo de serviço para:
+Cálculo de férias proporcionais + 1/3 constitucional.
+13º salário proporcional.
+FGTS e respectiva multa de 40%.
+Fundamentação:
+Art. 487, § 1º da CLT.
+OJ 82 da SDI-1 do TST: "O tempo do aviso-prévio, mesmo indenizado, integra o tempo de serviço do empregado para todos os efeitos legais."
+🔗 Acesse a OJ 82
+11. Considerações Finais
+O aviso-prévio é um mecanismo indispensável para a segurança jurídica nas relações laborais, preservando a dignidade e os interesses de ambas as partes na rescisão contratual.
+Compreender corretamente suas modalidades, efeitos e consequências é fundamental para empregadores, empregados e profissionais do Direito.
+“O aviso-prévio não é mera formalidade, mas um direito e uma garantia essencial nas relações de trabalho.”

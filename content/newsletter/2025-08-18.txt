@@ -1,0 +1,81 @@
+Formas de defesa do executado: mapa prático, fundamentos e jurisprudência
+1) Contextualização e premissas: contraditório efetivo na fase executiva
+A execução — seja de título judicial (cumprimento de sentença) ou de título extrajudicial — é orientada pelo binômio efetividade/satisfação do crédito e preservação da legalidade e do devido processo (arts. 4º, 6º e 7º, CPC). Em termos defensivos, o executado dispõe de instrumentos típicos e atípicos para controlar a legalidade dos atos executivos, prevenir constrições ilegais, conter excessos e, quando for o caso, extinguir a execução. O regime jurídico varia conforme a natureza do título e do rito (CPC/2015; Lei 6.830/1980 – LEF; CLT).
+2) Mapa dos regimes executivos e dos meios de defesa
+Para ordenar o tema, convém separar (i) cumprimento de sentença (título judicial, CPC arts. 523 a 527; 525 para a impugnação), (ii) execução fundada em título extrajudicial (CPC arts. 824 e ss.; embargos dos arts. 914 a 920) e (iii) execução fiscal (LEF). No processo do trabalho há regras próprias (CLT art. 884) com incidência subsidiária do CPC.
+2.1. Cumprimento de sentença (título judicial)
+Ato inicial: intimação do devedor para pagamento voluntário em 15 dias (art. 523, CPC). Decorrido sem pagamento, incidem multa e honorários (10% + 10%) e abre-se, automaticamente, o prazo de 15 dias para impugnação ao cumprimento de sentença (art. 525, caput).
+Tema relevante: o STJ firmou que o termo inicial do prazo impugnativo se relaciona ao término do prazo do art. 523, e noticiou a necessidade de manifestação expressa para caracterizar pagamento voluntário por depósito no prazo.
+2.2. Execução por título extrajudicial (CPC)
+Defesa típica: embargos à execução (arts. 914 a 920, CPC). Admissibilidade independe de garantia; porém, efeito suspensivo só por decisão judicial e, em regra, com garantia (penhora, caução ou depósito), além dos requisitos de tutela provisória (art. 919, §1º).
+2.3. Execução fiscal (LEF)
+Embargos à execução fiscal: exigem, como regra, garantia do juízo (art. 16, §1º, LEF).
+Exceções: a Primeira Seção do STJ assentou, em repetitivo (REsp 1.127.815/SP), que insuficiência da penhora não impede o recebimento dos embargos; e também há julgados admitindo o recebimento em hipossuficiência, com adoção de diligências para constrição contínua.
+Efeito suspensivo nos embargos fiscais: aplica-se, por simetria, a lógica do art. 919, §1º, do CPC (STF reconheceu a aplicabilidade).
+2.4. Execução trabalhista (CLT)
+Embargos à execução: prazo de 5 dias após a garantia ou penhora (art. 884, caput, CLT).
+3) Meios de defesa do executado: cabimento, matérias e riscos
+3.1. Impugnação ao cumprimento de sentença (CPC, art. 525)
+Cabimento: após o prazo do art. 523, inicia-se automaticamente o prazo de 15 dias para impugnação, independentemente de penhora ou nova intimação. Matérias (rol do §1º): inexequibilidade do título; inexigibilidade da obrigação; excesso de execução (com memória); incompetência; qualquer causa impeditiva, modificativa ou extintiva da obrigação, superveniente ao trânsito; entre outras. Efeito suspensivo: excepcional, se presentes probabilidade do direito e perigo de dano/risco ao resultado útil; em geral, condiciona-se a caução/garantia (art. 525, §§6º-10).
+Pontos de atenção
+Depósito no prazo do art. 523 não é, por si, pagamento voluntário, demanda manifestação.
+A intimação para pagar não tem conteúdo decisório e é, em regra, irrecorrível (afasta agravo nessa fase).
+Precedentes úteis (com link Jusbrasil)
+STJ, REsp 2.043.324/RJ, Rel. Min. Nancy Andrighi, DJe 20/04/2023 — excesso/adequação do cumprimento e parâmetros do título.
+STJ (Notícia) — “Depósito no prazo do pagamento voluntário só é entendido como quitação mediante manifestação do devedor.”
+3.2. Embargos à execução (título extrajudicial, CPC arts. 914 a 920)
+Cabimento: defesa típica do executado. Admissibilidade independe de garantia (art. 914, §1º), mas efeito suspensivo só na forma do art. 919, §1º (requisitos cumulativos e, via de regra, juízo garantido). Matérias (art. 917): nulidades; inexequibilidade; excesso; penhora incorreta; ilegitimidade; incompetência; entre outras. Observação: Mesmo com efeito suspensivo, é lícito ao exequente perseguir atos de substituição/reforço/redução da penhora e avaliação (art. 525, §7º, por simetria na execução de título judicial).
+Precedente orientativo
+TJDFT – Tema prático: exige-se garantia do juízo + requisitos de tutela para efeito suspensivo (interpretação do art. 919, §1º).
+3.3. Embargos à execução fiscal (LEF, art. 16)
+Regra: dependem de garantia (penhora, depósito, fiança bancária, seguro garantia). Exceções e mitigação:
+A insuficiência da penhora não impede o recebimento dos embargos (REsp 1.127.815/SP, repetitivo; v. referência em AgRg no REsp 1.563.061/PR).
+Em hipóteses de hipossuficiência, há julgados admitindo o recebimento, com determinação de diligências contínuas para constrição (REsp 1.681.111/RS).
+Efeito suspensivo: STF reconheceu a aplicação do art. 919, §1º, CPC à execução fiscal (não é automático; exige requisitos).
+Precedentes úteis (com link Jusbrasil)
+STJ, AgRg no REsp 1.563.061/PR, Rel. Min. Humberto Martins, DJe 10/12/2015 — insuficiência da penhora não obsta embargos (menção ao REsp 1.127.815/SP – repetitivo).
+STJ, REsp 1.681.111/RS, Rel. Min. Gurgel de Faria, DJe 24/05/2019 — hipossuficiência e recebimento dos embargos; diligências de constrição.
+3.4. Exceção de pré-executividade (todas as execuções; uso paradigmático na fiscal)
+Função: via incidental, sem garantia e sem dilação probatória, para matérias de ordem pública (pressupostos, condições da ação, prescrição/decadência, nulidades flagrantes, inexigibilidade do título). No âmbito fiscal, o cabimento está sumulado pelo STJ (Súmula 393).
+Precedentes úteis (com link Jusbrasil)
+STJ, Súmula 393 — “A exceção de pré-executividade é admissível na execução fiscal relativamente às matérias conhecíveis de ofício que não demandem dilação probatória.”
+STJ, AgRg no REsp 1.455.360/RS, Rel. Min. Sérgio Kukina, DJe 24/03/2015 — inviável exceção quando há necessidade de prova.
+3.5. Embargos de terceiro (CPC, arts. 674 a 681)
+Cabimento: para proteger bens de terceiro alheio à execução indevidamente constritos ou ameaçados (posse ou direito incompatível com a constrição). Prova sumária e tempestividade são cruciais.
+3.6. Impugnação/gestão de atos constritivos específicos
+Bacenjud/Sisbajud (art. 854, CPC): prazo de 5 dias para demonstrar impenhorabilidade ou excesso de bloqueio (defesa via simples petição).
+Impenhorabilidades (art. 833, CPC; bem de família – Lei 8.009/1990): salários, proventos, instrumentos de trabalho, poupança até 40 SM, etc., com exceções legais (dívida do próprio bem; alimentos, etc.).
+Nulidade da execução (art. 803, CPC): pode ser reconhecida de ofício ou mediante simples petição, independentemente de embargos (parágrafo único).
+3.7. Medidas negociais e processuais correlatas
+Parcelamento do art. 916, CPC: cabível na execução de título extrajudicial; não se aplica ao cumprimento de sentença (vedação do §7º), salvo acordo entre as partes, segundo STJ (REsp 1.891.577).
+Substituição/ordem da penhora e menor onerosidade (art. 805, CPC): pleitos frequentes para troca por fiança/seguro-garantia, com observância da efetividade.
+3.8. Processo do trabalho (nota específica)
+Embargos à execução: 5 dias após garantia/penhora (art. 884, CLT). Matérias semelhantes às do CPC, com preclusões rígidas na impugnação de cálculos (atenção à tempestividade).
+4) Estratégia defensiva: sequência lógica e ônus do executado
+Diagnóstico do título/conta (inexigibilidade, excesso, compensações vedadas, juros/correção, termo inicial, multas).
+Definição da via: impugnação (título judicial), embargos (título extrajudicial/fiscal), exceção de pré-executividade (matéria cognoscível de ofício sem prova), simples petições (art. 803, 833 e 854).
+Efeito suspensivo: preparar requisitos e garantia (quando exigida), sob pena de a execução prosseguir.
+Prova e memória de cálculo: em excesso, memória discriminada é condição de conhecimento.
+Atos constritivos: impugnações específicas (Sisbajud, Renajud, penhora no rosto, faturamento; alegação de impenhorabilidade).
+Negociação: avaliar acordo, inclusive parcelamento quando cabível (extrajudicial) ou via transação no cumprimento de sentença, se o credor anuir.
+5) Jurisprudência selecionada
+STJ – Súmula 393 (Primeira Seção, DJe 07/10/2009). Rel. Min. (Súmula – enunciado). Tese: cabimento da exceção de pré-executividade na execução fiscal para matérias de ordem pública sem prova.
+STJ – AgRg no REsp 1.563.061/PR (DJe 10/12/2015). Rel. Min. Humberto Martins. Tese: insuficiência da penhora não impede embargos do devedor em execução fiscal (menção ao REsp 1.127.815/SP – repetitivo).
+STJ – REsp 1.681.111/RS (DJe 24/05/2019). Rel. Min. Gurgel de Faria. Tese: hipossuficiência pode justificar recebimento dos embargos; determinação de diligências constritivas sucessivas.
+STJ – Notícia (30/09/2022), REsp 1.891.577. Rel. Min. Marco Aurélio Bellizze. Tese: não há direito subjetivo ao parcelamento no cumprimento de sentença (art. 916, §7º, CPC); só por acordo.
+STJ – Notícia (26/03/2021). Tese: a intimação do executado para pagar (art. 523) não tem conteúdo decisório e é irrecorrível.
+STF – Notícia (23/02/2022). Tese: aplicação do art. 919, §1º, CPC aos embargos na execução fiscal (regra do efeito suspensivo por decisão, não automático).
+6) Antecipação e refutação de teses usuais do exequente
+“Impugnação intempestiva porque não houve penhora.” — No cumprimento de sentença, o prazo decorre do término do art. 523; não se exige penhora para impugnar.
+“Embargos fiscais inadmissíveis sem penhora integral.” — A insuficiência de penhora não impede o recebimento dos embargos (REsp 1.127.815/SP – repetitivo; AgRg no REsp 1.563.061/PR).
+“Efeito suspensivo automático aos embargos.” — Regra é não suspensivo; só com requisitos e, em geral, garantia. Vale para CPC e, por simetria, para a execução fiscal.
+“Parcelamento judicial obrigatório no cumprimento de sentença.” — Rechaçado pelo STJ (REsp 1.891.577); apenas por acordo.
+7) Checklist prático do executado
+Conte prazos: 15 + 15 (arts. 523/525, CPC) no título judicial; 15 dias úteis p/ embargos (CPC, título extrajudicial), com atenção ao art. 919; 5 dias (CLT) após garantia.
+Defina a via: impugnação, embargos, exceção, petição simples (art. 803/833/854).
+Garanta o juízo quando necessário (efeito suspensivo; embargos fiscais).
+Prove o excesso (memória discriminada).
+Ataque constrições ilegais (impenhorabilidades, excesso de bloqueio).
+Negocie quando fizer sentido (extrajudicial) e avalie acordo no cumprimento.
+8) Conclusão
+A defesa do executado não se resume a um único instrumento; exige leitura estratégica do rito, disciplina temporal e coerência probatória. A escolha correta entre impugnação, embargos, exceção de pré-executividade e petições incidentais (impenhorabilidades, nulidades e atos constritivos específicos) pode reduzir substancialmente o valor executado, reordenar a penhora e, em casos próprios, levar à extinção. Em fiscal, a garantia continua central, mas a jurisprudência evoluiu para mitigar a rigidez em hipóteses justificadas (insuficiência/hipossuficiência). Em qualquer cenário, efeito suspensivo é excepcional e depende de fumaça + perigo e, via de regra, garantia, tanto no CPC quanto — por simetria — na execução fiscal.

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{titulo}} — Romagnani Advogados</title>
+<meta name="description" content="{{resumo}}">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E1B2C;--paper:#F7F4EE;--text:#1B2433;--muted:#5E6878;--line:#DDD5C7;--brass:#B08D57;--brass-2:#C9A46A;--brass-ink:#7A5E33;--on-ink:#EDE7DC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--paper);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--brass-ink)}
+.bar{background:var(--ink);color:var(--on-ink);padding:0 16px}
+.bar div{max-width:760px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+.bar a{color:var(--on-ink);text-decoration:none;font-size:.9rem}
+.bar b{font-family:"Fraunces",serif;font-weight:600;font-size:1.1rem}
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--brass-2);width:0;z-index:9}
+article{max-width:760px;margin:0 auto;padding:64px 16px 96px;overflow-wrap:anywhere}
+.eyebrow{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-ink);font-weight:600}
+h1{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.6rem 0 2.4rem}
+h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.45rem;margin:2.4rem 0 .8rem;line-height:1.3}
+h3{font-size:1rem;font-weight:600;margin:1.6rem 0 .4rem}
+p{margin-bottom:1rem}
+.back{display:inline-block;margin-top:40px;padding:12px 22px;border-radius:999px;background:var(--ink);color:var(--on-ink);text-decoration:none;font-size:.9rem}
+.fine{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="bar"><div><a href="../"><b>Romagnani</b> Advogados</a><a href="../#newsletter">← Newsletter</a></div></div>
+<article>
+  <div class="eyebrow">Newsletter · {{data}}</div>
+  <h1>{{titulo}}</h1>
+  {{corpo}}
+  <a class="back" href="../#contato">Fale com o escritório sobre este tema</a>
+  <p class="fine">Conteúdo informativo, que não substitui a consulta a um advogado para o seu caso concreto.</p>
+</article>
+<script>
+addEventListener("scroll",()=>{const h=document.documentElement;document.getElementById("prog").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%"},{passive:true});
+</script>
+</body>
+</html>
