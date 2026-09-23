@@ -121,6 +121,10 @@ def _player(video_id, cliente, versao):
         return json.load(r).get("videoDetails", {}).get("lengthSeconds")
 
 
+CACHE_VIDEOS = ROOT / "content/videos_duracao.json"
+_cache = json.loads(CACHE_VIDEOS.read_text()) if CACHE_VIDEOS.exists() else {}
+
+
 def duracao(video_id):
     """Duração em segundos (0 = ao vivo/agendado; None = não foi possível ler).
 
@@ -135,16 +139,20 @@ def duracao(video_id):
         ("ios", lambda: _player(video_id, "IOS", "20.10.4")),
         ("meta", lambda: _iso(re.search(r'itemprop="duration" content="([^"]+)"', pagina()).group(1))),
     ]
+    # Durações já conhecidas ficam guardadas: o YouTube bloqueia essas consultas a partir
+    # dos servidores do GitHub, então o arquivo é alimentado quando o site é gerado neste
+    # computador. Transmissões (0 s) são consultadas de novo, pois mudam depois de gravadas.
+    if _cache.get(video_id):
+        return _cache[video_id]
     for nome, f in tentativas:
         try:
             v = f()
             if v is not None:
-                if nome != "página":
-                    print(f"[info] duração de {video_id} via {nome}: {v}s", file=sys.stderr)
+                _cache[video_id] = int(v)
                 return int(v)
         except Exception:
             continue
-    print(f"[aviso] duração ilegível de {video_id}", file=sys.stderr)
+    print(f"[aviso] duração desconhecida de {video_id}; vídeo fica de fora", file=sys.stderr)
     return None
 
 
@@ -173,6 +181,7 @@ def videos():
             n += 1
             if n == limite:
                 break
+    CACHE_VIDEOS.write_text(json.dumps(_cache, indent=1, sort_keys=True) + "\n")
     return saida
 
 
