@@ -107,17 +107,45 @@ def noticias():
     return saida
 
 
+def _iso(d):
+    m = re.fullmatch(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", d or "")
+    return m and sum(int(x or 0) * k for x, k in zip(m.groups(), (3600, 60, 1)))
+
+
+def _player(video_id, cliente, versao):
+    corpo = json.dumps({"videoId": video_id, "context": {"client": {
+        "clientName": cliente, "clientVersion": versao, "hl": "pt", "gl": "BR"}}}).encode()
+    req = urllib.request.Request("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", data=corpo,
+                                 headers={"User-Agent": UA, "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r).get("videoDetails", {}).get("lengthSeconds")
+
+
 def duracao(video_id):
-    """Duração em segundos (0 = transmissão ao vivo/agendada; None = não conseguiu ler)."""
-    try:
-        pagina = baixar(f"https://www.youtube.com/watch?v={video_id}").decode("utf-8", "ignore")
-    except Exception:
-        return None
-    m = re.search(r'"lengthSeconds":"(\d+)"', pagina)
-    if not m:
-        t = re.search(r"<title>(.*?)</title>", pagina, re.S)
-        print(f"[aviso] duração ilegível de {video_id}: {len(pagina)} bytes, título={t and t.group(1)[:80]!r}", file=sys.stderr)
-    return int(m.group(1)) if m else None
+    """Duração em segundos (0 = ao vivo/agendado; None = não foi possível ler).
+
+    O YouTube às vezes entrega a servidores uma página sem dados do vídeo; por isso
+    há mais de um caminho de consulta.
+    """
+    pagina = lambda: baixar(f"https://www.youtube.com/watch?v={video_id}").decode("utf-8", "ignore")
+    tentativas = [
+        ("página", lambda: re.search(r'"lengthSeconds":"(\d+)"', pagina()).group(1)),
+        ("web", lambda: _player(video_id, "WEB", "2.20250925.01.00")),
+        ("mweb", lambda: _player(video_id, "MWEB", "2.20250925.01.00")),
+        ("ios", lambda: _player(video_id, "IOS", "20.10.4")),
+        ("meta", lambda: _iso(re.search(r'itemprop="duration" content="([^"]+)"', pagina()).group(1))),
+    ]
+    for nome, f in tentativas:
+        try:
+            v = f()
+            if v is not None:
+                if nome != "página":
+                    print(f"[info] duração de {video_id} via {nome}: {v}s", file=sys.stderr)
+                return int(v)
+        except Exception:
+            continue
+    print(f"[aviso] duração ilegível de {video_id}", file=sys.stderr)
+    return None
 
 
 def videos():
