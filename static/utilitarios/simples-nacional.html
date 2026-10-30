@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora do Simples Nacional — Romagnani Advogados</title>
+<meta name="description" content="Calcule a alíquota efetiva e o valor estimado do DAS no Simples Nacional (Anexos I a V da LC 123/2006), com Fator R para prestadores de serviço.">
+<meta property="og:title" content="Calculadora do Simples Nacional">
+<meta property="og:description" content="Alíquota efetiva, DAS estimado e Fator R, Anexos I a V.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/simples-nacional.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Tributário</span>
+  <h1>Simples Nacional</h1>
+  <p>Alíquota efetiva e valor estimado do DAS a partir da receita bruta dos últimos 12 meses, nos Anexos I a V da Lei Complementar 123/2006, com o Fator R para prestadores de serviço.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <label for="anexo">Atividade</label>
+      <select id="anexo">
+        <option value="1">Anexo I · Comércio</option>
+        <option value="2">Anexo II · Indústria</option>
+        <option value="3">Anexo III · Serviços (ex.: instalação, manutenção, agências)</option>
+        <option value="4">Anexo IV · Serviços (ex.: limpeza, vigilância, obras, advocacia)</option>
+        <option value="5">Anexo V · Serviços (ex.: auditoria, tecnologia, publicidade)</option>
+        <option value="R" selected>Anexo III ou V conforme o Fator R (ex.: medicina, engenharia, consultoria)</option>
+      </select>
+      <label for="rbt12">Receita bruta dos últimos 12 meses (RBT12)</label>
+      <input id="rbt12" inputmode="decimal" data-moeda placeholder="0,00" value="600.000,00">
+      <p class="hint">Empresa com menos de 12 meses: use a média mensal da receita × 12.</p>
+      <label for="mes">Receita do mês a apurar</label>
+      <input id="mes" inputmode="decimal" data-moeda placeholder="0,00" value="50.000,00">
+      <div id="boxFolha">
+        <label for="folha">Folha de salários dos últimos 12 meses <small>(com pró-labore e encargos)</small></label>
+        <input id="folha" inputmode="decimal" data-moeda placeholder="0,00" value="150.000,00">
+        <p class="hint">Inclui salários, pró-labore, 13º, férias, INSS patronal e FGTS.</p>
+      </div>
+    </form>
+    <section class="card" aria-live="polite">
+      <span class="eyebrow" style="color:var(--brass-ink)">DAS estimado do mês</span>
+      <div class="big" id="das">—</div>
+      <div class="kpis">
+        <div class="kpi"><span>Alíquota efetiva</span><b id="kEf">—</b></div>
+        <div class="kpi"><span>Anexo aplicado</span><b id="kAnexo">—</b></div>
+        <div class="kpi"><span>Faixa</span><b id="kFaixa">—</b></div>
+        <div class="kpi" id="kpiR"><span>Fator R</span><b id="kR">—</b></div>
+      </div>
+      <p class="hint" id="formula"></p>
+      <h3 id="tTit">Tabela do anexo</h3>
+      <div class="scroll"><table class="tbl" id="tab"></table></div>
+      <div class="note" id="obs"></div>
+    </section>
+  </div>
+  <div class="note">
+    <strong>Como é calculado.</strong> Alíquota efetiva = (RBT12 × alíquota nominal − parcela a deduzir) ÷ RBT12, conforme o art. 18 da LC 123/2006. O Fator R é a folha dos últimos 12 meses dividida pela RBT12: com 28% ou mais, a atividade sai do Anexo V e vai para o Anexo III.
+    O resultado é uma estimativa. Não considera receitas de exportação, ICMS-ST, ISS retido, monofásicos nem receitas de mais de um anexo no mesmo mês, que reduzem ou mudam o valor do DAS. O enquadramento da atividade depende do CNAE e da Resolução CGSN 140/2018.
+  </div>
+  <div class="cta">
+    <p><strong>Quer revisar o enquadramento ou o planejamento tributário da sua empresa?</strong><br>Converse com a nossa equipe.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../#contato">Outros contatos</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo, que não substitui a apuração no PGDAS-D.</p>
+</main>
+<script src="comum.js"></script>
+<script>
+// Anexos da LC 123/2006 (redação da LC 155/2016). Cada faixa: [limite RBT12, alíquota nominal, parcela a deduzir].
+const LIM = [180000, 360000, 720000, 1800000, 3600000, 4800000];
+const ANEXOS = {
+  1: { nome: "I", desc: "Comércio", f: [[.04, 0], [.073, 5940], [.095, 13860], [.107, 22500], [.143, 87300], [.19, 378000]] },
+  2: { nome: "II", desc: "Indústria", f: [[.045, 0], [.078, 5940], [.10, 13860], [.112, 22500], [.147, 85500], [.30, 720000]] },
+  3: { nome: "III", desc: "Serviços", f: [[.06, 0], [.112, 9360], [.135, 17640], [.16, 35640], [.21, 125640], [.33, 648000]] },
+  4: { nome: "IV", desc: "Serviços", f: [[.045, 0], [.09, 8100], [.102, 12420], [.14, 39780], [.22, 183780], [.33, 828000]] },
+  5: { nome: "V", desc: "Serviços", f: [[.155, 0], [.18, 4500], [.195, 9900], [.205, 17100], [.23, 62100], [.305, 540000]] },
+};
+const FATOR_R = .28;
+
+const $ = id => document.getElementById(id);
+const efetiva = (rbt, [nom, pd]) => rbt > 0 ? (rbt * nom - pd) / rbt : 0;
+
+function calcular() {
+  const sel = $("anexo").value;
+  const rbt = numero($("rbt12").value), mes = numero($("mes").value), folha = numero($("folha").value);
+  const usaR = sel === "R";
+  $("boxFolha").style.display = usaR ? "" : "none";
+  $("kpiR").style.display = usaR ? "" : "none";
+
+  let n = usaR ? 5 : +sel, fr = 0;
+  if (usaR) { fr = rbt > 0 ? folha / rbt : 0; n = fr >= FATOR_R ? 3 : 5; $("kR").textContent = pct(fr); }
+  const A = ANEXOS[n];
+  const i = Math.min(LIM.findIndex(l => rbt <= l) === -1 ? 5 : LIM.findIndex(l => rbt <= l), 5);
+  const faixa = A.f[i];
+  // Na 1ª faixa a alíquota efetiva é a própria nominal (inclusive com RBT12 zero, empresa nova).
+  const ef = i === 0 ? faixa[0] : efetiva(rbt, faixa);
+  const das = r2(mes * ef);
+
+  $("das").textContent = moeda(das);
+  $("kEf").textContent = pct(ef);
+  $("kAnexo").textContent = "Anexo " + A.nome;
+  $("kFaixa").textContent = (i + 1) + "ª";
+  $("formula").textContent = i === 0 ? `1ª faixa: alíquota efetiva igual à nominal (${pct(faixa[0])}).`
+    : `(${moeda(rbt)} × ${pct(faixa[0])} − ${moeda(faixa[1])}) ÷ ${moeda(rbt)} = ${pct(ef)}`;
+  $("tTit").textContent = `Tabela do Anexo ${A.nome} · ${A.desc}`;
+  $("tab").innerHTML = `<tr><th>Faixa · RBT12 até</th><th>Alíquota nominal</th><th>Parcela a deduzir</th><th>Efetiva no limite</th></tr>` +
+    A.f.map((f, k) => `<tr class="${k === i ? "on" : ""}"><td>${k + 1}ª · ${moeda(LIM[k])}</td><td>${pct(f[0])}</td><td>${moeda(f[1])}</td><td>${pct(efetiva(LIM[k], f))}</td></tr>`).join("");
+
+  const obs = [];
+  if (usaR) obs.push(fr >= FATOR_R
+    ? `Fator R de ${pct(fr)}: igual ou acima de 28%, a tributação é pelo Anexo III.`
+    : `Fator R de ${pct(fr)}: abaixo de 28%, a tributação é pelo Anexo V. Com folha de ${moeda(rbt * FATOR_R)} nos 12 meses, a empresa iria para o Anexo III, com alíquota efetiva de ${pct(i === 0 ? ANEXOS[3].f[0][0] : efetiva(rbt, ANEXOS[3].f[i]))}.`);
+  if (rbt > 4800000) obs.push("<b>Atenção:</b> receita acima de R$ 4,8 milhões no ano impede a permanência no Simples Nacional.");
+  else if (rbt > 3600000) obs.push("<b>Atenção:</b> acima do sublimite de R$ 3,6 milhões, o ICMS e o ISS deixam de ser recolhidos no DAS e passam a ser pagos à parte, pelas regras normais. O valor acima considera o DAS completo.");
+  $("obs").innerHTML = obs.join("<br>");
+  $("obs").className = "note" + (rbt > 3600000 ? " warn" : "");
+  $("obs").style.display = obs.length ? "" : "none";
+}
+
+$("f").addEventListener("input", calcular);
+$("f").addEventListener("change", calcular);
+calcular();
+</script>
+</body>
+</html>

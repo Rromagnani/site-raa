@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de INSS e IRRF 2026 — Romagnani Advogados</title>
+<meta name="description" content="Calcule o desconto de INSS e de Imposto de Renda sobre salário ou pró-labore com as tabelas de 2026 e a redução da Lei 15.270/2025 (isenção até R$ 5.000).">
+<meta property="og:title" content="Calculadora de INSS e IRRF 2026">
+<meta property="og:description" content="Salário líquido com as tabelas de 2026 e a nova redução do IR.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/inss-irrf.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Trabalhista e tributário</span>
+  <h1>INSS e IRRF 2026</h1>
+  <p>Desconto mensal de INSS e de Imposto de Renda retido na fonte sobre salário ou pró-labore, com a redução da Lei 15.270/2025, que zera o imposto até R$ 5.000 e o reduz até R$ 7.350.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <label>Tipo de rendimento</label>
+      <div class="seg">
+        <label><input type="radio" name="tipo" value="clt" checked><span>Salário (CLT)</span></label>
+        <label><input type="radio" name="tipo" value="socio"><span>Pró-labore</span></label>
+      </div>
+      <label for="bruto">Valor bruto mensal</label>
+      <input id="bruto" inputmode="decimal" data-moeda placeholder="0,00" value="5.000,00">
+      <div class="row">
+        <div><label for="dep">Dependentes no IR</label><input id="dep" type="number" min="0" step="1" value="0"></div>
+        <div id="boxFilhos"><label for="filhos">Filhos até 14 anos <small>(salário-família)</small></label><input id="filhos" type="number" min="0" step="1" value="0"></div>
+      </div>
+      <label for="pensao">Pensão alimentícia descontada <small>(opcional)</small></label>
+      <input id="pensao" inputmode="decimal" data-moeda placeholder="0,00">
+      <label for="prev">Previdência complementar descontada <small>(opcional)</small></label>
+      <input id="prev" inputmode="decimal" data-moeda placeholder="0,00">
+      <p class="hint">Previdência complementar fechada ou PGBL, até 12% dos rendimentos.</p>
+    </form>
+    <section class="card" aria-live="polite">
+      <span class="eyebrow" style="color:var(--brass-ink)">Valor líquido</span>
+      <div class="big" id="liq">—</div>
+      <div class="kpis">
+        <div class="kpi"><span>INSS</span><b id="kInss">—</b></div>
+        <div class="kpi"><span>IRRF</span><b id="kIr">—</b></div>
+        <div class="kpi"><span>INSS + IR / bruto</span><b id="kAliq">—</b></div>
+      </div>
+      <div class="scroll"><table class="tbl" id="demo"></table></div>
+      <h3>INSS por faixa</h3>
+      <div class="scroll"><table class="tbl" id="tInss"></table></div>
+      <h3>Imposto de Renda</h3>
+      <div class="scroll"><table class="tbl" id="tIr"></table></div>
+      <div class="note" id="obs"></div>
+    </section>
+  </div>
+  <div class="note">
+    <strong>Tabelas usadas (2026).</strong> INSS: Portaria Interministerial MPS/MF nº 13/2026, teto de R$ 8.475,55. IRRF: tabela progressiva mensal vigente desde maio/2025, dedução de R$ 189,59 por dependente, desconto simplificado de R$ 607,20 e redução da Lei 15.270/2025. Salário-família: R$ 67,54 por filho para remuneração de até R$ 1.980,38.
+    A calculadora é para a retenção mensal, não para a declaração anual. Não considera 13º salário, férias, PLR nem rendimentos de mais de uma fonte.
+  </div>
+  <div class="cta">
+    <p><strong>Dúvidas sobre folha, pró-labore ou retenções?</strong><br>Converse com a nossa equipe.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../#contato">Outros contatos</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo. Os valores oficiais são os da folha de pagamento e da legislação vigente na competência.</p>
+</main>
+<script src="comum.js"></script>
+<script>
+// Tabelas de 2026 — atualizar a cada ano (e quando sair nova portaria/lei).
+const T = {
+  inss: [[1621.00, .075], [2902.84, .09], [4354.27, .12], [8475.55, .14]],
+  socioAliq: .11,                       // contribuinte individual com retenção pela empresa
+  ir: [[2428.80, 0, 0], [2826.65, .075, 182.16], [3751.05, .15, 394.16], [4664.68, .225, 675.49], [Infinity, .275, 908.73]],
+  dependente: 189.59,
+  simplificado: 607.20,
+  reducao: { isentoAte: 5000, max: 312.89, ate: 7350, a: 978.62, b: 0.133145 },
+  salFamilia: { cota: 67.54, limite: 1980.38 },
+};
+
+const $ = id => document.getElementById(id);
+const tabelaIr = base => T.ir.find(f => base <= f[0]);
+const impostoTabela = base => { if (base <= 0) return 0; const f = tabelaIr(base); return Math.max(0, base * f[1] - f[2]); };
+
+function calcular() {
+  const tipo = document.querySelector("[name=tipo]:checked").value;
+  const bruto = numero($("bruto").value);
+  const dep = Math.max(0, parseInt($("dep").value) || 0);
+  const filhos = Math.max(0, parseInt($("filhos").value) || 0);
+  const pensao = numero($("pensao").value), prev = numero($("prev").value);
+  $("boxFilhos").style.visibility = tipo === "clt" ? "visible" : "hidden";
+
+  // INSS
+  let inss = 0, linhas = [];
+  if (tipo === "clt") {
+    let ant = 0;
+    T.inss.forEach(([teto, aliq], i) => {
+      const parcela = Math.max(0, Math.min(bruto, teto) - ant);
+      const v = parcela * aliq; inss += v;
+      linhas.push(`<tr class="${parcela > 0 ? "on" : ""}"><td>${i + 1}ª faixa · até ${moeda(teto)}</td><td>${pct(aliq, 1)}</td><td>${moeda(parcela)}</td><td>${moeda(v)}</td></tr>`);
+      ant = teto;
+    });
+  } else {
+    const base = Math.min(bruto, T.inss.at(-1)[0]);
+    inss = base * T.socioAliq;
+    linhas.push(`<tr class="on"><td>Pró-labore (contribuinte individual)</td><td>${pct(T.socioAliq, 0)}</td><td>${moeda(base)}</td><td>${moeda(inss)}</td></tr>`);
+  }
+  inss = r2(inss);
+  $("tInss").innerHTML = `<tr><th>Faixa</th><th>Alíquota</th><th>Base</th><th>Contribuição</th></tr>${linhas.join("")}<tr><td><b>Total</b></td><td></td><td></td><td><b>${moeda(inss)}</b></td></tr>`;
+
+  // IRRF: deduções legais × desconto simplificado — usa o que for melhor.
+  const prevDed = Math.min(prev, bruto * .12);
+  const baseLegal = Math.max(0, bruto - inss - dep * T.dependente - pensao - prevDed);
+  const baseSimp = Math.max(0, bruto - T.simplificado);
+  const irLegal = impostoTabela(baseLegal), irSimp = impostoTabela(baseSimp);
+  const simp = irSimp < irLegal;
+  const base = simp ? baseSimp : baseLegal, irTab = r2(simp ? irSimp : irLegal);
+  const R = T.reducao;
+  let red = bruto <= R.isentoAte ? Math.min(irTab, R.max) : bruto <= R.ate ? Math.max(0, Math.min(irTab, R.a - R.b * bruto)) : 0;
+  red = r2(red);
+  const ir = r2(irTab - red);
+  const f = tabelaIr(base);
+  $("tIr").innerHTML = `<tr><th>Item</th><th>Valor</th></tr>
+    <tr><td>Rendimento tributável</td><td>${moeda(bruto)}</td></tr>
+    ${simp ? `<tr><td>(−) Desconto simplificado</td><td>${moeda(T.simplificado)}</td></tr>` :
+      `<tr><td>(−) INSS</td><td>${moeda(inss)}</td></tr>` +
+      (dep ? `<tr><td>(−) ${dep} dependente(s)</td><td>${moeda(dep * T.dependente)}</td></tr>` : "") +
+      (pensao ? `<tr><td>(−) Pensão alimentícia</td><td>${moeda(pensao)}</td></tr>` : "") +
+      (prevDed ? `<tr><td>(−) Previdência complementar</td><td>${moeda(prevDed)}</td></tr>` : "")}
+    <tr class="on"><td>Base de cálculo</td><td>${moeda(base)}</td></tr>
+    <tr><td>Alíquota ${pct(f[1], 1)}${f[2] ? ` · parcela a deduzir ${moeda(f[2])}` : ""}</td><td>${moeda(irTab)}</td></tr>
+    <tr class="neg"><td>(−) Redução da Lei 15.270/2025</td><td>${moeda(red)}</td></tr>
+    <tr><td><b>IRRF devido</b></td><td><b>${moeda(ir)}</b></td></tr>`;
+
+  // Salário-família (só empregado CLT).
+  const sf = tipo === "clt" && bruto > 0 && bruto <= T.salFamilia.limite ? r2(filhos * T.salFamilia.cota) : 0;
+  const liq = r2(bruto - inss - ir - pensao - prev + sf);
+  $("liq").textContent = moeda(liq);
+  $("kInss").textContent = moeda(inss);
+  $("kIr").textContent = moeda(ir);
+  $("kAliq").textContent = bruto ? pct((inss + ir) / bruto) : "—";
+  $("demo").innerHTML = `<tr><th>Demonstrativo</th><th>Valor</th></tr>
+    <tr><td>${tipo === "clt" ? "Salário bruto" : "Pró-labore bruto"}</td><td>${moeda(bruto)}</td></tr>
+    <tr><td>(−) INSS</td><td>${moeda(inss)}</td></tr>
+    <tr><td>(−) IRRF</td><td>${moeda(ir)}</td></tr>
+    ${pensao ? `<tr><td>(−) Pensão alimentícia</td><td>${moeda(pensao)}</td></tr>` : ""}
+    ${prev ? `<tr><td>(−) Previdência complementar</td><td>${moeda(prev)}</td></tr>` : ""}
+    ${sf ? `<tr class="neg"><td>(+) Salário-família</td><td>${moeda(sf)}</td></tr>` : ""}
+    <tr class="on"><td>Valor líquido</td><td>${moeda(liq)}</td></tr>`;
+
+  const obs = [];
+  obs.push(simp ? "O desconto simplificado (R$ 607,20) foi mais vantajoso que as deduções legais e foi usado no lugar delas."
+                : "As deduções legais foram mais vantajosas que o desconto simplificado.");
+  if (red > 0 && ir === 0) obs.push("Com a redução da Lei 15.270/2025, não há imposto a reter.");
+  if (prev > prevDed) obs.push("A previdência complementar só é dedutível até 12% do rendimento; o excedente foi desconsiderado no IR.");
+  if (tipo === "socio") obs.push("Pró-labore: a empresa retém 11% do sócio (até o teto). A contribuição patronal de 20%, quando devida, não entra nesta conta.");
+  if (tipo === "clt" && filhos && !sf) obs.push(`Sem salário-família: a remuneração passa do limite de ${moeda(T.salFamilia.limite)}.`);
+  if (tipo === "clt" && bruto > T.inss.at(-1)[0]) obs.push("O salário passa do teto do INSS; a contribuição fica limitada ao valor máximo.");
+  $("obs").innerHTML = obs.join("<br>");
+}
+
+document.getElementById("f").addEventListener("input", calcular);
+document.getElementById("f").addEventListener("change", calcular);
+calcular();
+</script>
+</body>
+</html>

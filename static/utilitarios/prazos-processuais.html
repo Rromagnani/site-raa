@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de prazos processuais — Romagnani Advogados</title>
+<meta name="description" content="Calcule o vencimento de prazos processuais em dias úteis (CPC, art. 219) ou corridos, a partir do DJEN, da juntada ou da intimação pelo portal, com feriados, recesso forense e prazo em dobro.">
+<meta property="og:title" content="Calculadora de prazos processuais">
+<meta property="og:description" content="Vencimento de prazos em dias úteis ou corridos, com feriados e recesso forense.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/prazos-processuais.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Processo</span>
+  <h1>Prazos processuais</h1>
+  <p>Vencimento de prazos em dias úteis (CPC, art. 219) ou corridos, a partir da disponibilização no DJEN, da juntada ou da intimação pelo portal, com feriados, recesso forense e prazo em dobro.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <label for="trib">Tribunal</label>
+      <select id="trib">
+        <option value="tjsp">Tribunal de Justiça de São Paulo (TJSP)</option>
+        <option value="jf">Justiça Federal em São Paulo (TRF3)</option>
+        <option value="nac">Outro: só feriados nacionais e forenses comuns</option>
+      </select>
+      <label class="check"><input type="checkbox" id="capital"> Comarca ou subseção da Capital (feriado de 25 de janeiro)</label>
+      <label>A contagem parte de</label>
+      <div class="seg">
+        <label><input type="radio" name="modo" value="djen" checked><span>Disponibilização no DJEN</span></label>
+        <label><input type="radio" name="modo" value="evento"><span>Intimação ou juntada</span></label>
+        <label><input type="radio" name="modo" value="portal"><span>Envio pelo portal</span></label>
+      </div>
+      <p class="hint" id="modoHint"></p>
+      <label for="data" id="dataLbl">Data</label>
+      <input id="data" type="date">
+      <div class="row">
+        <div><label for="dias">Prazo</label><input id="dias" type="number" min="1" step="1" value="15"></div>
+        <div><label for="unid">Contagem</label>
+          <select id="unid"><option value="uteis">Dias úteis</option><option value="corridos">Dias corridos</option></select></div>
+      </div>
+      <label class="check"><input type="checkbox" id="dobro"> Prazo em dobro (Fazenda Pública, Ministério Público, Defensoria ou litisconsortes com advogados diferentes em autos físicos)</label>
+      <label for="extras">Outros dias sem expediente <small>(opcional)</small></label>
+      <textarea id="extras" placeholder="Ex.: 28/10/2026, 02/01/2027"></textarea>
+      <p class="hint">Suspensões, feriados municipais ou pontos facultativos do tribunal. Separe as datas por vírgula ou linha.</p>
+    </form>
+    <section class="card" aria-live="polite">
+      <span class="eyebrow" style="color:var(--brass-ink)">Vencimento</span>
+      <div class="big" id="venc">—</div>
+      <div class="kpis" id="marcos"></div>
+      <h3>Dias do prazo</h3>
+      <div class="dias" id="lista"></div>
+      <p class="hint"><span class="dia conta">azul</span> conta no prazo · <span class="dia pula">riscado</span> não conta · <span class="dia fim">escuro</span> vencimento</p>
+      <h3 id="tNao">Dias não contados</h3>
+      <div class="scroll"><table class="tbl" id="nao"></table></div>
+      <div class="cta" style="margin-top:18px;padding:16px">
+        <p style="margin:0">Leve o vencimento para a sua agenda.</p>
+        <a href="#" id="ics" download="prazo.ics">Adicionar à agenda</a>
+      </div>
+    </section>
+  </div>
+  <div class="note">
+    <strong>Regras usadas.</strong> Exclui-se o dia do começo e inclui-se o do vencimento (CPC, art. 224). Nos prazos em dias úteis, contam só os dias úteis (art. 219). No DJEN, a publicação é o primeiro dia útil seguinte à disponibilização, e o prazo começa no dia útil seguinte à publicação (Lei 11.419/2006, art. 4º, §§ 3º e 4º). Na intimação pelo portal sem consulta, a ciência ocorre dez dias corridos após o envio (art. 5º, § 3º). Os prazos ficam suspensos de 20 de dezembro a 20 de janeiro (CPC, art. 220). Na Quarta-feira de Cinzas, com expediente reduzido, o prazo não começa nem vence (art. 224, § 1º).
+  </div>
+  <div class="note warn">
+    <strong>Confira sempre no tribunal.</strong> Os tribunais publicam suspensões de prazo por indisponibilidade do sistema, feriados municipais e transferências de feriado (ex.: Dia do Servidor). Inclua essas datas no campo “Outros dias sem expediente”. Esta calculadora é um apoio e não substitui a conferência do prazo pelo advogado responsável.
+  </div>
+  <div class="cta">
+    <p><strong>Precisa de acompanhamento processual?</strong><br>Converse com a nossa equipe.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../#contato">Outros contatos</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Ferramenta de caráter informativo.</p>
+</main>
+<script src="comum.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const SEM = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+const dia = (y, m, d) => new Date(y, m - 1, d);
+const somar = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const chave = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const br = d => d.toLocaleDateString("pt-BR");
+const brLongo = d => d.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+
+function pascoa(y) { // algoritmo de Meeus/Jones/Butcher
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+    g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4,
+    l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451),
+    mes = Math.floor((h + l - 7 * m + 114) / 31), di = ((h + l - 7 * m + 114) % 31) + 1;
+  return dia(y, mes, di);
+}
+
+// Feriados e dias sem expediente de um ano → { "AAAA-MM-DD": motivo }.
+function feriados(y, trib, capital) {
+  const F = {}, p = pascoa(y), add = (d, t) => (F[chave(d)] = t);
+  [[1, 1, "Confraternização Universal"], [4, 21, "Tiradentes"], [5, 1, "Dia do Trabalho"], [9, 7, "Independência"],
+   [10, 12, "Nossa Senhora Aparecida"], [11, 2, "Finados"], [11, 15, "Proclamação da República"],
+   [11, 20, "Dia da Consciência Negra"], [12, 25, "Natal"], [12, 8, "Dia da Justiça"]]
+    .forEach(([m, d, t]) => add(dia(y, m, d), t));
+  add(somar(p, -48), "Carnaval"); add(somar(p, -47), "Carnaval");
+  add(somar(p, -2), "Sexta-feira Santa"); add(somar(p, 60), "Corpus Christi");
+  if (trib === "tjsp" || trib === "jf") add(dia(y, 7, 9), "Revolução Constitucionalista (SP)");
+  if (trib === "jf") {
+    add(somar(p, -4), "Semana Santa (Lei 5.010/66)"); add(somar(p, -3), "Semana Santa (Lei 5.010/66)");
+    add(dia(y, 8, 11), "Dia do Advogado (Lei 5.010/66)"); add(dia(y, 11, 1), "Todos os Santos (Lei 5.010/66)");
+  }
+  if (capital) add(dia(y, 1, 25), "Aniversário de São Paulo");
+  return F;
+}
+
+let cache = {};
+function motivo(d, cfg) {
+  const y = d.getFullYear(), k = chave(d);
+  if (cfg.extras.has(k)) return "Informado como sem expediente";
+  const ck = y + cfg.trib + cfg.capital;
+  const F = cache[ck] || (cache[ck] = feriados(y, cfg.trib, cfg.capital));
+  if (F[k]) return F[k];
+  const m = d.getMonth() + 1, dd = d.getDate();
+  if ((m === 12 && dd >= 20) || (m === 1 && dd <= 20)) return "Recesso forense (CPC, art. 220)";
+  if (d.getDay() === 0 || d.getDay() === 6) return "Fim de semana";
+  return "";
+}
+const cinzas = d => chave(d) === chave(somar(pascoa(d.getFullYear()), -46));
+const util = (d, cfg) => !motivo(d, cfg);
+const valido = (d, cfg) => util(d, cfg) && !cinzas(d);          // pode ser início ou vencimento
+const proxValido = (d, cfg) => { do d = somar(d, 1); while (!valido(d, cfg)); return d; };
+const ajusta = (d, cfg) => valido(d, cfg) ? d : proxValido(d, cfg);
+
+function lerExtras(txt) {
+  const s = new Set();
+  (txt.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g) || []).forEach(t => {
+    let [d, m, y] = t.split("/").map(Number); if (y < 100) y += 2000;
+    s.add(chave(dia(y, m, d)));
+  });
+  return s;
+}
+
+const HINT = {
+  djen: ["Data de disponibilização no DJEN", "A publicação é o dia útil seguinte; o prazo começa no próximo dia útil."],
+  evento: ["Data da intimação, citação ou juntada", "Ex.: juntada do AR ou do mandado, ciência no portal, intimação pessoal. O prazo começa no dia útil seguinte."],
+  portal: ["Data do envio da intimação pelo portal", "Sem abertura pelo advogado, a ciência ocorre dez dias corridos após o envio."],
+};
+
+function calcular() {
+  const modo = document.querySelector("[name=modo]:checked").value;
+  $("dataLbl").textContent = HINT[modo][0];
+  $("modoHint").textContent = HINT[modo][1];
+  const cfg = { trib: $("trib").value, capital: $("capital").checked, extras: lerExtras($("extras").value) };
+  const v = $("data").value;
+  let n = Math.max(1, parseInt($("dias").value) || 0);
+  if ($("dobro").checked) n *= 2;
+  const uteis = $("unid").value === "uteis";
+  if (!v) { $("venc").textContent = "Informe a data"; return; }
+  const [Y, M, D] = v.split("-").map(Number);
+  const base = dia(Y, M, D);
+
+  const marcos = [];
+  let comeco;
+  if (modo === "djen") {
+    const pub = proxValido(base, cfg);
+    marcos.push(["Disponibilização", base], ["Publicação", pub]);
+    comeco = pub;
+  } else if (modo === "portal") {
+    const ci = ajusta(somar(base, 10), cfg);
+    marcos.push(["Envio", base], ["Ciência presumida", ci]);
+    comeco = ci;
+  } else {
+    marcos.push(["Intimação / juntada", base]);
+    comeco = base;
+  }
+  const inicio = proxValido(comeco, cfg);
+  marcos.push(["Primeiro dia do prazo", inicio]);
+
+  // Contagem.
+  const dias = [], naoContados = [];
+  let d = inicio, cont = 0, venc;
+  for (let guarda = 0; guarda < 2000; guarda++) {
+    const mot = motivo(d, cfg);
+    const suspenso = mot.startsWith("Recesso") || mot.startsWith("Informado");
+    const conta = uteis ? !mot : !suspenso;
+    if (conta) cont++;
+    else naoContados.push([d, mot]);
+    dias.push([d, conta, cont]);
+    if (cont === n) { venc = d; break; }
+    d = somar(d, 1);
+  }
+  // Vencimento em dia sem expediente ou de expediente reduzido: prorroga (CPC, art. 224, § 1º).
+  if (!valido(venc, cfg)) {
+    const novo = proxValido(venc, cfg);
+    for (let x = somar(venc, 1); x <= novo; x = somar(x, 1)) {
+      const mot = motivo(x, cfg);
+      if (x < novo) naoContados.push([x, mot]);
+      dias.push([x, x.getTime() === novo.getTime(), null]);
+    }
+    naoContados.push([venc, cinzas(venc) ? "Quarta-feira de Cinzas: vencimento prorrogado" : "Vencimento prorrogado para o dia útil seguinte"]);
+    venc = novo;
+  }
+  marcos.push(["Vencimento", venc]);
+
+  $("venc").textContent = brLongo(venc);
+  $("marcos").innerHTML = marcos.map(([t, x]) => `<div class="kpi"><span>${t}</span><b>${br(x)}</b></div>`).join("");
+  $("lista").innerHTML = dias.slice(-160).map(([x, conta, c]) => {
+    const fim = x.getTime() === venc.getTime();
+    return `<span class="dia ${fim ? "fim" : conta ? "conta" : "pula"}" title="${motivo(x, cfg) || (cinzas(x) ? "Expediente reduzido" : "Dia útil")}">${SEM[x.getDay()]} ${br(x).slice(0, 5)}${conta && c ? ` · ${c}º` : ""}</span>`;
+  }).join("");
+  const uteisNC = naoContados.filter(([, m]) => m !== "Fim de semana");
+  $("tNao").style.display = $("nao").style.display = uteisNC.length ? "" : "none";
+  $("nao").innerHTML = `<tr><th>Data</th><th>Motivo</th></tr>` +
+    uteisNC.sort((a, b) => a[0] - b[0]).map(([x, m]) => `<tr><td>${SEM[x.getDay()]} ${br(x)}</td><td style="text-align:left">${m}</td></tr>`).join("");
+
+  // Arquivo .ics para a agenda (evento de dia inteiro no vencimento).
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//RAA//Prazos//PT", "BEGIN:VEVENT",
+    `UID:${Date.now()}@raa.com.br`, `DTSTART;VALUE=DATE:${chave(venc).replace(/-/g, "")}`,
+    `DTEND;VALUE=DATE:${chave(somar(venc, 1)).replace(/-/g, "")}`,
+    `SUMMARY:Vencimento de prazo (${n} dias ${uteis ? "úteis" : "corridos"})`,
+    `DESCRIPTION:Contagem a partir de ${br(base)}. Conferir no tribunal.`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  $("ics").href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+}
+
+$("data").value = chave(new Date());
+$("f").addEventListener("input", calcular);
+$("f").addEventListener("change", calcular);
+calcular();
+</script>
+</body>
+</html>

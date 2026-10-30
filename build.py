@@ -322,6 +322,8 @@ def main():
         (OUT / "newsletter" / f"{n['slug']}.html").write_text(pagina, encoding="utf-8")
 
     urls = ["https://www.raa.com.br/"] + [f"https://www.raa.com.br/newsletter/{n['slug']}.html" for n in nls]
+    urls += ["https://www.raa.com.br/utilitarios/"] + [
+        f"https://www.raa.com.br/utilitarios/{f.name}" for f in sorted((ROOT / "static/utilitarios").glob("*.html")) if f.name != "index.html"]
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "".join(f"<url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n", encoding="utf-8")
