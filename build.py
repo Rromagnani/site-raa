@@ -322,6 +322,7 @@ def main():
         (OUT / "newsletter" / f"{n['slug']}.html").write_text(pagina, encoding="utf-8")
 
     urls = ["https://www.raa.com.br/"] + [f"https://www.raa.com.br/newsletter/{n['slug']}.html" for n in nls]
+    urls += ["https://www.raa.com.br/agendar/"]
     urls += ["https://www.raa.com.br/utilitarios/"] + [
         f"https://www.raa.com.br/utilitarios/{f.name}" for f in sorted((ROOT / "static/utilitarios").glob("*.html")) if f.name != "index.html"]
     (OUT / "sitemap.xml").write_text(

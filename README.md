@@ -23,6 +23,20 @@ Uma edição por semana, em `content/newsletter/AAAA-MM-DD.md`, com fotos. O pas
 (escolha do tema, apuração, tom de voz, imagens e formato) está em [NEWSLETTER.md](NEWSLETTER.md).
 As edições antigas (`.txt`) continuam funcionando.
 
+## Agendamento de consultas telepresenciais
+
+Página `static/agendar/` ("Agende sua consulta telepresencial"). Os horários e as reservas ficam num
+Google Apps Script na conta roberto@raa.com.br (projeto "Agenda do site RAA"; código em `agenda/`):
+
+- terças, quartas e quintas, próximos 15 dias, 3 horários sorteados por dia entre 10h e 16h, 1 hora cada;
+- horários ocupados no Google Agenda de roberto@ não aparecem;
+- a reserva cria o evento com Google Meet, grava na planilha "Agenda - Consultas telepresenciais" e envia
+  e-mail (de contato@) ao cliente e a roberto@; lembretes 24 h e 1 h antes (gatilho a cada 10 min);
+- para cancelar, basta apagar o evento na agenda: o horário volta ao site em até 10 minutos.
+
+Para alterar regras (dias, horários, quantidade), edite `CFG` em `agenda/Codigo.js`, cole no editor do
+Apps Script e use *Implantar → Gerenciar implantações → editar → Nova versão* (o endereço não muda).
+
 ## Ajustes comuns
 
 - **Temas das notícias**: listas `AREAS` (buscas) e `REGRAS` (classificação) em `build.py`.
