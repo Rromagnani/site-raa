@@ -222,6 +222,9 @@ function confirmado(r) {
 }
 
 document.querySelectorAll("[data-ano]").forEach(el => (el.textContent = new Date().getFullYear()));
+// ?area=Tributário (vindo da página do diagnóstico fiscal) já deixa a área marcada
+const areaUrl = new URLSearchParams(location.search).get("area");
+document.querySelectorAll("input[name=area]").forEach(r => { if (r.value === areaUrl) r.checked = true; });
 carregar();
 </script>
 </body>

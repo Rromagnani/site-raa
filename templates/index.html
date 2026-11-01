@@ -204,6 +204,7 @@ header.solid{background:rgba(14,27,44,.96);backdrop-filter:blur(10px);box-shadow
 .ac p{color:rgba(237,231,220,.8);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s}
 .ac:hover p,.ac:focus-within p{max-height:12em;opacity:1}
 .ac a{color:var(--brass-2);margin-top:0;padding-top:14px}
+.ac a+a{padding-top:6px}
 
 /* ——— faixa com parallax ——— */
 .band{position:relative;height:clamp(340px,60vh,560px);overflow:hidden;display:grid;place-items:center;color:var(--on-ink);text-align:center;padding:0 16px}
@@ -584,15 +585,15 @@ if (vids.length) renderVids(true); else $("#videos").remove();
 /* áreas */
 const AREAS = [
   ["trabalhista","Direito do Trabalho","Nossa origem. Consultoria preventiva, contratos, regulamentos internos, compliance trabalhista, contencioso e negociações coletivas — com destaque para hotelaria, alimentação e serviços."],
-  ["tributario","Direito Tributário","Defesa administrativa e judicial, planejamento tributário, recuperação de créditos, análise de contingências e execuções fiscais."],
+  ["tributario","Direito Tributário","Defesa administrativa e judicial, planejamento tributário, recuperação de créditos, análise de contingências e execuções fiscais.",["diagnostico-fiscal/","Diagnóstico fiscal da empresa →"]],
   ["civil","Civil e Empresarial","Contratos civis e comerciais, responsabilidade civil, estruturação de negócios, reorganizações societárias e conflitos empresariais."],
   ["imobiliario","Direito Imobiliário","Contratos, due diligence para aquisição, regularização registral, garantias e disputas sobre posse, propriedade e locação."],
   ["familia","Família e Sucessões","Divórcios, união estável, partilha, testamentos, inventários e planejamento sucessório, com orientação técnica e humana."],
   ["consumidor","Direito do Consumidor","Defesa de empresas e consumidores em práticas comerciais, publicidade, contratos e cláusulas abusivas."],
 ];
-$("#agrid").innerHTML = AREAS.map(([s,t,d],i) => `<article class="ac" tabindex="0"><div class="bgs">${
+$("#agrid").innerHTML = AREAS.map(([s,t,d,x],i) => `<article class="ac" tabindex="0"><div class="bgs">${
   Array.from({length:FOTOS[s]}, (_,j) => `<img src="img/fotos/${s}-${j+1}.webp" alt="" loading="lazy"${j === DIA % FOTOS[s] ? ' class="on"' : ""}>`).join("")
-}</div><span class="n">0${i+1}</span><h3>${t}</h3><p>${d}</p><a href="#noticias" data-a="${s}">Notícias desta área →</a></article>`).join("");
+}</div><span class="n">0${i+1}</span><h3>${t}</h3><p>${d}</p>${x ? `<a href="${x[0]}">${x[1]}</a>` : ""}<a href="#noticias" data-a="${s}">Notícias desta área →</a></article>`).join("");
 // cada card troca de foto em ritmo próprio, como uma vitrine viva
 document.querySelectorAll(".ac").forEach((card, i) => {
   const imgs = card.querySelectorAll(".bgs img");
