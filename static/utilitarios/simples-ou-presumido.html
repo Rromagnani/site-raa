@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simples puro, híbrido ou Lucro Presumido na Reforma Tributária — Romagnani Advogados</title>
+<meta name="description" content="Simulador da Reforma Tributária: compare o Simples Nacional puro, o Simples híbrido (IBS e CBS fora do DAS) e o Lucro Presumido de 2026 a 2033, com créditos, Fator R e o efeito para clientes empresariais.">
+<meta property="og:title" content="Simples puro, híbrido ou Lucro Presumido? Simulador da Reforma Tributária">
+<meta property="og:description" content="Compare os três caminhos com IBS e CBS, ano a ano, de 2026 a 2033.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/simples-ou-presumido.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<style>
+main,.bar>div,.hero>div{max-width:1320px}
+.grid{grid-template-columns:minmax(300px,4fr) minmax(0,9fr)}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.seg label{position:relative}
+details{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--brass-ink)}
+input[type=range]{padding:0;border:0;accent-color:var(--brass)}
+.rng{display:flex;align-items:center;gap:12px}
+.rng output{min-width:52px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.anos{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.anos button{font:inherit;font-size:.88rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--text);font-variant-numeric:tabular-nums}
+.anos button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.regs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:1180px) and (min-width:961px),(max-width:700px){.regs{grid-template-columns:minmax(0,1fr)}}
+.reg{border:1px solid var(--line);border-radius:12px;padding:16px;position:relative;background:#fff}
+.reg.melhor{border-color:var(--brass);box-shadow:0 0 0 2px var(--brass-2) inset}
+.reg.off{opacity:.55}
+.reg h3{margin:0 0 2px;font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.08rem}
+.reg .sub{font-size:.78rem;color:var(--muted);margin-bottom:10px;min-height:2.4em}
+.reg .v{font-family:"Fraunces",Georgia,serif;font-size:1.55rem;color:var(--ink);line-height:1.15;font-variant-numeric:tabular-nums}
+.reg .p{font-size:.85rem;color:var(--muted);margin-bottom:10px}
+.reg dl{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:.84rem;border-top:1px solid var(--line);padding-top:10px}
+.reg dt{color:var(--muted)}
+.reg dd{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.reg dd.forte{font-weight:700;color:var(--ink)}
+.selo{position:absolute;top:-10px;right:12px;background:var(--brass-2);color:var(--ink);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.veredito{margin:16px 0 0;padding:16px;border-radius:12px;background:#FBF4E6;font-size:.95rem}
+.veredito b{color:var(--ink)}
+.barras{display:grid;gap:14px;margin-top:6px}
+.ano-l{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:center}
+.ano-l>span{font-weight:600;font-variant-numeric:tabular-nums;font-size:.9rem}
+.bs{display:grid;gap:3px}
+.b{display:flex;align-items:center;gap:8px;font-size:.78rem;font-variant-numeric:tabular-nums}
+.b i{display:block;height:10px;border-radius:5px;min-width:2px}
+.b.pu i{background:#8FA3BF}.b.hi i{background:var(--brass-2)}.b.lp i{background:#0E1B2C}
+.b.win{font-weight:700}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.leg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.leg .pu::before{background:#8FA3BF}.leg .hi::before{background:var(--brass-2)}.leg .lp::before{background:#0E1B2C}
+.premissas{font-size:.86rem;color:var(--text)}
+.premissas li{margin:0 0 6px 18px}
+.tbl td.melhor{background:#FBF4E6;font-weight:700}
+</style>
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Reforma Tributária</span>
+  <h1>Simples puro, Simples híbrido ou Lucro Presumido?</h1>
+  <p>Compare os três caminhos com as regras do IBS e da CBS (LC 214/2025), ano a ano, de 2026 a 2033. O simulador considera Fator R, créditos nas compras, encargos sobre a folha e o crédito que os seus clientes empresariais podem aproveitar.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <label for="ativ">Atividade principal</label>
+      <select id="ativ">
+        <option value="1">Comércio (Anexo I)</option>
+        <option value="2">Indústria (Anexo II)</option>
+        <option value="3">Serviços do Anexo III (ex.: manutenção, agências, academias)</option>
+        <option value="4">Serviços do Anexo IV (ex.: advocacia, limpeza, vigilância, obras)</option>
+        <option value="R" selected>Serviços III ou V pelo Fator R (ex.: consultoria, engenharia, medicina, TI)</option>
+      </select>
+
+      <label for="rec">Faturamento anual <small>(valor total cobrado dos clientes)</small></label>
+      <input id="rec" inputmode="decimal" data-moeda value="2.400.000,00">
+
+      <div class="row">
+        <div><label for="sal">Salários no ano <small>(sem encargos)</small></label>
+          <input id="sal" inputmode="decimal" data-moeda value="420.000,00"></div>
+        <div><label for="pro">Pró-labore no ano</label>
+          <input id="pro" inputmode="decimal" data-moeda value="120.000,00"></div>
+      </div>
+
+      <label for="cmp">Compras e despesas que geram crédito <small>(no ano)</small></label>
+      <input id="cmp" inputmode="decimal" data-moeda value="600.000,00">
+      <p class="hint">Mercadorias, insumos, serviços contratados, aluguel, energia, software etc., comprados de fornecedores fora do Simples puro. Salários não geram crédito.</p>
+
+      <label for="b2b">Vendas para empresas que aproveitam crédito</label>
+      <div class="rng"><input type="range" id="b2b" min="0" max="100" step="5" value="70"><output id="b2bO">70%</output></div>
+      <p class="hint">Clientes no Lucro Real, Presumido ou Simples híbrido. Venda a consumidor final e a empresas do Simples puro não conta.</p>
+
+      <label>Redução de IBS e CBS da atividade</label>
+      <div class="seg" role="radiogroup" aria-label="Redução de alíquota">
+        <label><input type="radio" name="red" value="0" checked><span>Nenhuma</span></label>
+        <label><input type="radio" name="red" value="0.3"><span>30%</span></label>
+        <label><input type="radio" name="red" value="0.6"><span>60%</span></label>
+      </div>
+      <p class="hint">30%: profissões intelectuais regulamentadas (advocacia, contabilidade, engenharia, arquitetura etc.). 60%: saúde, educação, alimentos e outros itens listados na LC 214.</p>
+
+      <label for="loc" id="locL">ICMS a recolher no Lucro Presumido <small>(% do faturamento, já descontados os créditos)</small></label>
+      <input id="loc" inputmode="decimal" value="5">
+
+      <details>
+        <summary>Premissas avançadas</summary>
+        <div class="row">
+          <div><label for="cbs">CBS de referência (%)</label><input id="cbs" inputmode="decimal" value="11,3"></div>
+          <div><label for="ibs">IBS de referência (%)</label><input id="ibs" inputmode="decimal" value="16,6"></div>
+        </div>
+        <p class="hint">CBS: cálculo do TCU para 2027 (11,3%), pendente de resolução do Senado. IBS: estimativa do total de 27,9% da Secretaria Extraordinária da Reforma Tributária, menos a CBS.</p>
+        <div class="row">
+          <div><label for="rat">RAT × FAP (%)</label><input id="rat" inputmode="decimal" value="2"></div>
+          <div><label for="ter">Terceiros / Sistema S (%)</label><input id="ter" inputmode="decimal" value="5,8"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="lc224" checked> <span>Aplicar o acréscimo de 10% na presunção do Lucro Presumido sobre a receita acima de R$ 5 milhões (LC 224/2025)</span></label>
+      </details>
+    </form>
+
+    <section class="card" aria-live="polite">
+      <div class="anos" id="anos" role="group" aria-label="Ano da simulação"></div>
+      <div class="regs" id="regs"></div>
+      <div class="veredito" id="ver"></div>
+      <p class="hint" id="info" style="margin-top:12px"></p>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:24px">
+    <h2>Evolução de 2026 a 2033</h2>
+    <p class="hint" style="margin:-6px 0 12px">Carga efetiva sobre o faturamento, já descontado o crédito aproveitado pelos clientes empresariais. A barra em negrito é a melhor opção do ano.</p>
+    <div class="leg"><span class="pu">Simples puro</span><span class="hi">Simples híbrido</span><span class="lp">Lucro Presumido</span></div>
+    <div class="barras" id="barras"></div>
+  </section>
+
+  <section class="card" style="margin-top:24px">
+    <h2>Como ler o resultado</h2>
+    <ul class="premissas">
+      <li><b>Tributos pagos</b> são o que a empresa recolhe no ano em cada regime, com o mesmo faturamento total cobrado dos clientes. No híbrido e no Presumido, o IBS e a CBS são cobrados "por fora", então o preço sem tributos é menor.</li>
+      <li><b>Crédito para o cliente</b> é o IBS e a CBS que um cliente empresarial pode abater. No Simples puro, esse crédito fica limitado à parte do DAS que corresponde a esses tributos (LC 214, art. 47, § 9º). No híbrido e no Presumido, o crédito é integral.</li>
+      <li><b>Carga efetiva</b> = tributos pagos − crédito aproveitado pelos clientes empresariais. É o custo tributário real da venda, que pesa na negociação de preço. Se você só vende para consumidores, ela é igual aos tributos pagos.</li>
+      <li>O optante do Simples puro <b>não aproveita crédito</b> nas próprias compras. No híbrido e no Presumido, as compras de fornecedores do regime regular geram crédito integral.</li>
+    </ul>
+    <h3>Premissas do cálculo</h3>
+    <ul class="premissas">
+      <li>Tabelas do Simples (LC 123, Anexos I a V) mantidas. A parte do DAS que vira IBS e CBS é a antiga parte de PIS e Cofins, mais a fração de ICMS ou ISS substituída pelo IBS a partir de 2029 (10%, 20%, 30%, 40% e 100% em 2033). No híbrido, essa parte sai do DAS.</li>
+      <li>CBS de 2027 e 2028 = referência − 0,1 ponto. IBS de 0,1% em 2027 e 2028, e 10%, 20%, 30%, 40% e 100% da referência de 2029 a 2033. ICMS e ISS a 90%, 80%, 70% e 60% de 2029 a 2032, e extintos em 2033 (EC 132/2023 e LC 214/2025).</li>
+      <li>2026 segue as regras atuais: PIS e Cofins cumulativos de 3,65% no Presumido, sem créditos, e sem a opção pelo híbrido. A CBS de 0,9% e o IBS de 0,1% de teste são compensáveis e não entram na conta.</li>
+      <li>Lucro Presumido: IRPJ de 15% e adicional de 10% sobre a base acima de R$ 240 mil por ano. CSLL de 9%. Presunção de 8% e 12% para comércio e indústria, e de 32% para serviços. Encargos de 20% + RAT + terceiros sobre salários, e 20% sobre o pró-labore.</li>
+      <li>Fator R = (salários + 8% de FGTS + pró-labore) ÷ faturamento. No Anexo IV, a contribuição previdenciária patronal (20% + RAT) é paga fora do DAS.</li>
+      <li>Acima de R$ 3,6 milhões, o ICMS ou o ISS é pago fora do DAS. Acima de R$ 4,8 milhões, a empresa não pode ficar no Simples.</li>
+      <li>Não considera: IPI, ICMS-ST, monofásicos, exportação, regimes específicos (combustíveis, financeiro, imóveis), créditos presumidos, distribuição de lucros (Lei 15.270/2025) nem as alíquotas finais que ainda serão fixadas pelo Senado e pelo Comitê Gestor.</li>
+    </ul>
+  </section>
+
+  <div class="cta">
+    <p><strong>A escolha do regime para 2027 vale por semestre e depende de cada operação.</strong><br>Fale com a nossa equipe tributária para revisar os números da sua empresa.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../agendar/">Agendar consulta</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo, com base na LC 214/2025, na LC 123/2006 e na LC 224/2025. As alíquotas de IBS e CBS ainda dependem de resolução do Senado e do Comitê Gestor. Não substitui a análise de um profissional.</p>
+</main>
+<script src="comum.js"></script>
+<script>
+// Simples Nacional: faixas da LC 123/2006 (redação da LC 155/2016). [alíquota nominal, parcela a deduzir]
+const LIM = [180000, 360000, 720000, 1800000, 3600000, 4800000];
+const ANEXOS = {
+  1: [[.04, 0], [.073, 5940], [.095, 13860], [.107, 22500], [.143, 87300], [.19, 378000]],
+  2: [[.045, 0], [.078, 5940], [.10, 13860], [.112, 22500], [.147, 85500], [.30, 720000]],
+  3: [[.06, 0], [.112, 9360], [.135, 17640], [.16, 35640], [.21, 125640], [.33, 648000]],
+  4: [[.045, 0], [.09, 8100], [.102, 12420], [.14, 39780], [.22, 183780], [.33, 828000]],
+  5: [[.155, 0], [.18, 4500], [.195, 9900], [.205, 17100], [.23, 62100], [.305, 540000]],
+};
+// Partilha do DAS por faixa: [PIS + Cofins, ICMS ou ISS]. A parte de PIS/Cofins vira CBS (e um pouco de IBS) em 2027.
+const PART = {
+  1: [[.155, .34], [.155, .34], [.155, .34], [.155, .34], [.155, .34], [.344, 0]],
+  2: [[.14, .32], [.14, .32], [.14, .32], [.14, .32], [.14, .32], [.255, 0]],
+  3: [[.156, .335], [.171, .32], [.166, .325], [.166, .325], [.156, .335], [.195, 0]],
+  4: [[.215, .445], [.25, .40], [.24, .40], [.23, .40], [.22, .40], [.25, 0]],
+  5: [[.1715, .14], [.1715, .17], [.1815, .19], [.1915, .21], [.1715, .235], [.20, 0]],
+};
+const ANOS = [2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033];
+// Fração do IBS de referência e do ICMS/ISS em cada ano da transição.
+const TRANS = { 2029: .1, 2030: .2, 2031: .3, 2032: .4, 2033: 1 };
+const NOMES = { pu: "Simples puro", hi: "Simples híbrido", lp: "Lucro Presumido" };
+
+const $ = id => document.getElementById(id);
+const perc = id => numero($(id).value) / 100;
+let anoSel = 2027;
+
+function entradas() {
+  const a = $("ativ").value;
+  return {
+    ativ: a, servico: a !== "1" && a !== "2",
+    R: numero($("rec").value), sal: numero($("sal").value), pro: numero($("pro").value), cmp: numero($("cmp").value),
+    b2b: +$("b2b").value / 100, red: +document.querySelector("input[name=red]:checked").value,
+    loc: perc("loc"), cbsRef: perc("cbs"), ibsRef: perc("ibs"), rat: perc("rat"), ter: perc("ter"), lc224: $("lc224").checked,
+  };
+}
+
+function aliquotas(ano, E) {
+  if (ano === 2026) return { cbs: 0, ibs: 0, fLoc: 1, fIbsDas: 0, velho: true };
+  if (ano <= 2028) return { cbs: Math.max(E.cbsRef - .001, 0), ibs: .001, fLoc: 1, fIbsDas: 0 };
+  const k = TRANS[ano];
+  return { cbs: E.cbsRef, ibs: E.ibsRef * k, fLoc: 1 - k, fIbsDas: k };
+}
+
+function faixa(rbt) { const i = LIM.findIndex(l => rbt <= l); return i === -1 ? 5 : i; }
+function aliqSimples(anexo, rbt) {
+  const i = faixa(rbt), [nom, pd] = ANEXOS[anexo][i];
+  return { i, ef: i === 0 || rbt <= 0 ? nom : (rbt * nom - pd) / rbt };
+}
+
+function anexoDe(E) {
+  const fr = E.R > 0 ? (E.sal * 1.08 + E.pro) / E.R : 0;
+  return { anexo: E.ativ === "R" ? (fr >= .28 ? 3 : 5) : +E.ativ, fr };
+}
+
+// Crédito nas compras: o valor pago ao fornecedor já inclui IBS/CBS pela alíquota geral.
+const creditoCompras = (E, A) => { const t = A.cbs + A.ibs; return E.cmp * t / (1 + t); };
+const cppFora = E => (E.sal + E.pro) * .20 + E.sal * E.rat;
+
+function simples(ano, E, hibrido) {
+  if (E.R > 4800000) return { off: "Faturamento acima de R$ 4,8 milhões: fora do Simples." };
+  const A = aliquotas(ano, E);
+  if (hibrido && A.velho) return { off: "A opção pelo IBS e pela CBS fora do DAS começa em 2027." };
+  const { anexo, fr } = anexoDe(E);
+  const t = hibrido ? (A.cbs + A.ibs) * (1 - E.red) : 0;
+  const V = E.R / (1 + t);                       // receita sem IBS/CBS "por fora"
+  const { i, ef } = aliqSimples(anexo, V);
+  const [pc, loc] = PART[anexo][i];
+  const parteIbsCbs = A.velho ? 0 : pc + loc * A.fIbsDas;
+  const dasCheio = V * ef;
+  const it = [];
+  let das = hibrido ? dasCheio * (1 - parteIbsCbs) : dasCheio;
+  it.push(["DAS", das]);
+  let total = das, credCli = hibrido ? 0 : dasCheio * parteIbsCbs;
+  if (i === 5) {  // acima do sublimite: ICMS/ISS (e o IBS que o substitui) fora do DAS
+    const fora = V * E.loc * A.fLoc;
+    it.push([E.servico ? "ISS fora do DAS" : "ICMS fora do DAS", fora]);
+    total += fora;
+    if (!hibrido && A.ibs) { const ibsF = V * A.ibs * (1 - E.red); it.push(["IBS fora do DAS", ibsF]); total += ibsF; credCli += ibsF; }
+  }
+  if (hibrido) {
+    const deb = V * t, cred = creditoCompras(E, A);
+    it.push(["IBS/CBS", deb], ["(−) créditos", -cred]);
+    total += deb - cred; credCli = deb;
+  }
+  if (anexo === 4) { const c = cppFora(E); it.push(["INSS (fora do DAS)", c]); total += c; }
+  return { total, credCli, it, anexo, fr, faixa: i + 1, ef, dasCheio, parteIbsCbs };
+}
+
+function presumido(ano, E) {
+  const A = aliquotas(ano, E);
+  const t = (A.cbs + A.ibs) * (1 - E.red);
+  const V = E.R / (1 + t);
+  const it = [];
+  const base = (p) => p * Math.min(V, 5e6) + p * (E.lc224 ? 1.1 : 1) * Math.max(V - 5e6, 0);
+  const bIr = base(E.servico ? .32 : .08), bCs = base(E.servico ? .32 : .12);
+  const irpj = bIr * .15 + Math.max(bIr - 240000, 0) * .10, csll = bCs * .09;
+  it.push(["IRPJ", irpj], ["CSLL", csll]);
+  let total = irpj + csll, credCli = 0;
+  if (A.velho) { const pc = E.R * .0365; it.push(["PIS/Cofins", pc]); total += pc; }
+  else {
+    const deb = V * t, cred = creditoCompras(E, A);
+    it.push(["IBS/CBS", deb], ["(−) créditos", -cred]);
+    total += deb - cred; credCli = deb;
+  }
+  if (A.fLoc) { const l = V * E.loc * A.fLoc; it.push([E.servico ? "ISS" : "ICMS", l]); total += l; }
+  const cpp = E.sal * (.20 + E.rat + E.ter) + E.pro * .20;
+  it.push(["INSS + terceiros", cpp]); total += cpp;
+  return { total, credCli, it };
+}
+
+function calcularAno(ano, E) {
+  const r = { pu: simples(ano, E, false), hi: simples(ano, E, true), lp: presumido(ano, E) };
+  let melhor = null;
+  for (const k in r) {
+    if (r[k].off) continue;
+    r[k].efetiva = r[k].total - E.b2b * r[k].credCli;
+    if (!melhor || r[k].efetiva < r[melhor].efetiva - 0.5) melhor = k;
+  }
+  return { r, melhor };
+}
+
+function render() {
+  const E = entradas();
+  $("b2bO").textContent = Math.round(E.b2b * 100) + "%";
+  $("locL").innerHTML = E.servico
+    ? 'ISS do município <small>(% do faturamento; usado no Presumido e acima do sublimite)</small>'
+    : 'ICMS a recolher <small>(% do faturamento, já descontados os créditos; usado no Presumido e acima do sublimite)</small>';
+  $("anos").innerHTML = ANOS.map(a => `<button type="button" data-a="${a}" aria-pressed="${a === anoSel}">${a}</button>`).join("");
+
+  const { r, melhor } = calcularAno(anoSel, E);
+  const pc = v => E.R > 0 ? pct(v / E.R, 1) : "—";
+  $("regs").innerHTML = ["pu", "hi", "lp"].map(k => {
+    const x = r[k];
+    if (x.off) return `<div class="reg off"><h3>${NOMES[k]}</h3><div class="sub">${x.off}</div></div>`;
+    const sub = k === "lp" ? "IRPJ e CSLL presumidos; IBS e CBS com crédito"
+      : `Anexo ${["", "I", "II", "III", "IV", "V"][x.anexo]} · ${x.faixa}ª faixa · alíquota ${pct(x.ef)}`;
+    return `<div class="reg${k === melhor ? " melhor" : ""}">${k === melhor ? '<span class="selo">Melhor opção</span>' : ""}
+      <h3>${NOMES[k]}</h3><div class="sub">${sub}</div>
+      <div class="v">${moeda(x.efetiva)}</div><div class="p">carga efetiva de ${pc(x.efetiva)} · tributos pagos ${pc(x.total)}</div>
+      <dl>${x.it.map(([n, v]) => `<dt>${n}</dt><dd>${moeda(v)}</dd>`).join("")}
+        <dt><b>Tributos pagos</b></dt><dd class="forte">${moeda(x.total)}</dd>
+        <dt>Crédito ao cliente</dt><dd>${moeda(x.credCli)}</dd>
+        <dt>Aproveitado (${Math.round(E.b2b * 100)}%)</dt><dd>−${moeda(E.b2b * x.credCli)}</dd></dl></div>`;
+  }).join("");
+
+  const vals = Object.keys(r).filter(k => !r[k].off).sort((a, b) => r[a].efetiva - r[b].efetiva);
+  const seg = vals[1];
+  $("ver").innerHTML = melhor
+    ? `Em <b>${anoSel}</b>, a melhor opção estimada é o <b>${NOMES[melhor]}</b>` +
+      (seg ? `, com economia de <b>${moeda(r[seg].efetiva - r[melhor].efetiva)}</b> por ano em relação ao ${NOMES[seg]}.` : ".") +
+      (E.b2b === 0 ? " Como todas as vendas são para consumidores, o crédito ao cliente não pesa na comparação." : "")
+    : "Informe o faturamento para simular.";
+  const s = r.pu.off ? null : r.pu;
+  $("info").textContent = s ? (E.ativ === "R" ? `Fator R de ${pct(s.fr, 1)}: ${s.fr >= .28 ? "Anexo III (28% ou mais)" : "Anexo V (abaixo de 28%)"}. ` : "") +
+    (anoSel >= 2027 ? `No Simples puro, ${pct(s.parteIbsCbs, 1)} do DAS corresponde a IBS e CBS e vira crédito para o cliente.` : "") : "";
+
+  // evolução
+  let max = 0;
+  const linhas = ANOS.map(a => { const c = calcularAno(a, E); for (const k in c.r) if (!c.r[k].off) max = Math.max(max, c.r[k].efetiva / E.R); return [a, c]; });
+  $("barras").innerHTML = linhas.map(([a, c]) => `<div class="ano-l"><span>${a}</span><div class="bs">${["pu", "hi", "lp"].map(k => {
+    const x = c.r[k];
+    if (x.off) return `<div class="b ${k}"><span style="color:var(--muted)">${k === "hi" ? "—" : "fora do Simples"}</span></div>`;
+    const p = E.R > 0 ? x.efetiva / E.R : 0;
+    return `<div class="b ${k}${k === c.melhor ? " win" : ""}"><i style="width:${max > 0 ? Math.max(p / max * 78, 0) : 0}%"></i>${pct(p, 1)}</div>`;
+  }).join("")}</div></div>`).join("");
+}
+
+$("anos").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { anoSel = +b.dataset.a; render(); } });
+// Ao trocar a atividade, sugere 5% de ISS (serviços) ou 6% de ICMS líquido (comércio e indústria).
+$("ativ").addEventListener("change", () => { $("loc").value = /[12]/.test($("ativ").value) ? "6" : "5"; });
+$("f").addEventListener("input", render);
+$("f").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>
