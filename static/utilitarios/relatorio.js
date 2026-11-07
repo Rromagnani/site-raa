@@ -48,11 +48,14 @@ function relatorio(o) {
       <div class="r-ass"><b>Romagnani Advogados Associados</b>contato@raa.com.br · +55 11 99649-1980 · www.raa.com.br</div>
     </td></tr></tbody></table>`;
 
-  // iPhone/iPad: o Safari do iOS não repete elementos fixos em cada página e ignora as margens do @page.
-  // Nele o timbre vira estático: logo no início e endereço no fim do relatório, sem faixas nem marca d'água.
-  const ios = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  document.body.classList.toggle("rel-ios", ios);
-  if (ios) rel.appendChild(rel.querySelector(".t-end"));
+  // Safari (Mac, iPhone e iPad) e qualquer navegador no iOS (todos usam o motor do Safari) não repetem
+  // elementos fixos em cada página impressa. Neles o timbre vira estático: logo no início e endereço no fim.
+  const ua = navigator.userAgent;
+  const ios = /iP(hone|od|ad)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const safari = /Safari\//.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox|Android/.test(ua);
+  const simples = ios || safari;
+  document.body.classList.toggle("rel-ios", simples);
+  if (simples) rel.appendChild(rel.querySelector(".t-end"));
 
   // Nome sugerido do PDF: sem acentos nem caracteres fora do ASCII (regra do escritório).
   const antes = document.title;
