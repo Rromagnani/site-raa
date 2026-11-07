@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de cálculos trabalhistas — Romagnani Advogados</title>
+<meta name="description" content="Estime o passivo de uma reclamação trabalhista: verbas rescisórias, horas extras, intervalo, adicionais, diferenças salariais, FGTS e dano moral, com reflexos, prescrição, correção e juros (ADC 58 e Lei 14.905/2024), INSS, IR, custas, honorários e depósito recursal.">
+<meta property="og:title" content="Simulador de cálculos trabalhistas">
+<meta property="og:description" content="Passivo estimado de uma reclamação trabalhista, com reflexos, correção, juros e encargos.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/calculos-trabalhistas.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=20261107b">
+<style>
+main,.bar>div,.hero>div{max-width:1320px}
+.grid{grid-template-columns:minmax(320px,5fr) minmax(0,8fr)}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.seg label{position:relative}
+fieldset{border:0;border-top:1px solid var(--line);margin-top:20px;padding-top:14px}
+fieldset:first-of-type{border-top:0;margin-top:0;padding-top:0}
+legend{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.08rem;color:var(--ink);padding-right:8px}
+.ped{border-top:1px dashed var(--line);padding:6px 0 8px}
+.ped>.check{margin-top:8px}
+.ped .campos{margin-left:28px}
+.ped:not(.on) .campos{display:none}
+.ped .campos label{margin-top:8px}
+.totais{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0 6px}
+.totais div{border-radius:12px;padding:14px;background:var(--paper);border-top:4px solid var(--c,#1F3864)}
+.totais span{display:block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.totais b{display:block;font-size:1.2rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.totais small{font-size:.76rem;color:var(--muted)}
+.tbl tr.g td{font-weight:600;background:var(--paper)}
+.tbl tr.s td:first-child{padding-left:22px;color:var(--muted)}
+.tbl tr.t td{font-weight:700;border-top:2px solid var(--ink)}
+.barras{display:grid;gap:7px;margin-top:8px}
+.barra{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:10px;align-items:center;font-size:.82rem}
+.barra div{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.barra i{display:block;height:12px;border-radius:6px;min-width:2px}
+.comp{display:flex;height:22px;border-radius:8px;overflow:hidden;margin:6px 0}
+.comp i{display:block;height:100%}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.leg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.premissas{font-size:.86rem}
+.premissas li{margin:0 0 6px 18px}
+#alertas:empty{display:none}
+</style>
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Trabalhista</span>
+  <h1>Simulador de cálculos trabalhistas</h1>
+  <p>Estimativa do passivo de uma reclamação trabalhista: verbas rescisórias e os pedidos mais comuns, com reflexos, prescrição, correção e juros pelos índices do Banco Central, INSS, Imposto de Renda, custas, honorários e depósito recursal.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <fieldset>
+        <legend>Contrato</legend>
+        <div class="row">
+          <div><label for="adm">Admissão</label><input id="adm" type="date" value="2019-03-11"></div>
+          <div><label for="dem">Último dia trabalhado</label><input id="dem" type="date" value="2025-06-16"></div>
+        </div>
+        <label for="ajz">Ajuizamento da ação <small>(ou data prevista)</small></label>
+        <input id="ajz" type="date">
+        <label for="mot">Motivo do desligamento</label>
+        <select id="mot">
+          <option value="sjc">Dispensa sem justa causa</option>
+          <option value="ind">Rescisão indireta (pedida na ação)</option>
+          <option value="acordo">Acordo entre as partes (art. 484-A da CLT)</option>
+          <option value="ped">Pedido de demissão</option>
+          <option value="jc">Dispensa por justa causa</option>
+        </select>
+        <div class="row">
+          <div id="boxAvi"><label for="avi">Aviso prévio</label>
+            <select id="avi"><option value="ind">Indenizado</option><option value="trab">Trabalhado</option></select></div>
+          <div><label for="div">Jornada mensal <small>(divisor)</small></label>
+            <select id="div"><option value="220">220 h (44 h por semana)</option><option value="200">200 h (40 h)</option><option value="180">180 h (36 h)</option><option value="150">150 h (30 h)</option></select></div>
+        </div>
+        <label for="sal">Último salário</label>
+        <input id="sal" inputmode="decimal" data-moeda value="4.500,00">
+        <label for="hist">Salários anteriores <small>(opcional)</small></label>
+        <textarea id="hist" placeholder="03/2019 3.200,00&#10;05/2021 3.700,00&#10;05/2023 4.100,00"></textarea>
+        <p class="hint">Um por linha: mês em que o salário passou a valer e o valor. Sem histórico, o último salário é usado em todo o período.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Verbas rescisórias</legend>
+        <div class="seg" role="radiogroup" aria-label="Verbas rescisórias">
+          <label><input type="radio" name="res" value="pagas" checked><span>Foram pagas</span></label>
+          <label><input type="radio" name="res" value="nao"><span>Não foram pagas</span></label>
+        </div>
+        <div class="row">
+          <div><label for="ferV">Férias vencidas não gozadas</label><input id="ferV" type="number" min="0" max="5" step="1" value="0"></div>
+          <div><label for="ferD">Delas, fora do prazo <small>(em dobro)</small></label><input id="ferD" type="number" min="0" max="5" step="1" value="0"></div>
+        </div>
+        <label for="fgtsSaldo">Saldo do FGTS para a multa <small>(em branco = estimado)</small></label>
+        <input id="fgtsSaldo" inputmode="decimal" data-moeda placeholder="estimado pelos salários">
+        <label class="check"><input type="checkbox" id="m477"> <span>Multa do art. 477 da CLT (pagamento fora do prazo de 10 dias)</span></label>
+        <label class="check"><input type="checkbox" id="m467"> <span>Multa do art. 467 da CLT (verbas incontroversas não pagas na primeira audiência)</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Pedidos da ação</legend>
+        <div class="ped on"><label class="check"><input type="checkbox" id="pHe" checked> <span><b>Horas extras</b></span></label>
+          <div class="campos row">
+            <div><label for="heH">Horas por mês <small>(média)</small></label><input id="heH" inputmode="decimal" value="30"></div>
+            <div><label for="heA">Adicional (%)</label><input id="heA" inputmode="decimal" value="50"></div>
+          </div></div>
+        <div class="ped on"><label class="check"><input type="checkbox" id="pInt" checked> <span><b>Intervalo para refeição não concedido</b></span></label>
+          <div class="campos row">
+            <div><label for="intM">Minutos suprimidos por dia</label><input id="intM" inputmode="decimal" value="30"></div>
+            <div><label for="intD">Dias por mês</label><input id="intD" inputmode="decimal" value="22"></div>
+          </div></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pNot"> <span><b>Adicional noturno</b></span></label>
+          <div class="campos">
+            <div class="row">
+              <div><label for="notH">Horas noturnas por mês</label><input id="notH" inputmode="decimal" value="40"></div>
+              <div><label for="notA">Adicional (%)</label><input id="notA" inputmode="decimal" value="20"></div>
+            </div>
+            <label class="check"><input type="checkbox" id="notR" checked> <span>Hora noturna reduzida (52 min 30 s)</span></label>
+          </div></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pIns"> <span><b>Adicional de insalubridade</b></span></label>
+          <div class="campos"><label for="insG">Grau <small>(sobre o salário mínimo)</small></label>
+            <select id="insG"><option value="0.1">Mínimo (10%)</option><option value="0.2" selected>Médio (20%)</option><option value="0.4">Máximo (40%)</option></select></div></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pPer"> <span><b>Adicional de periculosidade</b> (30% do salário)</span></label></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pDif"> <span><b>Diferenças salariais</b> (equiparação, desvio de função, piso)</span></label>
+          <div class="campos"><label for="difV">Diferença por mês</label><input id="difV" inputmode="decimal" data-moeda value="600,00"></div></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pFgts"> <span><b>FGTS não depositado</b></span></label>
+          <div class="campos"><label for="fgtsM">Meses sem depósito <small>(os últimos do contrato; 0 = todo o período)</small></label><input id="fgtsM" type="number" min="0" step="1" value="12"></div></div>
+        <div class="ped on"><label class="check"><input type="checkbox" id="pDano" checked> <span><b>Dano moral</b></span></label>
+          <div class="campos row">
+            <div><label for="danoG">Gravidade <small>(art. 223-G)</small></label>
+              <select id="danoG"><option value="3">Leve (até 3 salários)</option><option value="5" selected>Média (até 5)</option><option value="20">Grave (até 20)</option><option value="50">Gravíssima (até 50)</option><option value="0">Outro valor</option></select></div>
+            <div><label for="danoV">Valor</label><input id="danoV" inputmode="decimal" data-moeda></div>
+          </div></div>
+        <div class="ped"><label class="check"><input type="checkbox" id="pOut"> <span><b>Outro pedido</b></span></label>
+          <div class="campos">
+            <div class="row">
+              <div><label for="outD">Descrição</label><input id="outD" maxlength="60" value="Indenização"></div>
+              <div><label for="outV">Valor</label><input id="outV" inputmode="decimal" data-moeda value="5.000,00"></div>
+            </div>
+            <label class="check"><input type="checkbox" id="outS"> <span>Verba salarial (incide INSS e IR)</span></label>
+          </div></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Processo e encargos</legend>
+        <div class="row">
+          <div><label for="hon">Honorários ao advogado do autor (%)</label><input id="hon" inputmode="decimal" value="10"></div>
+          <div><label for="pericia">Honorários periciais</label><input id="pericia" inputmode="decimal" data-moeda placeholder="0,00"></div>
+        </div>
+        <label for="reg">Regime tributário da empresa <small>(INSS patronal)</small></label>
+        <select id="reg">
+          <option value="normal">Lucro Real ou Presumido (20% + RAT)</option>
+          <option value="simples">Simples Nacional, Anexos I, II, III ou V (sem cota patronal)</option>
+          <option value="anexo4">Simples Nacional, Anexo IV (20% + RAT)</option>
+        </select>
+        <div class="row">
+          <div><label for="rat">RAT × FAP (%)</label><input id="rat" inputmode="decimal" value="2"></div>
+          <div><label for="porte">Depósito recursal</label>
+            <select id="porte"><option value="1">Integral</option><option value="0.5">Pela metade (ME, EPP, sem fins lucrativos, doméstico)</option><option value="0">Isento (gratuidade, recuperação judicial)</option></select></div>
+        </div>
+        <label for="causa">Valor dado à causa <small>(opcional, para os honorários a favor da empresa)</small></label>
+        <input id="causa" inputmode="decimal" data-moeda placeholder="0,00">
+        <label class="check"><input type="checkbox" id="grat" checked> <span>Autor com justiça gratuita (honorários a favor da empresa ficam suspensos)</span></label>
+      </fieldset>
+    </form>
+
+    <section class="card" aria-live="polite">
+      <span class="eyebrow" style="color:var(--brass-ink)">Custo total estimado para a empresa</span>
+      <div class="big" id="custo">—</div>
+      <p class="hint" id="custoTxt"></p>
+      <div class="totais" id="tot"></div>
+      <div class="note warn" id="alertas"></div>
+      <h3>Composição do custo</h3>
+      <div class="comp" id="comp"></div>
+      <div class="leg" id="compLeg"></div>
+      <h3>Valor de cada pedido, atualizado</h3>
+      <div class="barras" id="barras"></div>
+      <h3>Demonstrativo</h3>
+      <div class="scroll"><table class="tbl" id="tab"></table></div>
+      <h3>Encargos e despesas do processo</h3>
+      <div class="scroll"><table class="tbl" id="enc"></table></div>
+      <p class="hint" id="idx" style="margin-top:12px"></p>
+      <div class="gerar">
+        <div><label for="empresa">Empresa ou processo <small>(opcional, para o relatório)</small></label>
+          <input id="empresa" maxlength="120" placeholder="Ex.: Exemplo Ltda. · 1000123-45.2026.5.02.0001"></div>
+        <button type="button" id="btnRel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><path d="M6 14h12v7H6z"/></svg>Gerar relatório em PDF</button>
+      </div>
+      <p class="hint">Abre a impressão com o relatório no papel timbrado do escritório. Escolha "Salvar como PDF" para guardar ou enviar.</p>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:24px">
+    <h2>Como o cálculo é feito</h2>
+    <ul class="premissas" id="premissas">
+      <li><b>Prescrição.</b> Só entram os últimos cinco anos contados do ajuizamento (CF, art. 7º, XXIX). Se a ação for ajuizada mais de dois anos após o fim do contrato, contado com a projeção do aviso prévio indenizado, tudo está prescrito.</li>
+      <li><b>Reflexos.</b> Horas extras, adicional noturno e intervalo (antes da Reforma Trabalhista) refletem no descanso semanal remunerado, calculado mês a mês com domingos e feriados nacionais. As verbas salariais refletem em 13º salário, férias com 1/3, aviso prévio indenizado (média dos últimos 12 meses) e FGTS com a multa rescisória.</li>
+      <li><b>Intervalo.</b> Até 10/11/2017, a hora inteira com 50% e reflexos (Súmula 437 do TST). A partir de 11/11/2017, só o tempo suprimido com 50%, de natureza indenizatória (CLT, art. 71, § 4º).</li>
+      <li><b>Base das horas extras.</b> Salário mais adicionais de insalubridade e periculosidade e diferenças salariais (Súmula 264 e OJ 47 da SDI-1 do TST). Insalubridade sobre o salário mínimo de cada época.</li>
+      <li><b>Correção e juros</b> (ADC 58 do STF e SDI-1 do TST, E-ED-RR-713-03.2010.5.04.0029). Antes da ação, IPCA-E desde o mês seguinte ao da competência. Do ajuizamento até 29/08/2024, Selic. A partir de 30/08/2024, IPCA mais juros pela taxa legal (Selic menos IPCA, nunca negativa), conforme a Lei 14.905/2024. Dano moral: Selic e taxa legal desde o ajuizamento.</li>
+      <li><b>INSS e IR.</b> Cota do empregado pela tabela progressiva de 2026 aplicada a cada mês. Cota patronal de 20% mais RAT; contribuições de terceiros não são executadas na Justiça do Trabalho. IR pelo regime de rendimentos recebidos acumuladamente (RRA), sem incidência sobre juros de mora (OJ 400 da SDI-1), férias indenizadas, aviso prévio indenizado, FGTS e dano moral.</li>
+      <li><b>Custas e honorários.</b> Custas de 2% da condenação, limitadas a quatro vezes o teto do INSS (CLT, art. 789). Honorários de sucumbência de 5% a 15% sobre o valor da condenação (CLT, art. 791-A). Depósito recursal do recurso ordinário: R$ 14.411,57 desde 01/08/2026 (Ato SEGJUD.GP 381/2026).</li>
+    </ul>
+  </section>
+  <div class="note warn">
+    <strong>Estimativa.</strong> O simulador usa médias mensais e as tabelas atuais de INSS e IR. Não considera controles de ponto, convenção coletiva, compensações, adicionais diferentes de horas extras, salário-utilidade, PLR, estabilidades nem descontos já pagos. Na liquidação, o cálculo é feito mês a mês no PJe-Calc, com os índices e as tabelas de cada competência.
+  </div>
+  <div class="cta">
+    <p><strong>Recebeu uma reclamação trabalhista?</strong><br>Converse com a nossa equipe sobre a defesa e o provisionamento.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../agendar/">Agendar consulta</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo, que não substitui a análise do processo e dos documentos do contrato.</p>
+</main>
+<script src="comum.js"></script>
+<script src="relatorio.js"></script>
+<script src="indices.js"></script>
+<script>
+// ---------- tabelas ----------
+const INSS = [[1621.00, .075], [2902.84, .09], [4354.27, .12], [8475.55, .14]];          // 2026
+const IR = [[2428.80, 0, 0], [2826.65, .075, 182.16], [3751.05, .15, 394.16], [4664.68, .225, 675.49], [Infinity, .275, 908.73]];
+const TETO = 8475.55, DEP_RO = 14411.57;
+const SM = [["2010-01", 510], ["2011-03", 545], ["2012-01", 622], ["2013-01", 678], ["2014-01", 724], ["2015-01", 788], ["2016-01", 880],
+  ["2017-01", 937], ["2018-01", 954], ["2019-01", 998], ["2020-01", 1039], ["2020-02", 1045], ["2021-01", 1100], ["2022-01", 1212],
+  ["2023-01", 1302], ["2023-05", 1320], ["2024-01", 1412], ["2025-01", 1518], ["2026-01", 1621]];
+const IDX = typeof INDICES === "object" ? INDICES : { ipca: {}, ipcae: {}, selic: {} };
+
+const $ = id => document.getElementById(id);
+const num = id => numero($(id).value);
+const on = id => $(id).checked;
+
+// ---------- datas (meio-dia UTC, sem fuso) ----------
+const D = s => { const [y, m, d] = s.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d, 12)); };
+const ymd = (y, m, d) => new Date(Date.UTC(y, m, d, 12));
+const addD = (d, n) => new Date(d.getTime() + n * 864e5);
+const ym = d => d.toISOString().slice(0, 7);
+const ymAdd = (k, n) => { let [y, m] = k.split("-").map(Number); m += n; y += Math.floor((m - 1) / 12); m = ((m - 1) % 12 + 12) % 12 + 1; return `${y}-${String(m).padStart(2, "0")}`; };
+const diasMes = (y, m) => new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+const br = d => d.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+const mesBr = k => k.slice(5) + "/" + k.slice(0, 4);
+const addAnos = (d, n) => ymd(d.getUTCFullYear() + n, d.getUTCMonth(), d.getUTCDate());
+
+function pascoa(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3),
+    h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const mes = Math.floor((h + l - 7 * m + 114) / 31), dia = ((h + l - 7 * m + 114) % 31) + 1;
+  return ymd(y, mes - 1, dia);
+}
+// Proporção DSR / dias úteis do mês (domingos e feriados nacionais).
+const _dsr = {};
+function fatorDsr(y, m) {
+  const k = y + "-" + m;
+  if (_dsr[k]) return _dsr[k];
+  const fer = new Set(["1-1", "4-21", "5-1", "9-7", "10-12", "11-2", "11-15", "12-25"].concat(y >= 2024 ? ["11-20"] : []));
+  const sexta = addD(pascoa(y), -2); fer.add(`${sexta.getUTCMonth() + 1}-${sexta.getUTCDate()}`);
+  let dsr = 0; const n = diasMes(y, m);
+  for (let d = 1; d <= n; d++) { const w = new Date(Date.UTC(y, m, d)).getUTCDay(); if (w === 0 || fer.has(`${m + 1}-${d}`)) dsr++; }
+  return (_dsr[k] = dsr / (n - dsr));
+}
+const salMin = k => SM.filter(s => s[0] <= k).at(-1)?.[1] || SM[0][1];
+
+// ---------- INSS e IR ----------
+function inss(v) {
+  let t = 0, ant = 0;
+  for (const [teto, a] of INSS) { if (v > ant) t += (Math.min(v, teto) - ant) * a; ant = teto; }
+  return t;
+}
+function irRRA(base, meses) {
+  if (base <= 0) return 0;
+  const f = IR.find(x => base / meses <= x[0]);
+  return Math.max(0, base * f[1] - f[2] * meses);
+}
+
+// ---------- correção e juros (por mês de vencimento) ----------
+const ultimo = s => Object.keys(IDX[s] || {}).sort().at(-1);
+const ind = (s, k) => { const v = IDX[s]?.[k]; if (v != null) return v / 100; return s === "selic" && k > ultimo(s) ? (IDX.selic[ultimo("selic")] || 0) / 100 : 0; };
+let _fat = {};
+// Fator total e fator só de correção (sem juros, para o IR), de "venc" até o mês atual.
+function fator(venc, ajz, hoje) {
+  const ch = venc + ajz;
+  if (_fat[ch]) return _fat[ch];
+  let pre = 1, selic = 0, ipca = 1, jur = 0;
+  for (let k = venc; k < ajz; k = ymAdd(k, 1)) pre *= 1 + ind("ipcae", k);
+  for (let k = venc > ajz ? venc : ajz; k <= hoje; k = ymAdd(k, 1)) {
+    if (k <= "2024-08") selic += ind("selic", k);
+    else { const i = ind("ipca", k); ipca *= 1 + i; jur += Math.max(0, ind("selic", k) - i); }
+  }
+  const corr = pre * ipca, total = pre * (1 + selic) * ipca * (1 + jur);
+  return (_fat[ch] = { total, corr });
+}
+
+// ---------- cálculo ----------
+let ult;
+function lerHist(sal, dem) {
+  const L = [];
+  $("hist").value.split(/\n/).forEach(l => {
+    const m = l.match(/(\d{1,2})\s*\/\s*(\d{4})\s+(?:R\$\s*)?([\d.,]+)/);
+    if (m) L.push([`${m[2]}-${m[1].padStart(2, "0")}`, numero(m[3])]);
+  });
+  L.sort((a, b) => a[0] < b[0] ? -1 : 1);
+  const kd = ym(dem);
+  if (!L.length || L.at(-1)[1] !== sal) L.push([L.length && L.at(-1)[0] >= kd ? L.at(-1)[0] : kd, sal]);
+  return k => (L.filter(x => x[0] <= k).at(-1) || L[0])[1];
+}
+
+function calcular() {
+  _fat = {};
+  const hojeD = new Date(), hoje = ym(hojeD);
+  if (!$("ajz").value) $("ajz").value = hojeD.toISOString().slice(0, 10);
+  const adm = D($("adm").value || "2020-01-01"), dem = D($("dem").value || "2025-01-01"), ajzD = D($("ajz").value), ajz = ym(ajzD);
+  const mot = $("mot").value, res = document.querySelector("[name=res]:checked").value;
+  const temAviso = ["sjc", "ind", "acordo"].includes(mot);
+  $("boxAvi").style.visibility = temAviso ? "" : "hidden";
+  const aviInd = temAviso && (mot === "ind" || $("avi").value === "ind");
+  const sal = num("sal"), divisor = +$("div").value;
+  const salDe = lerHist(sal, dem);
+  const multa = { sjc: .4, ind: .4, acordo: .2 }[mot] || 0;
+  const alertas = [];
+
+  // Aviso prévio proporcional (Lei 12.506/2011) e projeção (OJ 82 e 83 da SDI-1).
+  const anos = Math.floor((dem - adm) / 864e5 / 365.25);
+  const avisoDias = temAviso ? Math.min(90, 30 + 3 * anos) : 0;
+  const avisoPago = aviInd ? (mot === "acordo" ? avisoDias / 2 : avisoDias) : 0;
+  const fimProj = aviInd ? addD(dem, avisoDias) : dem;
+
+  // Prescrição.
+  const limite = addAnos(ajzD, -5);
+  const bienal = ajzD > addAnos(fimProj, 2);
+  if (bienal) alertas.push(`<b>Prescrição total:</b> a ação foi ajuizada mais de dois anos após o fim do contrato (${br(fimProj)}, com a projeção do aviso). Os pedidos estão prescritos.`);
+  if (dem < adm) alertas.push("A data de saída é anterior à admissão.");
+  const ini = adm > limite ? adm : limite;
+  if (limite > adm && !bienal) alertas.push(`Prescrição quinquenal: entram as parcelas a partir de ${br(limite)}.`);
+
+  // Itens: { ped, nome, venc, v, sal (INSS/IR), irT (tributável no IR), sub }
+  const itens = [];
+  const add = (ped, nome, venc, v, salarial = false, irT = salarial) => { if (v > 0.004) itens.push({ ped, nome, venc, v, salarial, irT }); };
+
+  // Meses imprescritos do contrato.
+  const meses = [];
+  if (!bienal && dem >= adm) {
+    for (let k = ym(ini); k <= ym(dem); k = ymAdd(k, 1)) {
+      const [y, m] = k.split("-").map(Number), n = diasMes(y, m - 1);
+      const a = ymd(y, m - 1, 1), b = ymd(y, m - 1, n);
+      const d0 = ini > a ? ini : a, d1 = dem < b ? dem : b;
+      const dias = Math.round((d1 - d0) / 864e5) + 1;
+      if (dias > 0) meses.push({ k, y, m: m - 1, f: Math.min(1, dias / 30), s: salDe(k) });
+    }
+  }
+  const P = {
+    he: on("pHe"), int: on("pInt"), not: on("pNot"), ins: on("pIns"), per: on("pPer"), dif: on("pDif"), fgts: on("pFgts"), dano: on("pDano"), out: on("pOut"),
+  };
+  if (P.ins && P.per) alertas.push("Os adicionais de insalubridade e de periculosidade não se acumulam (CLT, art. 193, § 2º): o empregado fica com o mais vantajoso. Marque só um deles para o valor provável.");
+  const NOME = { he: "Horas extras", int: "Intervalo intrajornada", not: "Adicional noturno", ins: "Adicional de insalubridade", per: "Adicional de periculosidade", dif: "Diferenças salariais" };
+  const mensal = { he: [], int: [], not: [], ins: [], per: [], dif: [] };  // valores com reflexos, para média do aviso
+  const inssMes = {};  // alíquota efetiva do empregado por mês
+
+  for (const M of meses) {
+    const venc = ymAdd(M.k, 1), f = M.f;
+    const ins = P.ins ? salMin(M.k) * +$("insG").value * f : 0;
+    const per = P.per ? M.s * .3 * f : 0;
+    const dif = P.dif ? num("difV") * f : 0;
+    const vh = (M.s + (P.ins ? salMin(M.k) * +$("insG").value : 0) + (P.per ? M.s * .3 : 0) + (P.dif ? num("difV") : 0)) / divisor;
+    const dsr = fatorDsr(M.y, M.m);
+    const v = { he: 0, int: 0, not: 0, ins, per, dif };
+    let intInd = 0;
+    if (P.he) v.he = vh * (1 + num("heA") / 100) * num("heH") * f * (1 + dsr);
+    if (P.not) v.not = vh * num("notA") / 100 * num("notH") * (on("notR") ? 8 / 7 : 1) * f * (1 + dsr);
+    if (P.int) {
+      if (M.k < "2017-11") v.int = vh * 1.5 * Math.max(1, num("intM") / 60) * num("intD") * f * (1 + dsr);
+      else intInd = vh * 1.5 * num("intM") / 60 * num("intD") * f;
+    }
+    let baseSal = 0;
+    for (const p in v) {
+      if (!v[p]) continue;
+      mensal[p].push(v[p]); baseSal += v[p] + v[p] / 12;
+      add(p, p === "he" || p === "not" || p === "int" ? "Principal com DSR" : "Principal", venc, v[p], true);
+      add(p, "Reflexo em 13º salário", venc, v[p] / 12, true);
+      add(p, "Reflexo em férias + 1/3", venc, v[p] / 12 * 4 / 3, false, false);
+      add(p, "FGTS (8%)" + (multa ? ` + multa de ${multa * 100}%` : ""), venc, (v[p] + v[p] / 12) * .08 * (1 + multa), false, false);
+    }
+    if (intInd) add("int", "Tempo suprimido + 50% (indenizatório, desde 11/11/2017)", venc, intInd, false, false);
+    inssMes[venc] = baseSal ? (inss(M.s + baseSal) - inss(M.s)) / baseSal : 0;
+  }
+  // Reflexo no aviso prévio indenizado: média dos últimos 12 meses.
+  if (avisoPago && !bienal) for (const p in mensal) {
+    const u = mensal[p].slice(-12); if (!u.length) continue;
+    const r = u.reduce((a, b) => a + b, 0) / u.length * avisoPago / 30;
+    add(p, "Reflexo no aviso prévio indenizado", ymAdd(ym(dem), 1), r, false, false);
+    add(p, "FGTS sobre o reflexo no aviso" + (multa ? ` + ${multa * 100}%` : ""), ymAdd(ym(dem), 1), r * .08 * (1 + multa), false, false);
+  }
+
+  // FGTS não depositado.
+  if (P.fgts && meses.length) {
+    const n = Math.round(num("fgtsM")), sel = n > 0 ? meses.slice(-n) : meses;
+    for (const M of sel) add("fgts", "Depósitos de FGTS (8%)" + (multa ? ` + multa de ${multa * 100}%` : ""), ymAdd(M.k, 1), M.s * M.f * (13 / 12) * .08 * (1 + multa));
+  }
+
+  // Verbas rescisórias não pagas.
+  const vRes = {};
+  if (res === "nao" && !bienal && dem >= adm) {
+    const kd = ymAdd(ym(addD(dem, 10)), 0), sd = salDe(ym(dem));
+    vRes.saldo = sd * Math.min(30, dem.getUTCDate()) / 30;
+    vRes.aviso = sd * avisoPago / 30;
+    // 13º proporcional: meses do ano com 15 dias ou mais (até a projeção do aviso).
+    let av13 = 0; const y = fimProj.getUTCFullYear();
+    for (let m = 0; m < 12; m++) {
+      const a = ymd(y, m, 1), b = ymd(y, m, diasMes(y, m)), d0 = adm > a ? adm : a, d1 = fimProj < b ? fimProj : b;
+      if ((d1 - d0) / 864e5 + 1 >= 15) av13++;
+    }
+    // Férias proporcionais: meses desde o último aniversário do contrato.
+    let anv = adm; while (addAnos(anv, 1) <= fimProj) anv = addAnos(anv, 1);
+    let avF = 0, c = anv; while (true) { const prox = ymd(c.getUTCFullYear(), c.getUTCMonth() + 1, c.getUTCDate()); if (prox > addD(fimProj, 1)) break; avF++; c = prox; }
+    if ((fimProj - c) / 864e5 + 1 >= 15) avF++;
+    avF = Math.min(12, avF);
+    const jc = mot === "jc";
+    vRes.d13 = jc ? 0 : sd * av13 / 12;
+    vRes.ferP = jc ? 0 : sd * avF / 12 * 4 / 3;
+    const fv = Math.max(0, Math.round(num("ferV"))), fd = Math.min(fv, Math.max(0, Math.round(num("ferD"))));
+    vRes.ferV = sd * 4 / 3 * (fv + fd);
+    vRes.fgtsR = (vRes.saldo + vRes.d13 + vRes.aviso) * .08;
+    // Saldo do FGTS para a multa: informado ou estimado pelos salários de todo o contrato.
+    let saldoF = num("fgtsSaldo");
+    if (!saldoF) for (let k = ym(adm); k <= ym(dem); k = ymAdd(k, 1)) {
+      const [yy, mm] = k.split("-").map(Number), n = diasMes(yy, mm - 1);
+      const a = ymd(yy, mm - 1, 1), b = ymd(yy, mm - 1, n), d0 = adm > a ? adm : a, d1 = dem < b ? dem : b;
+      saldoF += salDe(k) * Math.min(1, ((d1 - d0) / 864e5 + 1) / 30) * (1 + 1 / 12 + 1 / 36) * .08;
+    }
+    vRes.saldoF = saldoF;
+    vRes.multaF = (saldoF + vRes.fgtsR) * multa;
+    add("res", `Saldo de salário (${Math.min(30, dem.getUTCDate())} dias)`, kd, vRes.saldo, true);
+    add("res", `Aviso prévio indenizado (${avisoPago} dias)`, kd, vRes.aviso);
+    add("res", `13º salário proporcional (${av13}/12)`, kd, vRes.d13, true);
+    add("res", `Férias proporcionais + 1/3 (${avF}/12)`, kd, vRes.ferP);
+    add("res", `Férias vencidas + 1/3 (${fv}${fd ? `, ${fd} em dobro` : ""})`, kd, vRes.ferV);
+    add("res", "FGTS sobre as verbas rescisórias (8%)", kd, vRes.fgtsR);
+    add("res", `Multa de ${multa * 100}% do FGTS` + (num("fgtsSaldo") ? "" : " (saldo estimado)"), kd, vRes.multaF);
+    if (on("m467")) add("res", "Multa do art. 467 (50% das verbas incontroversas)", kd, (vRes.saldo + vRes.aviso + vRes.d13 + vRes.ferP + vRes.ferV + vRes.multaF) * .5);
+    inssMes[kd] = 0;
+  }
+  if (on("m477") && !bienal) add("res", "Multa do art. 477, § 8º (um salário)", ymAdd(ym(addD(dem, 10)), 0), salDe(ym(dem)));
+
+  // Dano moral e outros (atualizados desde o ajuizamento).
+  if (P.dano && !bienal) {
+    const g = +$("danoG").value;
+    if (g && document.activeElement !== $("danoV")) $("danoV").value = (g * sal).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+    add("dano", "Indenização por dano moral", ajz, num("danoV"));
+  }
+  if (P.out && !bienal) add("out", $("outD").value.trim() || "Outro pedido", ymAdd(ym(dem), 1), num("outV"), on("outS"));
+
+  // Atualização.
+  let hist = 0, total = 0, inssEmp = 0, baseSal = 0, baseIr = 0;
+  for (const it of itens) {
+    const F = fator(it.venc, ajz, hoje);
+    it.t = it.v * F.total; it.c = it.v * F.corr;
+    hist += it.v; total += it.t;
+    if (it.salarial) {
+      baseSal += it.t;
+      const al = it.ped === "res" ? (it.v ? inss(it.v) / it.v : 0) : (inssMes[it.venc] ?? (inss(sal + it.v) - inss(sal)) / it.v);
+      it.inss = it.t * al; inssEmp += it.inss;
+    }
+    if (it.irT) baseIr += it.c - (it.inss || 0) * it.c / it.t;
+  }
+  const nMeses = Math.max(1, meses.length);
+  const ir = irRRA(baseIr, nMeses);
+  const reg = $("reg").value, patronalAliq = reg === "simples" ? 0 : .2 + num("rat") / 100;
+  const patronal = baseSal * patronalAliq;
+  const custas = total > 0 ? Math.min(Math.max(total * .02, 10.64), TETO * 4) : 0;
+  const hon = total * Math.min(15, Math.max(0, num("hon"))) / 100;
+  const pericia = num("pericia");
+  const causa = num("causa");
+  const honEmp = causa > total ? (causa - total) * Math.min(15, Math.max(0, num("hon"))) / 100 : 0;
+  const deposito = Math.min(total, DEP_RO) * +$("porte").value;
+  const custo = total + patronal + custas + hon + pericia;
+  const liquido = total - inssEmp - ir;
+
+  ult = { itens, hist, total, inssEmp, ir, patronal, patronalAliq, custas, hon, pericia, honEmp, deposito, custo, liquido, baseSal, baseIr, nMeses,
+    adm, dem, ajzD, fimProj, mot, aviInd, avisoDias, avisoPago, sal, divisor, res, multa, alertas, P, NOME, limite, bienal, hoje };
+  render();
+}
+
+// ---------- apresentação ----------
+const PEDIDOS = [["res", "Verbas rescisórias"], ["he", "Horas extras"], ["int", "Intervalo intrajornada"], ["not", "Adicional noturno"], ["ins", "Adicional de insalubridade"],
+  ["per", "Adicional de periculosidade"], ["dif", "Diferenças salariais"], ["fgts", "FGTS não depositado"], ["dano", "Dano moral"], ["out", "Outro pedido"]];
+const COR = { res: "#1F3864", he: "#C9A46A", int: "#4A6FA5", not: "#16414A", ins: "#5E9C8F", per: "#B0695B", dif: "#8A6FB0", fgts: "#7A8594", dano: "#D08C4E", out: "#9AA5B4" };
+
+function grupos(u) {
+  return PEDIDOS.map(([p, n]) => {
+    const it = u.itens.filter(i => i.ped === p);
+    if (!it.length) return null;
+    const sub = {};
+    it.forEach(i => { const s = sub[i.nome] || (sub[i.nome] = { nome: i.nome, v: 0, t: 0 }); s.v += i.v; s.t += i.t; });
+    const nome = p === "out" ? (it[0].nome) : n;
+    return { p, nome, v: it.reduce((a, i) => a + i.v, 0), t: it.reduce((a, i) => a + i.t, 0), sub: Object.values(sub) };
+  }).filter(Boolean);
+}
+function encargos(u) {
+  return [
+    ["Condenação atualizada (bruto)", u.total, "valor devido ao autor, com FGTS"],
+    [`INSS patronal (${pct(u.patronalAliq, 1)})`, u.patronal, u.patronalAliq ? "sobre as verbas salariais" : "empresa do Simples sem cota patronal"],
+    ["Custas processuais (2%)", u.custas, "limitadas a 4 tetos do INSS"],
+    [`Honorários de sucumbência (${numero($("hon").value)}%)`, u.hon, "ao advogado do autor"],
+    ...(u.pericia ? [["Honorários periciais", u.pericia, "perícia de insalubridade ou periculosidade"]] : []),
+  ];
+}
+const COMP = u => [["Condenação ao autor", u.total - 0, "#1F3864"], ["INSS patronal", u.patronal, "#C9A46A"], ["Custas", u.custas, "#5E9C8F"], ["Honorários", u.hon + u.pericia, "#B0695B"]];
+
+function render() {
+  const u = ult;
+  $("custo").textContent = moeda(u.custo);
+  $("custoTxt").textContent = `Condenação de ${moeda(u.total)} atualizada até ${mesBr(u.hoje)}, mais INSS patronal, custas e honorários.`;
+  $("tot").innerHTML = [
+    ["Condenação atualizada", moeda(u.total), `${moeda(u.hist)} sem atualização`, "#1F3864"],
+    ["Encargos e despesas", moeda(u.custo - u.total), "INSS patronal, custas, honorários", "#B0695B"],
+    ["Líquido ao autor", moeda(u.liquido), `após INSS de ${moeda(u.inssEmp)} e IR de ${moeda(u.ir)}`, "#5E9C8F"],
+    ["Depósito recursal", moeda(u.deposito), "para recorrer (recurso ordinário)", "#C9A46A"],
+  ].map(([t, v, s, c]) => `<div style="--c:${c}"><span>${t}</span><b>${v}</b><small>${s}</small></div>`).join("");
+  $("alertas").innerHTML = u.alertas.join("<br>");
+
+  const comp = COMP(u).filter(c => c[1] > 0);
+  $("comp").innerHTML = comp.map(([n, v, c]) => `<i style="width:${v / u.custo * 100}%;background:${c}" title="${n}: ${moeda(v)}"></i>`).join("");
+  $("compLeg").innerHTML = comp.map(([n, v, c]) => `<span style="--c:${c}">${n} · ${moeda(v)} (${pct(v / (u.custo || 1), 0)})</span>`).join("");
+
+  const G = grupos(u), mx = Math.max(...G.map(g => g.t), 1);
+  $("barras").innerHTML = G.slice().sort((a, b) => b.t - a.t).map(g =>
+    `<div class="barra"><span>${relEsc(g.nome)}</span><div><i style="width:${g.t / mx * 70}%;background:${COR[g.p]}"></i>${moeda(g.t)}</div></div>`).join("") || `<p class="hint">Nenhum valor no período.</p>`;
+
+  $("tab").innerHTML = `<tr><th>Pedido</th><th>Valor histórico</th><th>Correção e juros</th><th>Atualizado</th></tr>` +
+    G.map(g => `<tr class="g"><td>${relEsc(g.nome)}</td><td>${moeda(g.v)}</td><td>${moeda(g.t - g.v)}</td><td>${moeda(g.t)}</td></tr>` +
+      (g.sub.length > 1 || g.p === "res" ? g.sub.map(s => `<tr class="s"><td>${s.nome}</td><td>${moeda(s.v)}</td><td>${moeda(s.t - s.v)}</td><td>${moeda(s.t)}</td></tr>`).join("") : "")).join("") +
+    `<tr class="t"><td>Total da condenação</td><td>${moeda(u.hist)}</td><td>${moeda(u.total - u.hist)}</td><td>${moeda(u.total)}</td></tr>`;
+
+  $("enc").innerHTML = `<tr><th>Item</th><th>Valor</th><th style="text-align:left">Observação</th></tr>` +
+    encargos(u).map(([n, v, o]) => `<tr><td>${n}</td><td>${moeda(v)}</td><td style="text-align:left;color:var(--muted)">${o}</td></tr>`).join("") +
+    `<tr class="t"><td>Custo total para a empresa</td><td>${moeda(u.custo)}</td><td></td></tr>` +
+    `<tr><td>INSS do empregado (retido do autor)</td><td>${moeda(u.inssEmp)}</td><td style="text-align:left;color:var(--muted)">descontado do valor bruto</td></tr>` +
+    `<tr><td>IR retido (RRA, ${u.nMeses} meses)</td><td>${moeda(u.ir)}</td><td style="text-align:left;color:var(--muted)">descontado do valor bruto</td></tr>` +
+    `<tr><td>Depósito recursal</td><td>${moeda(u.deposito)}</td><td style="text-align:left;color:var(--muted)">garantia para recorrer; abatido da condenação ao final</td></tr>` +
+    (u.honEmp ? `<tr><td>Honorários a favor da empresa</td><td>${moeda(u.honEmp)}</td><td style="text-align:left;color:var(--muted)">sobre a parte do valor da causa não deferida${on("grat") ? "; suspensos pela justiça gratuita (ADI 5766)" : ""}</td></tr>` : "");
+
+  const ult_ = ["ipca", "ipcae", "selic"].map(s => ultimo(s)).filter(Boolean);
+  $("idx").textContent = ult_.length ? `Índices do Banco Central: IPCA e IPCA-E até ${mesBr(ultimo("ipca"))}, Selic até ${mesBr(ultimo("selic"))}. Meses ainda sem IPCA divulgado contam só com a Selic.` : "Índices de correção indisponíveis: valores sem atualização.";
+}
+
+document.querySelectorAll(".ped input[type=checkbox]:first-child").forEach(c => {
+  const ped = c.closest(".ped");
+  if (ped.querySelector(".check") !== c.parentElement) return;
+  c.addEventListener("change", () => ped.classList.toggle("on", c.checked));
+});
+$("danoV").addEventListener("input", () => { $("danoG").value = "0"; });
+$("f").addEventListener("input", calcular);
+$("f").addEventListener("change", calcular);
+
+// ---------- relatório em PDF ----------
+function svgPedidos(G) {
+  const W = 680, lh = 19, H = G.length * lh + 6, L = 170, mx = Math.max(...G.map(g => g.t), 1);
+  let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`;
+  G.forEach((g, i) => {
+    const y = 6 + i * lh, w = g.t / mx * (W - L - 120), wh = g.v / mx * (W - L - 120);
+    o += `<text x="${L - 10}" y="${y + 11}" font-size="9" fill="#0E1B2C" text-anchor="end">${relEsc(g.nome)}</text>` +
+      `<rect x="${L}" y="${y + 2}" width="${Math.max(w, 1.5).toFixed(1)}" height="12" rx="3" fill="${COR[g.p]}" opacity=".35"/>` +
+      `<rect x="${L}" y="${y + 2}" width="${Math.max(wh, 1.5).toFixed(1)}" height="12" rx="3" fill="${COR[g.p]}"/>` +
+      `<text x="${L + w + 6}" y="${y + 11}" font-size="9" font-weight="700" fill="#0E1B2C">${moeda(g.t)}</text>`;
+  });
+  return o + "</svg>";
+}
+function svgComp(u) {
+  const W = 680, H = 56, c = COMP(u).filter(x => x[1] > 0);
+  let x = 0, o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`;
+  c.forEach(([n, v, cor]) => {
+    const w = v / u.custo * W;
+    o += `<rect x="${x.toFixed(1)}" y="0" width="${w.toFixed(1)}" height="22" fill="${cor}"/>` +
+      (w > 50 ? `<text x="${(x + w / 2).toFixed(1)}" y="15" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">${pct(v / u.custo, 0)}</text>` : "");
+    x += w;
+  });
+  let lx = 0;
+  c.forEach(([n, v, cor]) => { const t = `${n} · ${moeda(v)}`; o += `<rect x="${lx}" y="34" width="10" height="10" rx="2" fill="${cor}"/><text x="${lx + 15}" y="43" font-size="9.5" fill="#33405A">${t}</text>`; lx += 30 + t.length * 5.3; });
+  return o + "</svg>";
+}
+
+function gerarRelatorio() {
+  calcular();
+  const u = ult, emp = $("empresa").value.trim(), G = grupos(u);
+  const MOT = { sjc: "Dispensa sem justa causa", ind: "Rescisão indireta", acordo: "Acordo (art. 484-A)", ped: "Pedido de demissão", jc: "Justa causa" }[u.mot];
+  const ped = G.filter(g => g.p !== "res").map(g => g.nome);
+  const dados = [["Admissão", br(u.adm)], ["Último dia trabalhado", br(u.dem)], ["Ajuizamento", br(u.ajzD)], ["Desligamento", MOT],
+    ["Aviso prévio", u.avisoDias ? `${u.avisoDias} dias, ${u.aviInd ? "indenizado" : "trabalhado"}` : "não se aplica"], ["Último salário", moeda(u.sal)],
+    ["Jornada (divisor)", `${u.divisor} horas`], ["Verbas rescisórias", u.res === "nao" ? "não pagas (pedidas)" : "pagas"],
+    ["Período imprescrito", u.bienal ? "prescrição total" : `${br(u.limite > u.adm ? u.limite : u.adm)} a ${br(u.dem)}`], ["Atualização até", mesBr(u.hoje)]];
+  const premissas = [...document.querySelectorAll("#premissas li")].map(l => `<li>${l.innerHTML}</li>`).join("");
+  const tab = `<table class="r-tab longa"><thead><tr><th>Pedido</th><th>Histórico</th><th>Correção e juros</th><th>Atualizado</th></tr></thead><tbody>` +
+    G.map(g => `<tr class="on"><td>${relEsc(g.nome)}</td><td>${moeda(g.v)}</td><td>${moeda(g.t - g.v)}</td><td>${moeda(g.t)}</td></tr>` +
+      (g.sub.length > 1 || g.p === "res" ? g.sub.map(s => `<tr><td style="padding-left:5mm">${s.nome}</td><td>${moeda(s.v)}</td><td>${moeda(s.t - s.v)}</td><td>${moeda(s.t)}</td></tr>`).join("") : "")).join("") +
+    `<tr class="tot"><td>Total da condenação</td><td>${moeda(u.hist)}</td><td>${moeda(u.total - u.hist)}</td><td>${moeda(u.total)}</td></tr></tbody></table>`;
+  const enc = relTabela(["Item", "Valor", "Observação"], [
+    ...encargos(u).map(([n, v, o]) => [n, moeda(v), o]),
+    ["<b>Custo total para a empresa</b>", `<b>${moeda(u.custo)}</b>`, ""],
+    ["INSS do empregado", moeda(u.inssEmp), "retido do autor"],
+    [`IR retido (RRA, ${u.nMeses} meses)`, moeda(u.ir), "retido do autor"],
+    ["Depósito recursal", moeda(u.deposito), "garantia para recorrer"],
+    ...(u.honEmp ? [["Honorários a favor da empresa", moeda(u.honEmp), on("grat") ? "suspensos (justiça gratuita)" : "sobre a parte não deferida"]] : []),
+  ]).replace(/<td>([^<]*)<\/td><\/tr>/g, '<td style="text-align:left;color:#5E6878">$1</td></tr>').replace(/<th>Observação<\/th>/, '<th style="text-align:left">Observação</th>');
+  relatorio({
+    eyebrow: "Simulação · Passivo trabalhista",
+    titulo: "Estimativa de reclamação trabalhista",
+    para: emp, ref: `Valores atualizados até ${mesBr(u.hoje)}`,
+    conclusao: `<p>O custo total estimado para a empresa é de <b>${moeda(u.custo)}</b>: condenação de <b>${moeda(u.total)}</b> atualizada (${moeda(u.hist)} em valores históricos), ` +
+      `mais ${moeda(u.custo - u.total)} de INSS patronal, custas e honorários.</p>` +
+      `<p>O autor receberia, líquidos, cerca de <b>${moeda(u.liquido)}</b>. Para recorrer, a empresa precisa depositar ${moeda(u.deposito)}.</p>` +
+      (u.alertas.length ? `<p style="color:#8A4B12">${u.alertas.join("<br>")}</p>` : ""),
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
+      <p class="r-nota">Pedidos simulados: ${ped.length ? ped.join(", ") : "nenhum além das verbas rescisórias"}.</p>
+      <h2>2. Resultado</h2>
+      ${relKpis([
+        { titulo: "Custo total", valor: moeda(u.custo), cor: "#0E1B2C", texto: "condenação e encargos" },
+        { titulo: "Condenação atualizada", valor: moeda(u.total), cor: "#1F3864", texto: `${moeda(u.hist)} histórico` },
+        { titulo: "Líquido ao autor", valor: moeda(u.liquido), cor: "#5E9C8F", texto: "após INSS e IR" },
+        { titulo: "Depósito recursal", valor: moeda(u.deposito), cor: "#C9A46A", texto: "recurso ordinário" },
+      ])}
+      <div class="r-graf" style="margin-top:2mm">${svgComp(u)}</div>
+      <div class="r-graf" style="margin-top:2mm">${svgPedidos(G)}</div>
+      <p class="r-nota">Valor de cada pedido: a parte escura é o valor histórico; a clara, a correção e os juros.</p>
+      <h2>3. Demonstrativo dos pedidos</h2>${tab}
+      <h2>4. Encargos e despesas do processo</h2>${enc}
+      <h2>5. Critérios do cálculo</h2><ul class="r-crit">${premissas}</ul>
+      <p class="r-nota">${$("idx").textContent}</p>`,
+    ressalva: "Estimativa de caráter informativo, com médias mensais e as tabelas atuais de INSS e IR, para avaliação de risco e provisionamento. Não substitui a liquidação no PJe-Calc nem a análise dos documentos do contrato (cartões de ponto, recibos, normas coletivas).",
+    arquivo: "Calculo trabalhista" + (emp ? " - " + emp : ""),
+  });
+}
+$("btnRel").addEventListener("click", gerarRelatorio);
+
+calcular();
+</script>
+</body>
+</html>

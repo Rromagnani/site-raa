@@ -285,10 +285,35 @@ def data_br(slug):
     return f"{int(d)} {meses[int(m) - 1]} {a}"
 
 
+# Índices do Banco Central para o simulador trabalhista (correção e juros, ADC 58 e Lei 14.905/2024).
+# Guardados em content/indices_bcb.json: se a API estiver fora do ar, usa a última cópia.
+SERIES_BCB = {"ipca": 433, "ipcae": 10764, "selic": 4390}
+CACHE_INDICES = ROOT / "content/indices_bcb.json"
+
+
+def indices():
+    dados = json.loads(CACHE_INDICES.read_text()) if CACHE_INDICES.exists() else {}
+    novos = {}
+    try:
+        for nome, cod in SERIES_BCB.items():
+            url = f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{cod}/dados?formato=json&dataInicial=01/01/2010"
+            serie = json.loads(baixar(url))
+            novos[nome] = {f"{d['data'][6:]}-{d['data'][3:5]}": float(d["valor"]) for d in serie}
+        if all(len(v) > 100 for v in novos.values()):
+            dados = novos | {"atualizado": dt.date.today().isoformat()}
+            CACHE_INDICES.write_text(json.dumps(dados, separators=(",", ":")), encoding="utf-8")
+    except Exception as e:
+        print(f"[aviso] índices do Banco Central indisponíveis ({e}); usando a cópia guardada", file=sys.stderr)
+    return dados
+
+
 def main():
     if OUT.exists():
         shutil.rmtree(OUT)
     shutil.copytree(ROOT / "static", OUT)
+    (OUT / "utilitarios/indices.js").write_text(
+        "// Índices do Banco Central (% ao mês), gerados por build.py.\nconst INDICES = " + json.dumps(indices(), separators=(",", ":")) + ";\n",
+        encoding="utf-8")
 
     agora = dt.datetime.now(dt.timezone.utc)
     news, vids, nls = noticias(), videos(), newsletters()

@@ -113,6 +113,8 @@ textarea{min-height:76px;resize:vertical}
   #rel .r-tab th{background:#1F3864;color:#fff;font-weight:600;font-size:7.5pt;text-transform:uppercase;letter-spacing:.04em}
   #rel .r-tab tr.tot td{font-weight:700;border-top:.4mm solid #1F3864}
   #rel .r-tab td.win{background:#FBF4E6;font-weight:700}
+  #rel table.r-tab.longa{break-inside:auto}
+  #rel table.r-tab.longa tr{break-inside:avoid}
   #rel .r-tab tr.on td{background:#FBF4E6;font-weight:700}
   #rel .r-tab tr.neg td{color:#3E7A6E}
   #rel .r-dados td{text-align:left!important;width:25%;vertical-align:top}
@@ -132,5 +134,7 @@ textarea{min-height:76px;resize:vertical}
   #rel .r-dias .conta{background:#E4ECF5;color:#1F3864}
   #rel .r-dias .pula{background:#F3F0EA;color:#9AA5B4;text-decoration:line-through}
   #rel .r-dias .fim{background:#C9A46A;color:#0E1B2C;font-weight:700}
+  #rel .r-crit{font-size:8pt;padding-left:4.5mm;margin:0}
+  #rel .r-crit li{margin-bottom:1.3mm}
   #rel .r-obs{font-size:8.5pt;padding:3mm 4mm;background:#F3F0EA;border-radius:1.5mm;margin-top:3mm;break-inside:avoid}
 }
