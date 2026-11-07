@@ -48,6 +48,12 @@ function relatorio(o) {
       <div class="r-ass"><b>Romagnani Advogados Associados</b>contato@raa.com.br · +55 11 99649-1980 · www.raa.com.br</div>
     </td></tr></tbody></table>`;
 
+  // iPhone/iPad: o Safari do iOS não repete elementos fixos em cada página e ignora as margens do @page.
+  // Nele o timbre vira estático: logo no início e endereço no fim do relatório, sem faixas nem marca d'água.
+  const ios = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  document.body.classList.toggle("rel-ios", ios);
+  if (ios) rel.appendChild(rel.querySelector(".t-end"));
+
   // Nome sugerido do PDF: sem acentos nem caracteres fora do ASCII (regra do escritório).
   const antes = document.title;
   document.title = (o.arquivo || o.titulo).normalize("NFKD").replace(/[^\x20-\x7E]/g, "").replace(/[\\/:*?"<>|]/g, "-");

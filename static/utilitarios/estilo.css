@@ -93,6 +93,11 @@ textarea{min-height:76px;resize:vertical}
   #rel .t-pg>thead td>div{height:34mm}
   #rel .t-pg>tfoot td>div{height:21mm}
   #rel .t-pg>tbody>tr>td{padding:0 14mm}
+  body.rel-ios #rel .t-barra,body.rel-ios #rel .t-marca,body.rel-ios #rel .t-faixa{display:none}
+  body.rel-ios #rel .t-logo{position:static;display:block;margin:0 auto 6mm;width:36.7mm}
+  body.rel-ios #rel .t-end{position:static;display:block;width:100%;margin-top:8mm}
+  body.rel-ios #rel .t-pg>thead td>div,body.rel-ios #rel .t-pg>tfoot td>div{height:0}
+  body.rel-ios #rel .t-pg>tbody>tr>td{padding:0 4mm}
   #rel h1{font-size:18pt;font-weight:700;color:#1F3864;margin:2mm 0 1mm;line-height:1.2}
   #rel h2{font-size:12pt;font-weight:700;color:#1F3864;margin:7mm 0 3mm;padding-bottom:1.5mm;border-bottom:.6mm solid #C9A46A;break-after:avoid}
   #rel .r-eye{font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;color:#8C6D3F;font-weight:700}
