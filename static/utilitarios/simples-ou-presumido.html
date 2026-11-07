@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="estilo.css?v=20261107">
 <style>
 main,.bar>div,.hero>div{max-width:1320px}
 .grid{grid-template-columns:minmax(300px,4fr) minmax(0,9fr)}
@@ -57,64 +57,10 @@ input[type=range]{padding:0;border:0;accent-color:var(--brass)}
 .premissas{font-size:.86rem;color:var(--text)}
 .premissas li{margin:0 0 6px 18px}
 .tbl td.melhor{background:#FBF4E6;font-weight:700}
-.gerar{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;padding-top:16px;border-top:1px solid var(--line)}
-.gerar>div{flex:1;min-width:200px}
-.gerar label{margin-top:0}
-.gerar button{font:inherit;font-weight:600;padding:12px 20px;border-radius:999px;border:0;background:var(--ink);color:var(--on-ink);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
-.gerar button:hover{background:#1c3350}
-/* Relatório impresso no papel timbrado (A4) */
-#rel{display:none}
-@media print{
-  @page{size:A4;margin:0}
-  html,body{background:#fff!important}
-  body>*:not(#rel){display:none!important}
-  #rel{display:block;font-family:"Century Gothic","Avenir Next","Segoe UI",Inter,sans-serif;color:#1B2433;font-size:9.5pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #rel .t-fix{position:fixed;z-index:2}
-  #rel .t-barra{top:0;left:0;width:210mm;height:1.4mm}
-  #rel .t-logo{top:4mm;left:86.65mm;width:36.7mm}
-  #rel .t-marca{top:93mm;left:52.3mm;width:105.4mm;z-index:0;opacity:.6}
-  #rel .t-end{bottom:8.4mm;left:6.5mm;width:197mm}
-  #rel .t-faixa{bottom:0;left:0;width:210mm;height:6.3mm;background:#16414A}
-  #rel .t-pg{width:100%;border-collapse:collapse;position:relative;z-index:1}
-  #rel .t-pg>thead td>div{height:34mm}
-  #rel .t-pg>tfoot td>div{height:21mm}
-  #rel .t-pg>tbody>tr>td{padding:0 14mm}
-  #rel h1{font-size:18pt;font-weight:700;color:#1F3864;margin:2mm 0 1mm;line-height:1.2}
-  #rel h2{font-size:12pt;font-weight:700;color:#1F3864;margin:7mm 0 3mm;padding-bottom:1.5mm;border-bottom:.6mm solid #C9A46A;break-after:avoid}
-  #rel .r-eye{font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;color:#8C6D3F;font-weight:700}
-  #rel .r-meta{color:#5E6878;font-size:9pt}
-  #rel .r-concl{margin:5mm 0 2mm;padding:4mm 5mm;background:#FBF4E6;border-left:1.6mm solid #C9A46A;border-radius:1.5mm;break-inside:avoid}
-  #rel .r-concl p{margin:0 0 1.5mm}
-  #rel .r-concl p:last-child{margin:0}
-  #rel .r-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;break-inside:avoid}
-  #rel .r-kpi{border:.3mm solid #DDD5C7;border-top:2mm solid;border-radius:1.5mm;padding:3mm 4mm;position:relative}
-  #rel .r-kpi small{display:block;font-size:7.5pt;text-transform:uppercase;letter-spacing:.06em;color:#5E6878}
-  #rel .r-kpi b{display:block;font-size:14pt;color:#0E1B2C;margin:1mm 0 .5mm}
-  #rel .r-kpi span{font-size:8.5pt;color:#5E6878}
-  #rel .r-kpi.off{opacity:.5}
-  #rel .r-selo{position:absolute;top:-3.2mm;right:3mm;background:#C9A46A;color:#0E1B2C;font-size:6.5pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.6mm 2mm;border-radius:3mm}
-  #rel table.r-tab{width:100%;border-collapse:collapse;font-size:8.5pt;font-variant-numeric:tabular-nums;break-inside:avoid}
-  #rel .r-tab th,#rel .r-tab td{padding:1.3mm 2mm;border-bottom:.2mm solid #DDD5C7;text-align:right}
-  #rel .r-tab th:first-child,#rel .r-tab td:first-child{text-align:left}
-  #rel .r-tab thead th{background:#1F3864;color:#fff;font-weight:600;font-size:7.5pt;text-transform:uppercase;letter-spacing:.04em}
-  #rel .r-tab tr.tot td{font-weight:700;border-top:.4mm solid #1F3864}
-  #rel .r-tab td.win{background:#FBF4E6;font-weight:700}
-  #rel .r-dados td{text-align:left!important;width:25%;vertical-align:top}
-  #rel .r-dados td:nth-child(odd){color:#5E6878;width:21%}
-  #rel .r-dados td:nth-child(even){width:29%}
-  #rel .r-graf{break-inside:avoid;margin:2mm 0}
-  #rel .r-graf svg{width:100%;height:auto;display:block}
-  #rel .r-nota{font-size:8pt;color:#5E6878;margin-top:1.5mm}
-  #rel ul{margin:0;padding-left:5mm;font-size:8.3pt}
-  #rel li{margin:0 0 1.2mm}
-  #rel .r-quebra{break-before:page}
-  #rel .r-ass{margin-top:10mm;break-inside:avoid;font-size:9pt}
-  #rel .r-ass b{display:block;color:#1F3864;font-size:10pt}
-}
 </style>
 </head>
 <body>
-<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
 <header class="hero"><div>
   <span class="eyebrow">Utilitários · Reforma Tributária</span>
   <h1>Simples puro, Simples híbrido ou Lucro Presumido?</h1>
@@ -224,8 +170,8 @@ input[type=range]{padding:0;border:0;accent-color:var(--brass)}
   </div>
   <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo, com base na LC 214/2025, na LC 123/2006 e na LC 224/2025. As alíquotas de IBS e CBS ainda dependem de resolução do Senado e do Comitê Gestor. Não substitui a análise de um profissional.</p>
 </main>
-<div id="rel"></div>
 <script src="comum.js"></script>
+<script src="relatorio.js"></script>
 <script>
 // Simples Nacional: faixas da LC 123/2006 (redação da LC 155/2016). [alíquota nominal, parcela a deduzir]
 const LIM = [180000, 360000, 720000, 1800000, 3600000, 4800000];
@@ -397,7 +343,6 @@ function render() {
 // ---------- relatório em PDF no papel timbrado ----------
 const CORES = { pu: "#4A6FA5", hi: "#C9A46A", lp: "#16414A" };
 const GRUPOS = [["DAS", "#4A6FA5"], ["IBS/CBS líquido", "#C9A46A"], ["PIS/Cofins", "#8C6D3F"], ["IRPJ/CSLL", "#1F3864"], ["ICMS/ISS", "#5E9C8F"], ["INSS e terceiros", "#B0695B"]];
-const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function grupo(n) {
   if (/INSS/.test(n)) return "INSS e terceiros";
@@ -466,11 +411,10 @@ function svgEvolucao(E, anos) {
   return o + "</svg>";
 }
 
-function relatorio() {
+function gerarRelatorio() {
   const E = entradas(), { r, melhor } = calcularAno(anoSel, E);
   if (!E.R) { alert("Informe o faturamento para gerar o relatório."); return; }
   const emp = $("empresa").value.trim();
-  const hoje = new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const anos = ANOS.map(a => [a, calcularAno(a, E)]);
   const pc = v => pct(v / E.R, 1);
   const ks = ["pu", "hi", "lp"];
@@ -512,7 +456,7 @@ function relatorio() {
     `</tbody></table>`;
 
   const kpis = ks.map(k => { const x = r[k];
-    return x.off ? `<div class="r-kpi off" style="border-top-color:${CORES[k]}"><small>${NOMES[k]}</small><b>—</b><span>${esc(x.off)}</span></div>`
+    return x.off ? `<div class="r-kpi off" style="border-top-color:${CORES[k]}"><small>${NOMES[k]}</small><b>—</b><span>${relEsc(x.off)}</span></div>`
       : `<div class="r-kpi" style="border-top-color:${CORES[k]}">${k === melhor ? '<span class="r-selo">Melhor opção</span>' : ""}<small>${NOMES[k]}</small><b>${moeda(x.efetiva)}</b><span>carga efetiva de ${pc(x.efetiva)}<br>tributos pagos: ${pc(x.total)}</span></div>`; }).join("");
 
   const premissas = document.querySelectorAll("ul.premissas");
@@ -522,49 +466,29 @@ function relatorio() {
     `<p>${Object.entries(vitorias).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${NOMES[k]}: melhor em ${n} ${n > 1 ? "anos" : "ano"}`).join(" · ")} (de 2026 a 2033).</p>`,
   ].join("");
 
-  $("rel").innerHTML = `
-    <img class="t-fix t-barra" src="timbre/barra-ouro.webp" alt="">
-    <img class="t-fix t-logo" src="timbre/logo.webp" alt="Romagnani Advogados Associados">
-    <img class="t-fix t-marca" src="timbre/marca.webp" alt="">
-    <img class="t-fix t-end" src="timbre/endereco.webp" alt="www.raa.com.br · Av. Paulista, 1079, 7º e 8º andar, Bela Vista, São Paulo/SP">
-    <div class="t-fix t-faixa"></div>
-    <table class="t-pg"><thead><tr><td><div></div></td></tr></thead><tfoot><tr><td><div></div></td></tr></tfoot><tbody><tr><td>
-      <div class="r-eye">Simulação tributária · Reforma Tributária (IBS e CBS)</div>
-      <h1>Simples puro, Simples híbrido ou Lucro Presumido?</h1>
-      <div class="r-meta">${emp ? `Preparado para <b>${esc(emp)}</b> · ` : ""}Emitido em ${hoje} · Ano de referência: ${anoSel}</div>
-      <div class="r-concl">${concl}</div>
-
-      <h2>1. Dados considerados</h2>
-      <table class="r-tab r-dados"><tbody>${dados.map(([a, b], i) => i % 2 ? "" : `<tr><td>${a}</td><td>${esc(b)}</td>${dados[i + 1] ? `<td>${dados[i + 1][0]}</td><td>${esc(dados[i + 1][1])}</td>` : "<td></td><td></td>"}</tr>`).join("")}</tbody></table>
-
+  relatorio({
+    eyebrow: "Simulação tributária · Reforma Tributária (IBS e CBS)",
+    titulo: "Simples puro, Simples híbrido ou Lucro Presumido?",
+    para: emp, ref: "Ano de referência: " + anoSel, conclusao: concl,
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
       <h2>2. Comparativo de ${anoSel}</h2>
       <div class="r-kpis">${kpis}</div>
       <div class="r-graf" style="margin-top:5mm">${svgComposicao(r)}</div>
       <p class="r-nota">Composição dos tributos pagos em cada regime. Os percentuais dentro das barras indicam o peso de cada tributo no total.</p>
       ${tabAno}
-
       <h2>3. Evolução de 2026 a 2033</h2>
       <div class="r-graf">${svgEvolucao(E, anos)}</div>
       <p class="r-nota">Carga efetiva sobre o faturamento (tributos pagos menos o crédito aproveitado pelos clientes empresariais). Os pontos preenchidos marcam a melhor opção de cada ano.</p>
       ${tabEvo}
-
       <h2>4. Como ler o resultado</h2>
       <ul>${premissas[0] ? premissas[0].innerHTML : ""}</ul>
       <h2>5. Premissas e limitações</h2>
-      <ul>${premissas[1] ? premissas[1].innerHTML : ""}</ul>
-      <p class="r-nota" style="margin-top:4mm">Simulação de caráter informativo, elaborada com base na LC 214/2025, na LC 123/2006 e na LC 224/2025, com alíquotas de IBS e CBS ainda pendentes de fixação pelo Senado Federal e pelo Comitê Gestor. Não substitui a análise individualizada da operação, dos contratos e da apuração da empresa. A opção pelo recolhimento do IBS e da CBS fora do DAS é feita por semestre.</p>
-      <div class="r-ass"><b>Romagnani Advogados Associados</b>Equipe tributária · contato@raa.com.br · +55 11 99649-1980</div>
-    </td></tr></tbody></table>`;
-
-  const tituloAntes = document.title;
-  const nome = ("Simulacao regime tributario" + (emp ? " - " + emp : "") + " - " + anoSel)
-    .normalize("NFKD").replace(/[^\x20-\x7E]/g, "").replace(/[\\/:*?"<>|]/g, "");
-  document.title = nome;
-  window.addEventListener("afterprint", () => { document.title = tituloAntes; }, { once: true });
-  const imgs = [...$("rel").querySelectorAll("img")];
-  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(ok => { i.onload = i.onerror = ok; }))).then(() => window.print());
+      <ul>${premissas[1] ? premissas[1].innerHTML : ""}</ul>`,
+    ressalva: "Simulação de caráter informativo, elaborada com base na LC 214/2025, na LC 123/2006 e na LC 224/2025, com alíquotas de IBS e CBS ainda pendentes de fixação pelo Senado Federal e pelo Comitê Gestor. Não substitui a análise individualizada da operação, dos contratos e da apuração da empresa. A opção pelo recolhimento do IBS e da CBS fora do DAS é feita por semestre.",
+    arquivo: "Simulacao regime tributario" + (emp ? " - " + emp : "") + " - " + anoSel,
+  });
 }
-$("btnRel").addEventListener("click", relatorio);
+$("btnRel").addEventListener("click", gerarRelatorio);
 
 $("anos").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { anoSel = +b.dataset.a; render(); } });
 // Ao trocar a atividade, sugere 5% de ISS (serviços) ou 6% de ICMS líquido (comércio e indústria).

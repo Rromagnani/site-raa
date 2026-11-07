@@ -13,10 +13,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="estilo.css?v=20261107">
 </head>
 <body>
-<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
 <header class="hero"><div>
   <span class="eyebrow">Utilitários · Tributário</span>
   <h1>Simples Nacional</h1>
@@ -58,6 +58,11 @@
       <h3 id="tTit">Tabela do anexo</h3>
       <div class="scroll"><table class="tbl" id="tab"></table></div>
       <div class="note" id="obs"></div>
+      <div class="gerar">
+        <div><label for="empresa">Empresa <small>(opcional, para o relatório)</small></label>
+          <input id="empresa" maxlength="120" placeholder="Ex.: Exemplo Comércio Ltda."></div>
+        <button type="button" id="btnRel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><path d="M6 14h12v7H6z"/></svg>Gerar relatório em PDF</button>
+      </div>
     </section>
   </div>
   <div class="note">
@@ -72,6 +77,7 @@
   <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo, que não substitui a apuração no PGDAS-D.</p>
 </main>
 <script src="comum.js"></script>
+<script src="relatorio.js"></script>
 <script>
 // Anexos da LC 123/2006 (redação da LC 155/2016). Cada faixa: [limite RBT12, alíquota nominal, parcela a deduzir].
 const LIM = [180000, 360000, 720000, 1800000, 3600000, 4800000];
@@ -86,6 +92,7 @@ const FATOR_R = .28;
 
 const $ = id => document.getElementById(id);
 const efetiva = (rbt, [nom, pd]) => rbt > 0 ? (rbt * nom - pd) / rbt : 0;
+let ult;
 
 function calcular() {
   const sel = $("anexo").value;
@@ -113,6 +120,7 @@ function calcular() {
   $("tab").innerHTML = `<tr><th>Faixa · RBT12 até</th><th>Alíquota nominal</th><th>Parcela a deduzir</th><th>Efetiva no limite</th></tr>` +
     A.f.map((f, k) => `<tr class="${k === i ? "on" : ""}"><td>${k + 1}ª · ${moeda(LIM[k])}</td><td>${pct(f[0])}</td><td>${moeda(f[1])}</td><td>${pct(efetiva(LIM[k], f))}</td></tr>`).join("");
 
+  ult = { usaR, fr, n, i, ef, das, rbt, mes, folha };
   const obs = [];
   if (usaR) obs.push(fr >= FATOR_R
     ? `Fator R de ${pct(fr)}: igual ou acima de 28%, a tributação é pelo Anexo III.`
@@ -123,6 +131,77 @@ function calcular() {
   $("obs").className = "note" + (rbt > 3600000 ? " warn" : "");
   $("obs").style.display = obs.length ? "" : "none";
 }
+
+// ---------- relatório em PDF no papel timbrado ----------
+const efetivaEm = (n, rbt) => { const k = Math.min(LIM.findIndex(l => rbt <= l) === -1 ? 5 : LIM.findIndex(l => rbt <= l), 5); return k === 0 ? ANEXOS[n].f[0][0] : efetiva(rbt, ANEXOS[n].f[k]); };
+
+// Curva da alíquota efetiva ao longo da receita (0 a R$ 4,8 milhões), com a posição da empresa.
+function svgCurva(n, alt, rbt) {
+  const W = 680, H = 240, L = 46, R = 20, T = 14, B = 34, XM = 4800000;
+  const ns = alt ? [n, alt] : [n], cor = { 1: "#4A6FA5", 2: "#4A6FA5", 3: "#C9A46A", 4: "#4A6FA5", 5: "#16414A" };
+  const pts = k => Array.from({ length: 97 }, (_, j) => { const x = Math.max(j * XM / 96, 1); return [x, efetivaEm(k, x)]; });
+  const ymax = Math.ceil(Math.max(...ns.flatMap(k => pts(k).map(p => p[1]))) * 100 / 5) * 5 / 100;
+  const X = v => L + v / XM * (W - L - R), Y = v => T + (1 - v / ymax) * (H - T - B);
+  let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`;
+  for (let v = 0; v <= ymax + 1e-9; v += .05) o += `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E6E0D4"/><text x="${L - 6}" y="${Y(v) + 3}" font-size="9" fill="#5E6878" text-anchor="end">${pct(v, 0)}</text>`;
+  [180000, 360000, 720000, 1800000, 3600000, 4800000].forEach((l, k) => {
+    o += `<line x1="${X(l)}" x2="${X(l)}" y1="${T}" y2="${H - B}" stroke="#DDD5C7" stroke-dasharray="3 3"/>` + (k < 2 ? "" :
+      `<text x="${X(l)}" y="${H - B + 13}" font-size="8.5" fill="#5E6878" text-anchor="${k === 5 ? "end" : "middle"}">${l < 1e6 ? l / 1000 + " mil" : (l / 1e6).toLocaleString("pt-BR") + " mi"}</text>`);
+  });
+  o += `<text x="${(L + W - R) / 2}" y="${H - 4}" font-size="8.5" fill="#5E6878" text-anchor="middle">Receita bruta dos últimos 12 meses (R$)</text>`;
+  ns.forEach((k, j) => {
+    o += `<path d="${pts(k).map((p, q) => (q ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1)).join("")}" fill="none" stroke="${j ? "#9AA5B4" : cor[k]}" stroke-width="${j ? 2 : 2.8}"${j ? ' stroke-dasharray="6 4"' : ""}/>`;
+    const ini = pts(k)[60];   // rótulo junto à curva, perto de R$ 3 milhões
+    o += `<text x="${X(ini[0])}" y="${Y(ini[1]) + (j && efetivaEm(k, 3e6) < efetivaEm(n, 3e6) ? 15 : -8)}" font-size="9.5" font-weight="700" fill="${j ? "#7A8594" : cor[k]}" text-anchor="middle">Anexo ${["", "I", "II", "III", "IV", "V"][k]}</text>`;
+  });
+  if (rbt > 0 && rbt <= XM) {
+    const e = efetivaEm(n, rbt), cx = X(rbt), cy = Y(e), dir = cx > W * .6;
+    o += `<circle cx="${cx}" cy="${cy}" r="6" fill="#C9A46A" stroke="#0E1B2C" stroke-width="2"/>` +
+      `<text x="${cx + (dir ? -10 : 10)}" y="${cy - 9}" font-size="10" font-weight="700" fill="#0E1B2C" text-anchor="${dir ? "end" : "start"}">Sua empresa: ${pct(e)}</text>`;
+  }
+  return o + "</svg>";
+}
+
+function gerarRelatorio() {
+  calcular();
+  const u = ult, A = ANEXOS[u.n], emp = $("empresa").value.trim();
+  if (!u.rbt && !u.mes) { alert("Informe a receita para gerar o relatório."); return; }
+  const alt = u.usaR ? (u.n === 3 ? 5 : 3) : null;
+  const ativ = $("anexo").selectedOptions[0].text.replace(/ \(ex\.:.*\)/, "");
+  const dados = [["Atividade", ativ], ["Receita bruta dos últimos 12 meses", moeda(u.rbt)], ["Receita do mês", moeda(u.mes)]];
+  if (u.usaR) dados.push(["Folha dos últimos 12 meses", moeda(u.folha)], ["Fator R", pct(u.fr) + (u.fr >= FATOR_R ? " (Anexo III)" : " (Anexo V)")]);
+  const tab = relTabela(["Faixa · RBT12 até", "Alíquota nominal", "Parcela a deduzir", "Efetiva no limite"],
+    A.f.map((f, k) => [`${k + 1}ª · ${moeda(LIM[k])}`, pct(f[0]), moeda(f[1]), pct(efetiva(LIM[k], f))]));
+  const tabOn = tab.split("<tbody>");
+  const linhas = tabOn[1].split("<tr>"); linhas[u.i + 1] = '<tr class="on">' + linhas[u.i + 1];
+  const tabF = tabOn[0] + "<tbody>" + linhas.map((l, k) => k === 0 || k === u.i + 1 ? l : "<tr>" + l).join("");
+  const avisos = $("obs").innerHTML.split("<br>").filter(t => t.startsWith("<b>Atenção"));  // o Fator R já está na conclusão
+  const obs = avisos.length ? `<div class="r-obs" style="background:#FBF4E6">${avisos.join("<br>")}</div>` : "";
+  relatorio({
+    eyebrow: "Simulação tributária · Simples Nacional",
+    titulo: "DAS e alíquota efetiva do Simples Nacional",
+    para: emp, ref: `Anexo ${A.nome} · ${u.i + 1}ª faixa`,
+    conclusao: `<p>DAS estimado de <b>${moeda(u.das)}</b> para a receita de ${moeda(u.mes)} no mês, com alíquota efetiva de <b>${pct(u.ef)}</b> no <b>Anexo ${A.nome}</b> (${A.desc}), ${u.i + 1}ª faixa.</p>` +
+      (u.usaR ? `<p>Fator R de <b>${pct(u.fr)}</b>: ${u.fr >= FATOR_R ? "a atividade fica no Anexo III" : `a atividade fica no Anexo V; com folha de ${moeda(u.rbt * FATOR_R)} nos 12 meses, iria para o Anexo III, com alíquota efetiva de ${pct(efetivaEm(3, u.rbt))}`}.</p>` : ""),
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
+      <h2>2. Resultado</h2>
+      ${relKpis([
+        { titulo: "DAS do mês", valor: moeda(u.das), cor: "#C9A46A", texto: "receita do mês × alíquota efetiva" },
+        { titulo: "Alíquota efetiva", valor: pct(u.ef), cor: "#1F3864", texto: `Anexo ${A.nome} · ${u.i + 1}ª faixa` },
+        { titulo: "Estimativa em 12 meses", valor: moeda(u.rbt * u.ef), cor: "#16414A", texto: "RBT12 × alíquota efetiva" },
+        ...(u.usaR ? [{ titulo: "Fator R", valor: pct(u.fr), cor: u.fr >= FATOR_R ? "#5E9C8F" : "#B0695B", texto: "mínimo de 28% para o Anexo III" }] : []),
+      ])}
+      <p class="r-nota">${$("formula").textContent}</p>
+      <div class="r-graf" style="margin-top:4mm">${svgCurva(u.n, alt, u.rbt)}</div>
+      <p class="r-nota">Alíquota efetiva conforme a receita dos últimos 12 meses${alt ? `, comparando o Anexo ${A.nome} com o Anexo ${["", "I", "II", "III", "IV", "V"][alt]} (tracejado)` : ""}. As linhas verticais marcam o início de cada faixa.</p>
+      ${obs}
+      <h2>3. Tabela do Anexo ${A.nome} · ${A.desc}</h2>${tabF}
+      <h2>4. Como é calculado</h2><p style="font-size:8.5pt">${document.querySelector("main > .note").innerHTML.replace(/^\s*<strong>[^<]*<\/strong>\s*/, "")}</p>`,
+    ressalva: "Simulação de caráter informativo, com base na LC 123/2006 (redação da LC 155/2016) e na Resolução CGSN 140/2018. Não substitui a apuração no PGDAS-D nem a análise do enquadramento da atividade pelo CNAE.",
+    arquivo: "Simples Nacional - DAS" + (emp ? " - " + emp : ""),
+  });
+}
+$("btnRel").addEventListener("click", gerarRelatorio);
 
 $("f").addEventListener("input", calcular);
 $("f").addEventListener("change", calcular);

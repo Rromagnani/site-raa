@@ -13,10 +13,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="estilo.css?v=20261107">
 </head>
 <body>
-<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
 <header class="hero"><div>
   <span class="eyebrow">Utilitários · Trabalhista e tributário</span>
   <h1>INSS e IRRF 2026</h1>
@@ -56,6 +56,11 @@
       <h3>Imposto de Renda</h3>
       <div class="scroll"><table class="tbl" id="tIr"></table></div>
       <div class="note" id="obs"></div>
+      <div class="gerar">
+        <div><label for="empresa">Colaborador ou sócio <small>(opcional, para o relatório)</small></label>
+          <input id="empresa" maxlength="120" placeholder="Ex.: Maria da Silva"></div>
+        <button type="button" id="btnRel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><path d="M6 14h12v7H6z"/></svg>Gerar relatório em PDF</button>
+      </div>
     </section>
   </div>
   <div class="note">
@@ -70,6 +75,7 @@
   <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Simulação de caráter informativo. Os valores oficiais são os da folha de pagamento e da legislação vigente na competência.</p>
 </main>
 <script src="comum.js"></script>
+<script src="relatorio.js"></script>
 <script>
 // Tabelas de 2026 — atualizar a cada ano (e quando sair nova portaria/lei).
 const T = {
@@ -83,6 +89,7 @@ const T = {
 };
 
 const $ = id => document.getElementById(id);
+let ult;
 const tabelaIr = base => T.ir.find(f => base <= f[0]);
 const impostoTabela = base => { if (base <= 0) return 0; const f = tabelaIr(base); return Math.max(0, base * f[1] - f[2]); };
 
@@ -139,6 +146,7 @@ function calcular() {
   // Salário-família (só empregado CLT).
   const sf = tipo === "clt" && bruto > 0 && bruto <= T.salFamilia.limite ? r2(filhos * T.salFamilia.cota) : 0;
   const liq = r2(bruto - inss - ir - pensao - prev + sf);
+  ult = { tipo, bruto, inss, ir, pensao, prev, sf, liq, dep, filhos, simp, base, aliq: f[1] };
   $("liq").textContent = moeda(liq);
   $("kInss").textContent = moeda(inss);
   $("kIr").textContent = moeda(ir);
@@ -162,6 +170,66 @@ function calcular() {
   if (tipo === "clt" && bruto > T.inss.at(-1)[0]) obs.push("O salário passa do teto do INSS; a contribuição fica limitada ao valor máximo.");
   $("obs").innerHTML = obs.join("<br>");
 }
+
+// ---------- relatório em PDF no papel timbrado ----------
+// Barra empilhada e rosca com a destinação do valor bruto.
+function svgDestino(u) {
+  const P = [["Valor líquido", u.liq - u.sf, "#1F3864"], ["INSS", u.inss, "#C9A46A"], ["IRRF", u.ir, "#B0695B"],
+    ["Pensão alimentícia", u.pensao, "#5E9C8F"], ["Previdência complementar", u.prev, "#4A6FA5"]].filter(p => p[1] > 0.004);
+  const W = 680, H = 170, cx = 90, cy = 85, R = 72, r = 44, tot = P.reduce((a, p) => a + p[1], 0) || 1;
+  let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`, ang = -Math.PI / 2;
+  P.forEach(([, v, c]) => {
+    const a2 = ang + v / tot * 2 * Math.PI * .99999, g = a2 - ang > Math.PI ? 1 : 0;
+    const p = (rr, a) => `${(cx + rr * Math.cos(a)).toFixed(2)} ${(cy + rr * Math.sin(a)).toFixed(2)}`;
+    o += `<path d="M${p(R, ang)} A${R} ${R} 0 ${g} 1 ${p(R, a2)} L${p(r, a2)} A${r} ${r} 0 ${g} 0 ${p(r, ang)}Z" fill="${c}" stroke="#fff" stroke-width="1.5"/>`;
+    ang = a2;
+  });
+  o += `<text x="${cx}" y="${cy - 3}" font-size="9" fill="#5E6878" text-anchor="middle">bruto</text><text x="${cx}" y="${cy + 12}" font-size="11.5" font-weight="700" fill="#0E1B2C" text-anchor="middle">${moeda(u.bruto)}</text>`;
+  P.forEach(([n, v, c], k) => {
+    const y = 30 + k * 27;
+    o += `<rect x="230" y="${y - 10}" width="12" height="12" rx="2" fill="${c}"/><text x="250" y="${y}" font-size="10.5" fill="#0E1B2C">${n}</text>` +
+      `<text x="530" y="${y}" font-size="10.5" font-weight="700" fill="#0E1B2C" text-anchor="end">${moeda(v)}</text>` +
+      `<rect x="545" y="${y - 9}" width="${(v / tot * 120).toFixed(1)}" height="10" rx="2" fill="${c}" opacity=".85"/>` +
+      `<text x="${545 + v / tot * 120 + 5}" y="${y}" font-size="9.5" fill="#5E6878">${pct(v / tot)}</text>`;
+  });
+  return o + "</svg>";
+}
+
+function gerarRelatorio() {
+  calcular();
+  const u = ult, nome = $("empresa").value.trim(), clt = u.tipo === "clt";
+  if (!u.bruto) { alert("Informe o valor bruto para gerar o relatório."); return; }
+  const tab = id => `<table class="r-tab">${$(id).innerHTML}</table>`;
+  const dados = [["Tipo", clt ? "Empregado (CLT)" : "Sócio (pró-labore)"], [clt ? "Salário bruto" : "Pró-labore bruto", moeda(u.bruto)],
+    ["Dependentes no IR", String(u.dep)], ["Pensão alimentícia", u.pensao ? moeda(u.pensao) : "—"],
+    ["Previdência complementar", u.prev ? moeda(u.prev) : "—"]];
+  if (clt) dados.push(["Filhos até 14 anos", String(u.filhos)]);
+  const carga = (u.inss + u.ir) / u.bruto;
+  relatorio({
+    eyebrow: "Simulação · Folha de pagamento",
+    titulo: clt ? "INSS, IRRF e salário líquido" : "INSS, IRRF e pró-labore líquido",
+    para: nome, ref: "Tabelas de 2026",
+    conclusao: `<p>Sobre ${clt ? "o salário" : "o pró-labore"} bruto de <b>${moeda(u.bruto)}</b> são retidos <b>${moeda(u.inss)}</b> de INSS e <b>${moeda(u.ir)}</b> de IRRF, ` +
+      `uma carga de <b>${pct(carga)}</b>. O valor líquido é de <b>${moeda(u.liq)}</b>${u.sf ? `, já com ${moeda(u.sf)} de salário-família` : ""}.</p>`,
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
+      <h2>2. Resultado</h2>
+      ${relKpis([
+        { titulo: "Valor líquido", valor: moeda(u.liq), cor: "#1F3864", texto: "a receber no mês" },
+        { titulo: "INSS", valor: moeda(u.inss), cor: "#C9A46A", texto: clt ? "alíquotas progressivas por faixa" : "11% até o teto" },
+        { titulo: "IRRF", valor: moeda(u.ir), cor: "#B0695B", texto: u.simp ? "com desconto simplificado" : "com deduções legais" },
+        { titulo: "Carga INSS + IR", valor: pct(carga), cor: "#16414A", texto: "sobre o valor bruto" },
+      ])}
+      <div class="r-graf" style="margin-top:4mm">${svgDestino(u)}</div>
+      <p class="r-nota">Destinação do valor bruto${u.sf ? ". O salário-família é pago à parte, somado ao líquido" : ""}.</p>
+      ${$("obs").innerHTML ? `<div class="r-obs">${$("obs").innerHTML}</div>` : ""}
+      <h2>3. Demonstrativo</h2>${tab("demo")}
+      <h2>4. INSS por faixa</h2>${tab("tInss")}
+      <h2>5. Imposto de Renda</h2>${tab("tIr")}`,
+    ressalva: document.querySelector("main > .note").innerHTML + " Simulação de caráter informativo; os valores oficiais são os da folha de pagamento e da legislação vigente na competência.",
+    arquivo: "INSS e IRRF" + (nome ? " - " + nome : ""),
+  });
+}
+$("btnRel").addEventListener("click", gerarRelatorio);
 
 document.getElementById("f").addEventListener("input", calcular);
 document.getElementById("f").addEventListener("change", calcular);

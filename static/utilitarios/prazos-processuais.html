@@ -13,10 +13,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
+<link rel="stylesheet" href="estilo.css?v=20261107">
 </head>
 <body>
-<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><b>Romagnani</b></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
 <header class="hero"><div>
   <span class="eyebrow">Utilitários · Processo</span>
   <h1>Prazos processuais</h1>
@@ -64,6 +64,11 @@
         <p style="margin:0">Leve o vencimento para a sua agenda.</p>
         <a href="#" id="ics" download="prazo.ics">Adicionar à agenda</a>
       </div>
+      <div class="gerar">
+        <div><label for="empresa">Processo ou cliente <small>(opcional, para o relatório)</small></label>
+          <input id="empresa" maxlength="120" placeholder="Ex.: 1001234-56.2026.8.26.0100 · Exemplo Ltda."></div>
+        <button type="button" id="btnRel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><path d="M6 14h12v7H6z"/></svg>Gerar relatório em PDF</button>
+      </div>
     </section>
   </div>
   <div class="note">
@@ -80,6 +85,7 @@
   <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Ferramenta de caráter informativo.</p>
 </main>
 <script src="comum.js"></script>
+<script src="relatorio.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const SEM = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
@@ -204,6 +210,7 @@ function calcular() {
   }
   marcos.push(["Vencimento", venc]);
 
+  ult = { modo, n, uteis, base, venc, marcos, nao: uteisNCtmp(naoContados), naoLista: naoContados.filter(([, m]) => m !== "Fim de semana").sort((a, b) => a[0] - b[0]), dias: dias.length, contados: cont };
   $("venc").textContent = brLongo(venc);
   $("marcos").innerHTML = marcos.map(([t, x]) => `<div class="kpi"><span>${t}</span><b>${br(x)}</b></div>`).join("");
   $("lista").innerHTML = dias.slice(-160).map(([x, conta, c]) => {
@@ -223,6 +230,76 @@ function calcular() {
     `DESCRIPTION:Contagem a partir de ${br(base)}. Conferir no tribunal.`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
   $("ics").href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
 }
+
+// ---------- relatório em PDF no papel timbrado ----------
+let ult;
+const uteisNCtmp = nc => nc.filter(([, m]) => m !== "Fim de semana").length;
+
+// Linha do tempo com os marcos da contagem, em intervalos iguais e com a distância em dias entre eles.
+function svgLinha(marcos) {
+  const W = 680, H = 120, L = 60, R = 60, y = 58, k = marcos.length;
+  const X = i => k === 1 ? W / 2 : L + i * (W - L - R) / (k - 1);
+  let o = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">` +
+    `<line x1="${X(0)}" x2="${X(k - 1)}" y1="${y}" y2="${y}" stroke="#C8D3E1" stroke-width="4" stroke-linecap="round"/>`;
+  marcos.forEach(([t, d], i) => {
+    const fim = i === k - 1;
+    if (i) {
+      const dd = Math.round((d - marcos[i - 1][1]) / 864e5);
+      o += `<text x="${(X(i) + X(i - 1)) / 2}" y="${y - 8}" font-size="8.5" fill="#7A8594" text-anchor="middle">+${dd} dia${dd === 1 ? "" : "s"}</text>`;
+    }
+    o += `<circle cx="${X(i)}" cy="${y}" r="${fim ? 11 : 7}" fill="${fim ? "#C9A46A" : "#1F3864"}" stroke="#fff" stroke-width="2.5"/>` +
+      `<text x="${X(i)}" y="${y + 30}" font-size="10" font-weight="700" fill="#0E1B2C" text-anchor="middle">${SEM[d.getDay()]} ${br(d)}</text>` +
+      `<text x="${X(i)}" y="${y + 44}" font-size="9" fill="#5E6878" text-anchor="middle">${t}</text>`;
+  });
+  return o + "</svg>";
+}
+
+function gerarRelatorio() {
+  calcular();
+  const u = ult, ref = $("empresa").value.trim();
+  if (!u || !$("data").value) { alert("Informe a data para gerar o relatório."); return; }
+  const trib = $("trib").selectedOptions[0].text + ($("capital").checked ? " · Capital" : "");
+  const modoTxt = { djen: "Disponibilização no DJEN", evento: "Intimação ou juntada", portal: "Envio pelo portal" }[u.modo];
+  const extras = $("extras").value.trim();
+  const dados = [["Tribunal", trib], ["A contagem parte de", modoTxt], [$("dataLbl").textContent, br(u.base)],
+    ["Prazo", `${u.n} dias ${u.uteis ? "úteis" : "corridos"}${$("dobro").checked ? " (em dobro)" : ""}`]];
+  if (extras) dados.push(["Outros dias sem expediente", extras.replace(/\s*[\n,;]\s*/g, ", ")]);
+  // Dias não contados, com o recesso e outras sequências do mesmo motivo agrupados em períodos.
+  const grupos = [];
+  for (const [d, m] of u.naoLista) {
+    const g = grupos.findLast(g => g.m === m && (d - g.fim) / 864e5 <= 4);
+    if (g) { g.fim = d; g.n++; } else grupos.push({ m, ini: d, fim: d, n: 1 });
+  }
+  grupos.sort((a, b) => a.ini - b.ini);
+  const nao = grupos.length ? `<h2>4. Dias não contados</h2><table class="r-tab"><thead><tr><th>Data ou período</th><th style="text-align:left">Motivo</th></tr></thead><tbody>` +
+    grupos.map(g => `<tr><td>${g.n > 1 ? `${br(g.ini)} a ${br(g.fim)}` : `${SEM[g.ini.getDay()]} ${br(g.ini)}`}</td><td style="text-align:left">${g.m}</td></tr>`).join("") + "</tbody></table>" : "";
+  const notas = document.querySelectorAll("main > .note");
+  relatorio({
+    eyebrow: "Contagem de prazo processual",
+    titulo: "Vencimento do prazo",
+    para: ref, ref: `${u.n} dias ${u.uteis ? "úteis" : "corridos"}`,
+    conclusao: `<p>Prazo de ${u.n} dias ${u.uteis ? "úteis" : "corridos"}${$("dobro").checked ? " (em dobro)" : ""}, contado a partir ${{ djen: "da disponibilização no DJEN", evento: "da intimação ou juntada", portal: "do envio pelo portal" }[u.modo]} em ${br(u.base)}.</p>` +
+      `<p class="r-grande">Vence em ${brLongo(u.venc)}</p>`,
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
+      <h2>2. Marcos da contagem</h2>
+      <div class="r-graf">${svgLinha(u.marcos)}</div>
+      ${relKpis([
+        { titulo: "Vencimento", valor: br(u.venc), cor: "#C9A46A", texto: brLongo(u.venc).split(",")[0] },
+        { titulo: "Dias do período", valor: String(u.dias), cor: "#1F3864", texto: "do primeiro dia ao vencimento" },
+        { titulo: "Dias contados", valor: String(u.contados), cor: "#4A6FA5", texto: u.uteis ? "dias úteis" : "dias corridos" },
+        { titulo: "Feriados e suspensões", valor: String(u.nao), cor: "#B0695B", texto: "dias úteis não contados" },
+      ])}
+      <h2>3. Dias do prazo</h2>
+      <div class="r-dias" style="margin-bottom:2mm;align-items:center;color:#5E6878"><span class="dia conta">azul</span> conta no prazo · <span class="dia pula">riscado</span> não conta · <span class="dia fim">dourado</span> vencimento</div>
+      <div class="r-dias">${$("lista").innerHTML}</div>
+      ${nao}
+      <div class="r-obs">${notas[0].innerHTML}</div>
+      <div class="r-obs" style="background:#FBF4E6">${notas[1].innerHTML}</div>`,
+    ressalva: "Cálculo de apoio, que não substitui a conferência do prazo pelo advogado responsável nem as publicações do tribunal sobre suspensões e feriados locais.",
+    arquivo: "Prazo" + (ref ? " - " + ref : "") + " - vencimento " + br(u.venc).replace(/\//g, "-"),
+  });
+}
+$("btnRel").addEventListener("click", gerarRelatorio);
 
 $("data").value = chave(new Date());
 $("f").addEventListener("input", calcular);
