@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IBS e CBS por operação: calculadora da Reforma Tributária — Romagnani Advogados</title>
+<meta name="description" content="Calcule a CBS e o IBS de uma venda ou prestação de serviço com as regras e a base oficial da calculadora da Receita Federal: classificação tributária (cClassTrib), reduções de 30%, 60% e alíquota zero, NCM e NBS, de 2026 a 2033.">
+<meta property="og:title" content="IBS e CBS por operação — calculadora da Reforma Tributária">
+<meta property="og:description" content="CBS e IBS de cada venda ou serviço, com a base oficial da Receita Federal, de 2026 a 2033.">
+<meta property="og:url" content="https://www.raa.com.br/utilitarios/ibs-cbs-operacao.html">
+<meta name="theme-color" content="#0E1B2C">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=20261107d">
+<style>
+main,.bar>div,.hero>div{max-width:1240px}
+.grid{grid-template-columns:minmax(300px,5fr) minmax(0,7fr)}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+details{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--brass-ink)}
+.anos{display:flex;gap:6px;flex-wrap:wrap}
+.anos button{font:inherit;font-size:.88rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--text);font-variant-numeric:tabular-nums}
+.anos button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.desc{font-size:.8rem;color:var(--brass-ink);margin-top:6px;min-height:1.2em}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--paper-2);color:var(--ink);margin-right:6px}
+.tag.red{background:#FBF4E6;color:var(--brass-ink)}
+.mem{font-size:.85rem;color:var(--text);background:var(--paper);border-radius:10px;padding:12px 14px;margin-top:14px}
+.mem p{margin:0 0 6px}.mem p:last-child{margin:0}
+.premissas{font-size:.86rem;color:var(--text)}
+.premissas li{margin:0 0 6px 18px}
+.tbl td.dim{color:var(--muted)}
+select{font-size:.92rem}
+</style>
+</head>
+<body>
+<div class="bar"><div><a class="home" href="../"><img src="../img/brasao.webp" alt=""><span><b>Romagnani</b><small>Advogados Associados</small></span></a><a class="voltar" href="./">← Todos os utilitários</a></div></div>
+<header class="hero"><div>
+  <span class="eyebrow">Utilitários · Reforma Tributária</span>
+  <h1>IBS e CBS por operação</h1>
+  <p>Calcule a CBS e o IBS de uma venda ou de um serviço com as regras e a base oficial da calculadora da Receita Federal: classificação tributária (cClassTrib), NCM ou NBS, reduções e alíquota zero, de 2026 a 2033.</p>
+</div></header>
+<main>
+  <div class="grid">
+    <form class="card" id="f" onsubmit="return false">
+      <label>Ano da operação</label>
+      <div class="anos" id="anos" role="group" aria-label="Ano da operação"></div>
+
+      <label>O que está sendo vendido</label>
+      <div class="seg" role="radiogroup" aria-label="Natureza">
+        <label><input type="radio" name="nat" value="servico" checked><span>Serviço (NBS)</span></label>
+        <label><input type="radio" name="nat" value="bem"><span>Produto (NCM)</span></label>
+      </div>
+
+      <label for="cod" id="codL">Código NBS <small>(opcional, 9 dígitos)</small></label>
+      <input id="cod" inputmode="numeric" list="listaNbs" autocomplete="off" placeholder="Ex.: 113012000 ou digite parte da descrição">
+      <datalist id="listaNbs"></datalist>
+      <div class="desc" id="codD"></div>
+
+      <label for="cls">Classificação tributária (cClassTrib)</label>
+      <select id="cls"></select>
+      <p class="hint" id="clsH"></p>
+
+      <div class="row">
+        <div><label for="val" id="valL">Valor do serviço</label><input id="val" inputmode="decimal" data-moeda value="10.000,00"></div>
+        <div><label for="dsc">Descontos incondicionais</label><input id="dsc" inputmode="decimal" data-moeda value="0,00"></div>
+      </div>
+      <div id="boxOut"><label for="out">Frete, seguro e outras despesas cobradas</label><input id="out" inputmode="decimal" data-moeda value="0,00"></div>
+      <div class="row">
+        <div><label for="loc" id="locL">ISS destacado</label><input id="loc" inputmode="decimal" data-moeda value="0,00"></div>
+        <div><label for="pis">PIS e Cofins <small>(só 2026)</small></label><input id="pis" inputmode="decimal" data-moeda value="0,00"></div>
+      </div>
+      <p class="hint">Na transição, o ICMS, o ISS e (em 2026) o PIS e a Cofins destacados saem da base do IBS e da CBS.</p>
+      <label class="check"><input type="checkbox" id="inc"> <span>O valor informado já inclui o IBS e a CBS (calcular "por dentro")</span></label>
+
+      <details>
+        <summary>Premissas de 2027 a 2033</summary>
+        <div class="row">
+          <div><label for="cbs">CBS de referência (%)</label><input id="cbs" inputmode="decimal" value="11,3"></div>
+          <div><label for="ibs">IBS de referência (%)</label><input id="ibs" inputmode="decimal" value="16,6"></div>
+        </div>
+        <p class="hint">As alíquotas de referência ainda não foram fixadas e não constam da base oficial. CBS: cálculo do TCU para 2027 (11,3%), pendente de resolução do Senado. IBS: estimativa do total de 27,9% da Secretaria Extraordinária da Reforma Tributária, menos a CBS. Em 2026, valem as alíquotas de teste da base oficial.</p>
+      </details>
+    </form>
+
+    <section class="card" aria-live="polite">
+      <h2 id="tit">Resultado</h2>
+      <div id="err"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="scroll"><table class="tbl" id="tab"></table></div>
+      <div class="mem" id="mem"></div>
+      <div class="gerar">
+        <div><label for="empresa">Empresa ou operação <small>(opcional, para o relatório)</small></label>
+          <input id="empresa" maxlength="120" placeholder="Ex.: Honorários de consultoria — Cliente X"></div>
+        <button type="button" id="btnRel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><path d="M6 14h12v7H6z"/></svg>Gerar relatório em PDF</button>
+      </div>
+      <p class="hint">Abre a impressão com o relatório no papel timbrado do escritório. Escolha "Salvar como PDF" para guardar ou enviar.</p>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:24px">
+    <h2>A mesma operação de 2026 a 2033</h2>
+    <p class="hint" style="margin:-6px 0 12px">IBS e CBS devidos em cada ano da transição, com os mesmos valores e a mesma classificação. A partir de 2027, com as alíquotas de referência estimadas acima.</p>
+    <div class="scroll"><table class="tbl" id="evo"></table></div>
+  </section>
+
+  <section class="card" style="margin-top:24px">
+    <h2>Como ler o resultado</h2>
+    <ul class="premissas">
+      <li><b>Base de cálculo</b>: valor da operação, mais frete, seguro e outras despesas, menos descontos incondicionais e os tributos que saem da base na transição. O IBS e a CBS são cobrados "por fora": não integram a própria base.</li>
+      <li><b>Alíquota efetiva</b> = alíquota nominal × (1 − redução da classificação). As reduções (30%, 40%, 60%, 100% etc.) vêm da tabela oficial de classificações tributárias.</li>
+      <li><b>Diferimento</b>: o tributo é calculado, mas o pagamento é transferido para a etapa seguinte; nada é devido na operação. <b>Suspensão</b>: o valor fica suspenso enquanto cumpridas as condições legais. <b>Isenção, imunidade e não incidência</b>: não há IBS nem CBS no documento.</li>
+      <li>Quando a classificação reduzida só vale para uma lista fechada de NCM ou NBS (anexos da LC 214/2025), a calculadora confere o código informado e avisa se ele não estiver na lista, como faz a calculadora da Receita.</li>
+    </ul>
+    <h3>Premissas e fonte</h3>
+    <ul class="premissas">
+      <li>Regras de cálculo e tabelas (classificações, reduções, NCM e NBS vinculados, alíquotas de 2026) extraídas da <a href="https://github.com/ReceitaFederal/calculadora-rtc-regime-regular" target="_blank" rel="noopener">calculadora oficial da Receita Federal para o regime regular</a>, base <span id="versao"></span>. Os resultados foram conferidos com a calculadora da Receita, classificação por classificação, em 2026 e 2027.</li>
+      <li>2026: CBS de 0,9% e IBS estadual de 0,1% (ano de teste; o valor é compensável com PIS e Cofins e, cumpridas as obrigações acessórias, dispensado de recolhimento). 2027 e 2028: CBS de referência − 0,1 ponto e IBS de 0,05% estadual + 0,05% municipal. 2029 a 2032: IBS de 10%, 20%, 30% e 40% da referência; 2033: integral.</li>
+      <li>De 2029 em diante, o IBS aparece somado, porque a divisão entre Estado e Município depende das alíquotas que cada ente vai fixar.</li>
+      <li>Não considera: Simples Nacional, Imposto Seletivo, regimes específicos (combustíveis, serviços financeiros, planos de saúde, imóveis), alíquotas fixas, redutor de compras governamentais, Zona Franca de Manaus, créditos presumidos nem o crédito do adquirente.</li>
+      <li>A escolha da classificação tributária é de responsabilidade do contribuinte e depende do enquadramento legal de cada operação. A calculadora aplica a classificação informada, mas não confere os requisitos legais (por exemplo, profissão regulamentada ou destinatário específico).</li>
+    </ul>
+  </section>
+
+  <div class="cta">
+    <p><strong>Dúvida sobre o enquadramento da sua operação?</strong><br>A classificação errada pode gerar autuação ou pagamento a maior. Fale com a nossa equipe tributária.</p>
+    <a class="wa" href="https://wa.me/5511996491980" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="../agendar/">Agendar consulta</a>
+  </div>
+  <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Cálculo de caráter informativo, com base na LC 214/2025 e na base de dados da calculadora oficial da Receita Federal. As alíquotas de 2027 em diante são estimativas e dependem de resolução do Senado e do Comitê Gestor. Não substitui a análise de um profissional.</p>
+</main>
+<script src="comum.js"></script>
+<script src="relatorio.js?v=20261107d"></script>
+<script src="dados-rtc.js?v=20261118"></script>
+<script src="rtc-calculo.js?v=20261118"></script>
+<script>
+const $ = id => document.getElementById(id);
+let anoSel = 2026, codAnterior = "";
+const curto = (t, n = 95) => t.length > n ? t.slice(0, n - 1) + "…" : t;
+const fmtP = v => v == null ? "—" : (Math.round(v * 1e4) / 1e4).toLocaleString("pt-BR", { maximumFractionDigits: 4 }) + "%";
+const natureza = () => document.querySelector("input[name=nat]:checked").value;
+const tipoCod = () => natureza() === "servico" ? "nbs" : "ncm";
+const codigo = () => $("cod").value.replace(/\D/g, "");
+
+$("versao").textContent = RTC.versao.match(/V\d+/)?.[0] + " de " + RTC.versao.match(/\d{4}-\d\d-\d\d/)?.[0].split("-").reverse().join("/");
+$("listaNbs").innerHTML = RTC.listaNbs.filter(n => n[0].length === 9).map(n => `<option value="${n[0]}">${n[1]}</option>`).join("");
+
+function reducao(c) {
+  const r = c.r[0] === c.r[1] ? c.r[0] : null;
+  if (c.cst === "400" || c.cst === "410") return c.t;
+  if (c.cst === "550") return "Suspensão";
+  if (c.cst === "510" || c.cst === "515") return "Diferimento" + (c.r[0] ? ` e redução de ${c.r[0]}%` : "");
+  if (r === null) return `CBS −${c.r[0]}%, IBS −${c.r[1]}%`;
+  return r === 100 ? "Alíquota zero" : r ? `Redução de ${r}%` : "Tributação integral";
+}
+
+function montarClasses() {
+  const t = tipoCod(), cod = codigo(), sel = $("cls").value;
+  const aplicaveis = RTC.cls.filter(c => c.n.includes(t.toUpperCase()));
+  // Vinculadas ao código: primeiro as de alíquota reduzida (maior redução antes), depois diferimento e as demais.
+  const peso = c => (c.cst === "200" ? 1000 : 0) + c.r[0];
+  const vinc = (cod.length >= 4 ? rtcVinculadas(cod, t) : []).sort((a, b) => peso(rtcClasse(b)) - peso(rtcClasse(a)));
+  const opt = c => `<option value="${c.c}">${c.c} · ${curto(c.d)} — ${reducao(c)}</option>`;
+  let h = "";
+  if (vinc.length) h += `<optgroup label="Vinculadas ao código ${cod}">${vinc.map(v => opt(rtcClasse(v))).join("")}</optgroup>`;
+  const grupos = [["000", "Tributação integral"], ["200", "Alíquota reduzida ou zero"], ["510", "Diferimento"], ["515", "Diferimento"], ["550", "Suspensão"], ["400", "Isenção"], ["410", "Imunidade e não incidência"]];
+  const vistos = new Set();
+  grupos.forEach(([cst, nome]) => {
+    const l = aplicaveis.filter(c => c.cst === cst);
+    if (!l.length) return;
+    h += `<optgroup label="CST ${cst} — ${nome}">${l.map(opt).join("")}</optgroup>`;
+  });
+  $("cls").innerHTML = h;
+  // Ao trocar o código, sugere a primeira classificação vinculada; senão, mantém a escolha ou volta à tributação integral.
+  if (cod !== codAnterior && vinc.length) $("cls").value = vinc[0];
+  else if ([...$("cls").options].some(o => o.value === sel)) $("cls").value = sel;
+  else $("cls").value = "000001";
+  codAnterior = cod;
+}
+
+function entradas(ano = anoSel) {
+  return {
+    ano, natureza: natureza(), codigo: codigo(), classe: $("cls").value,
+    valor: numero($("val").value), outros: natureza() === "bem" ? numero($("out").value) : 0, desc: numero($("dsc").value),
+    icmsIss: numero($("loc").value), pisCofins: numero($("pis").value), inclui: $("inc").checked,
+    cbsRef: numero($("cbs").value), ibsRef: numero($("ibs").value),
+  };
+}
+
+function textoSituacao(r) {
+  return { sem: `${r.cl.t}: não há IBS nem CBS nesta operação.`, diferido: `Diferimento: ${moeda(r.diferido)} calculados e transferidos para a etapa seguinte; nada a recolher nesta operação.`, suspenso: `Suspensão: ${moeda(r.suspenso)} ficam suspensos enquanto cumpridas as condições legais.` }[r.situacao] || "";
+}
+
+function render() {
+  const serv = natureza() === "servico";
+  $("codL").innerHTML = serv ? 'Código NBS <small>(opcional, 9 dígitos)</small>' : 'Código NCM <small>(opcional, 8 dígitos)</small>';
+  $("cod").setAttribute("list", serv ? "listaNbs" : "");
+  $("cod").placeholder = serv ? "Ex.: 113012000 ou digite parte da descrição" : "Ex.: 10063021";
+  $("valL").textContent = serv ? "Valor do serviço" : "Valor dos produtos";
+  $("locL").textContent = serv ? "ISS destacado" : "ICMS destacado";
+  $("boxOut").style.display = serv ? "none" : "";
+  // Só atualiza o estado dos botões: recriá-los durante o clique faria o clique se perder.
+  $("anos").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.a === anoSel));
+  montarClasses();
+  const cod = codigo(), vinc = cod.length >= 4 ? rtcVinculadas(cod, tipoCod()).length : 0;
+  const dsc = cod ? (serv ? rtcDescNbs(cod) : rtcDescNcm(cod)) : "";
+  $("codD").textContent = !cod ? "" : [curto(dsc, 120), vinc ? `${vinc} ${vinc > 1 ? "classificações vinculadas" : "classificação vinculada"} a este código` : cod.length >= (serv ? 9 : 8) ? "sem tratamento diferenciado nas tabelas oficiais" : ""].filter(Boolean).join(" · ");
+
+  const r = rtcCalcular(entradas());
+  const c = r.cl;
+  const nV = codigo().length >= 4 ? rtcVinculadas(codigo(), tipoCod()).length : 0;
+  $("clsH").innerHTML = (nV > 1 ? `Há ${nV} classificações possíveis para este código: confira qual corresponde à operação. ` : "") + `<span class="tag">CST ${c.cst}</span><span class="tag red">${reducao(c)}</span>${c.f ? "LC 214/2025, " + c.f.replace("LC 214/2025", "").trim() : ""}`;
+  $("tit").textContent = "Resultado em " + anoSel + (r.oficial ? "" : " (estimado)");
+  $("err").innerHTML = [...r.erros.map(t => `<div class="note warn">${t}</div>`), ...r.avisos.map(t => `<div class="note">${t}</div>`)].join("");
+
+  const pc = r.base > 0 ? pct(r.total / r.base, 2) : "—";
+  $("kpis").innerHTML = `<div class="kpi"><span>Base de cálculo</span><b>${moeda(r.base)}</b></div>
+    <div class="kpi"><span>IBS + CBS a destacar</span><b>${moeda(r.total)}</b></div>
+    <div class="kpi"><span>Carga sobre a base</span><b>${pc}</b></div>
+    <div class="kpi"><span>Valor com IBS e CBS</span><b>${moeda(r.precoFinal)}</b></div>`;
+  const col = r.situacao === "diferido" ? "Diferido" : r.situacao === "suspenso" ? "Suspenso" : null;
+  $("tab").innerHTML = `<thead><tr><th>Tributo</th><th>Alíquota</th><th>Redução</th><th>Efetiva</th>${col ? `<th>${col}</th>` : ""}<th>Valor devido</th></tr></thead><tbody>` +
+    r.linhas.map(l => `<tr><td>${l.nome}</td><td>${fmtP(l.nominal)}</td><td>${l.red ? l.red + "%" : "—"}</td><td>${fmtP(l.ef)}</td>${col ? `<td>${moeda(l.dif ?? l.susp)}</td>` : ""}<td>${moeda(l.devido)}</td></tr>`).join("") +
+    `<tr class="on"><td>Total</td><td></td><td></td><td>${r.base > 0 && r.situacao === "devido" ? pct(r.total / r.base, 4) : "—"}</td>${col ? `<td>${moeda(r.diferido || r.suspenso)}</td>` : ""}<td>${moeda(r.total)}</td></tr></tbody>`;
+  $("mem").innerHTML = `<p><b>${c.c}</b> — ${c.d}. Tratamento: ${c.t || reducao(c)}${c.f ? ` (${c.f})` : ""}.</p>` +
+    (textoSituacao(r) ? `<p>${textoSituacao(r)}</p>` : "") +
+    `<p>${c.cr ? "Gera crédito de IBS e CBS para o adquirente contribuinte do regime regular." : "Não gera crédito para o adquirente."}</p>` +
+    (r.oficial ? `<p>2026 é ano de teste: o valor destacado é compensável com PIS e Cofins e, cumpridas as obrigações acessórias, dispensado de recolhimento.</p>` : `<p>Alíquotas de ${anoSel} estimadas (CBS de referência ${fmtP(entradas().cbsRef)}, IBS ${fmtP(entradas().ibsRef)}), ainda não fixadas pelo Senado.</p>`);
+
+  $("evo").innerHTML = `<thead><tr><th>Ano</th><th>Base</th><th>CBS</th><th>IBS</th><th>Total devido</th><th>Carga</th></tr></thead><tbody>` +
+    RTC_ANOS.map(a => { const x = rtcCalcular(entradas(a));
+      const cbs = x.linhas[0].devido, ibs = x.linhas.slice(1).reduce((s, l) => s + l.devido, 0);
+      return `<tr class="${a === anoSel ? "on" : ""}"><td>${a}${a > 2026 ? " *" : ""}</td><td>${moeda(x.base)}</td><td>${moeda(cbs)}</td><td>${moeda(ibs)}</td><td>${moeda(x.total)}</td><td>${x.base > 0 ? pct(x.total / x.base, 2) : "—"}</td></tr>`; }).join("") +
+    `</tbody>`;
+}
+
+function gerarRelatorio() {
+  const E = entradas(), r = rtcCalcular(E), c = r.cl;
+  if (!E.valor) { alert("Informe o valor para gerar o relatório."); return; }
+  const emp = $("empresa").value.trim(), serv = E.natureza === "servico";
+  const dados = [
+    ["Ano da operação", String(E.ano) + (r.oficial ? "" : " (alíquotas estimadas)")],
+    ["Natureza", serv ? "Prestação de serviço" : "Venda de produto"],
+    [serv ? "NBS" : "NCM", E.codigo ? E.codigo + " — " + curto((serv ? rtcDescNbs(E.codigo) : rtcDescNcm(E.codigo)) || "—", 70) : "Não informado"],
+    ["Classificação (cClassTrib)", c.c + " — CST " + c.cst],
+    ["Tratamento", reducao(c) + (c.f ? " (" + c.f + ")" : "")],
+    ["Valor " + (E.inclui ? "(com IBS e CBS)" : "(sem IBS e CBS)"), moeda(E.valor)],
+    ...(serv ? [] : [["Frete, seguro e outras", moeda(E.outros)]]),
+    ["Descontos incondicionais", moeda(E.desc)],
+    [serv ? "ISS destacado" : "ICMS destacado", moeda(E.icmsIss)],
+    ["PIS e Cofins", moeda(E.pisCofins)],
+  ];
+  const tab = relTabela(["Tributo", "Alíquota", "Redução", "Efetiva", "Valor devido"],
+    [...r.linhas.map(l => [l.nome, fmtP(l.nominal), l.red ? l.red + "%" : "—", fmtP(l.ef), moeda(l.devido)]), ["<b>Total</b>", "", "", "", "<b>" + moeda(r.total) + "</b>"]]);
+  const evo = relTabela(["Ano", "Base", "CBS", "IBS", "Total devido", "Carga"], RTC_ANOS.map(a => { const x = rtcCalcular(entradas(a));
+    return [a + (a > 2026 ? " *" : ""), moeda(x.base), moeda(x.linhas[0].devido), moeda(x.linhas.slice(1).reduce((s, l) => s + l.devido, 0)), moeda(x.total), x.base > 0 ? pct(x.total / x.base, 2) : "—"]; }));
+  const premissas = document.querySelectorAll("ul.premissas");
+  relatorio({
+    eyebrow: "Cálculo tributário · Reforma Tributária (IBS e CBS)",
+    titulo: "IBS e CBS da operação",
+    para: emp, ref: "Ano da operação: " + E.ano,
+    conclusao: `<p>Base de cálculo de <b>${moeda(r.base)}</b>, com <b>${moeda(r.total)}</b> de IBS e CBS a destacar (${r.base > 0 ? pct(r.total / r.base, 2) : "—"} da base). Valor total com os tributos: <b>${moeda(r.precoFinal)}</b>.</p>` +
+      (textoSituacao(r) ? `<p>${textoSituacao(r)}</p>` : "") + r.erros.map(t => `<p><b>Atenção:</b> ${t}</p>`).join(""),
+    corpo: `<h2>1. Dados considerados</h2>${relDados(dados)}
+      <h2>2. Cálculo de ${E.ano}</h2>${relKpis([
+        { titulo: "Base de cálculo", valor: moeda(r.base) },
+        { titulo: "IBS + CBS", valor: moeda(r.total), cor: "#C9A46A" },
+        { titulo: "Valor com tributos", valor: moeda(r.precoFinal), cor: "#16414A" }])}
+      <div style="margin-top:4mm">${tab}</div>
+      <p class="r-nota">${relEsc(c.c + " — " + c.d)}. ${c.cr ? "Gera crédito de IBS e CBS para o adquirente." : "Não gera crédito para o adquirente."}</p>
+      <h2>3. A mesma operação de 2026 a 2033</h2>${evo}
+      <p class="r-nota">* Alíquotas estimadas: CBS de referência ${fmtP(E.cbsRef)} e IBS de referência ${fmtP(E.ibsRef)}, ainda não fixadas pelo Senado Federal e pelo Comitê Gestor.</p>
+      <h2>4. Como ler o resultado</h2><ul>${premissas[0] ? premissas[0].innerHTML : ""}</ul>
+      <h2>5. Premissas e fonte</h2><ul>${premissas[1] ? premissas[1].innerHTML : ""}</ul>`,
+    ressalva: "Cálculo de caráter informativo, elaborado com base na LC 214/2025 e na base de dados da calculadora oficial da Receita Federal para o regime regular. A classificação tributária e o enquadramento legal da operação são de responsabilidade do contribuinte. As alíquotas de 2027 em diante são estimativas. Não substitui a análise individualizada da operação.",
+    arquivo: "Calculo IBS CBS" + (emp ? " - " + emp : "") + " - " + E.ano,
+  });
+}
+
+$("anos").innerHTML = RTC_ANOS.map(a => `<button type="button" data-a="${a}">${a}</button>`).join("");
+$("btnRel").addEventListener("click", gerarRelatorio);
+$("anos").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { anoSel = +b.dataset.a; render(); } });
+document.querySelectorAll("input[name=nat]").forEach(i => i.addEventListener("change", () => { $("cod").value = ""; $("cls").value = "000001"; }));
+$("f").addEventListener("input", render);
+$("f").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>

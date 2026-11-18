@@ -37,6 +37,17 @@ Google Apps Script na conta roberto@raa.com.br (projeto "Agenda do site RAA"; c�
 Para alterar regras (dias, horários, quantidade), edite `CFG` em `agenda/Codigo.js`, cole no editor do
 Apps Script e use *Implantar → Gerenciar implantações → editar → Nova versão* (o endereço não muda).
 
+## Calculadora "IBS e CBS por operação"
+
+Página `static/utilitarios/ibs-cbs-operacao.html`, com o motor em `rtc-calculo.js` e as tabelas oficiais em
+`dados-rtc.js`, extraídas da base da calculadora da Receita Federal
+(github.com/ReceitaFederal/calculadora-rtc-regime-regular). Quando a Receita publicar nova versão da base
+(novas classificações, NCM/NBS vinculados ou alíquotas), gere o banco conforme o README dela e rode:
+
+```bash
+python3 tools/extrair_rtc.py caminho/para/calculadora-pro.db static/utilitarios/dados-rtc.js
+```
+
 ## Ajustes comuns
 
 - **Temas das notícias**: listas `AREAS` (buscas) e `REGRAS` (classificação) em `build.py`.
