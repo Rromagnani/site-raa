@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=20261107d">
+<link rel="stylesheet" href="estilo.css?v=20261119b">
 <style>
 main,.bar>div,.hero>div{max-width:1240px}
 .grid{grid-template-columns:minmax(300px,5fr) minmax(0,7fr)}
@@ -131,7 +131,7 @@ select{font-size:.92rem}
   <p class="fine">© <span data-ano></span> Romagnani Advogados Associados. Cálculo de caráter informativo, com base na LC 214/2025 e na base de dados da calculadora oficial da Receita Federal. As alíquotas de 2027 em diante são estimativas e dependem de resolução do Senado e do Comitê Gestor. Não substitui a análise de um profissional.</p>
 </main>
 <script src="comum.js"></script>
-<script src="relatorio.js?v=20261107d"></script>
+<script src="relatorio.js?v=20261119b"></script>
 <script src="dados-rtc.js?v=20261118"></script>
 <script src="rtc-calculo.js?v=20261118"></script>
 <script>
@@ -271,8 +271,8 @@ function gerarRelatorio() {
       <p class="r-nota">${relEsc(c.c + " — " + c.d)}. ${c.cr ? "Gera crédito de IBS e CBS para o adquirente." : "Não gera crédito para o adquirente."}</p>
       <h2>3. A mesma operação de 2026 a 2033</h2>${evo}
       <p class="r-nota">* Alíquotas estimadas: CBS de referência ${fmtP(E.cbsRef)} e IBS de referência ${fmtP(E.ibsRef)}, ainda não fixadas pelo Senado Federal e pelo Comitê Gestor.</p>
-      <h2>4. Como ler o resultado</h2><ul>${premissas[0] ? premissas[0].innerHTML : ""}</ul>
-      <h2>5. Premissas e fonte</h2><ul>${premissas[1] ? premissas[1].innerHTML : ""}</ul>`,
+      <h2>4. Como ler o resultado</h2><ul class="r-crit">${premissas[0] ? premissas[0].innerHTML : ""}</ul>
+      <h2>5. Premissas e fonte</h2><ul class="r-crit">${premissas[1] ? premissas[1].innerHTML : ""}</ul>`,
     ressalva: "Cálculo de caráter informativo, elaborado com base na LC 214/2025 e na base de dados da calculadora oficial da Receita Federal para o regime regular. A classificação tributária e o enquadramento legal da operação são de responsabilidade do contribuinte. As alíquotas de 2027 em diante são estimativas. Não substitui a análise individualizada da operação.",
     arquivo: "Calculo IBS CBS" + (emp ? " - " + emp : "") + " - " + E.ano,
   });

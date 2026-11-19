@@ -44,8 +44,8 @@ function relatorio(o) {
       <div class="r-meta">${o.para ? `Preparado para <b>${relEsc(o.para)}</b> · ` : ""}Emitido em ${hoje}${o.ref ? " · " + o.ref : ""}</div>
       ${o.conclusao ? `<div class="r-concl">${o.conclusao}</div>` : ""}
       ${o.corpo}
-      <p class="r-nota" style="margin-top:5mm">${o.ressalva || "Simulação de caráter informativo, que não substitui a análise de um profissional para o caso concreto."}</p>
-      <div class="r-ass"><b>Romagnani Advogados Associados</b>contato@raa.com.br · +55 11 99649-1980 · www.raa.com.br</div>
+      <div class="r-fim"><p class="r-nota" style="margin-top:4mm">${o.ressalva || "Simulação de caráter informativo, que não substitui a análise de um profissional para o caso concreto."}</p>
+      <div class="r-ass"><b>Romagnani Advogados Associados</b>contato@raa.com.br · +55 11 99649-1980 · www.raa.com.br</div></div>
     </td></tr></tbody></table>`;
 
   // Safari (Mac, iPhone e iPad) e qualquer navegador no iOS (todos usam o motor do Safari) não repetem
